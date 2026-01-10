@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopManage - Product Management System</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        .product-card {
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-shop me-2"></i>ShopManage
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#products">
+                            <i class="bi bi-box-seam me-1"></i>Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categories">
+                            <i class="bi bi-tags me-1"></i>Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reports">
+                            <i class="bi bi-graph-up me-1"></i>Reports
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex">
+                    <button class="btn btn-outline-light me-2" type="button" data-bs-toggle="modal" data-bs-target="#productModal">
+                        <i class="bi bi-plus-circle me-1"></i>Add Product
+                    </button>
+                    <form class="d-flex">
+                        <input class="form-control form-control-sm" type="search" placeholder="Search products..." aria-label="Search">
+                        <button class="btn btn-outline-light btn-sm ms-1" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mt-4">
+        <!-- Page Header -->
+        <header class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h3 mb-1">Product Management</h1>
+                        <p class="text-muted mb-0">Manage your inventory and product catalog</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-funnel me-1"></i>Filter
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-arrow-down-up me-1"></i>Sort
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Product Statistics -->
+        <section class="row mb-4" aria-label="Product Statistics">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-box-seam text-primary fs-1"></i>
+                        <h5 class="card-title mt-2">Total Products</h5>
+                        <p class="card-text display-6 text-primary">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-check-circle text-success fs-1"></i>
+                        <h5 class="card-title mt-2">In Stock</h5>
+                        <p class="card-text display-6 text-success">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-exclamation-triangle text-warning fs-1"></i>
+                        <h5 class="card-title mt-2">Low Stock</h5>
+                        <p class="card-text display-6 text-warning">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-x-circle text-danger fs-1"></i>
+                        <h5 class="card-title mt-2">Out of Stock</h5>
+                        <p class="card-text display-6 text-danger">0</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Listing Container -->
+        <section class="row" id="productList" aria-label="Product Listing">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Product items will be dynamically loaded here -->
+                        <div class="row" id="productContainer">
+                            <!-- Placeholder for empty state -->
+                            <div class="col-12 text-center py-5" id="emptyState">
+                                <i class="bi bi-box text-muted" style="font-size: 4rem;"></i>
+                                <h4 class="text-muted mt-3">No Products Found</h4>
+                                <p class="text-muted">Start by adding your first product to the inventory.</p>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+                                    <i class="bi bi-plus-circle me-2"></i>Add Your First Product
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">
+                        <i class="bi bi-plus-circle me-2"></i>Add New Product
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="row">
+                            <!-- Product Basic Information -->
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Basic Information</h6>
+                                
+                                <div class="mb-3">
+                                    <label for="productName" class="form-label">Product Name *</label>
+                                    <input type="text" class="form-control" id="productName" name="productName" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="productSku" class="form-label">SKU *</label>
+                                    <input type="text" class="form-control" id="productSku" name="productSku" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="productCategory" class="form-label">Category</label>
+                                    <select class="form-select" id="productCategory" name="productCategory">
+                                        <option value="">Select Category</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="clothing">Clothing</option>
+                                        <option value="books">Books</option>
+                                        <option value="home">Home & Garden</option>
+                                        <option value="sports">Sports & Outdoors</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="productDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="productDescription" name="productDescription" rows="3"></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Product Pricing & Inventory -->
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Pricing & Inventory</h6>
+                                
+                                <div class="mb-3">
+                                    <label for="productPrice" class="form-label">Price *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="productPrice" name="productPrice" step="0.01" min="0" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="productCost" class="form-label">Cost Price</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="productCost" name="productCost" step="0.01" min="0">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="productStock" class="form-label">Stock Quantity *</label>
+                                    <input type="number" class="form-control" id="productStock" name="productStock" min="0" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="productMinStock" class="form-label">Minimum Stock Level</label>
+                                    <input type="number" class="form-control" id="productMinStock" name="productMinStock" min="0" value="5">
+                                    <div class="form-text">Alert when stock falls below this level</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="productActive" name="productActive" checked>
+                                        <label class="form-check-label" for="productActive">
+                                            Active Product
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" form="productForm">
+                        <i class="bi bi-check-circle me-1"></i>Save Product
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="text-muted mb-0">&copy; 2026 ShopManage. Built with Bootstrap 5.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Custom JavaScript placeholder -->
+    <script>
+        // ShopManage Application JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('ShopManage application loaded successfully!');
+            
+            // Initialize form handling
+            const productForm = document.getElementById('productForm');
+            if (productForm) {
+                productForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Form submission logic will be implemented here
+                    console.log('Product form submitted');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
