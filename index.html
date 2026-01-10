@@ -228,75 +228,84 @@
                 <div class="modal-body">
                     <form id="productForm">
                         <div class="row">
-                            <!-- Product Basic Information -->
-                            <div class="col-md-6">
-                                <h6 class="text-muted mb-3">Basic Information</h6>
-                                
+                            <!-- Product Information -->
+                            <div class="col-12">
                                 <div class="mb-3">
-                                    <label for="productName" class="form-label">Product Name *</label>
-                                    <input type="text" class="form-control" id="productName" name="productName" required>
+                                    <label for="productTitle" class="form-label">Product Title *</label>
+                                    <input type="text" class="form-control" id="productTitle" name="productTitle" required 
+                                           placeholder="Enter product title">
+                                    <div class="invalid-feedback">
+                                        Please provide a valid product title.
+                                    </div>
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="productSku" class="form-label">SKU *</label>
-                                    <input type="text" class="form-control" id="productSku" name="productSku" required>
+                                    <label for="productPrice" class="form-label">Price *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="productPrice" name="productPrice" 
+                                               step="0.01" min="0" required placeholder="0.00">
+                                        <div class="invalid-feedback">
+                                            Please provide a valid price.
+                                        </div>
+                                    </div>
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="productCategory" class="form-label">Category</label>
-                                    <select class="form-select" id="productCategory" name="productCategory">
+                                    <label for="productCategory" class="form-label">Category *</label>
+                                    <select class="form-select" id="productCategory" name="productCategory" required>
                                         <option value="">Select Category</option>
                                         <option value="electronics">Electronics</option>
                                         <option value="clothing">Clothing</option>
                                         <option value="books">Books</option>
                                         <option value="home">Home & Garden</option>
                                         <option value="sports">Sports & Outdoors</option>
+                                        <option value="beauty">Beauty & Health</option>
+                                        <option value="automotive">Automotive</option>
+                                        <option value="toys">Toys & Games</option>
                                     </select>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label for="productDescription" class="form-label">Description</label>
-                                    <textarea class="form-control" id="productDescription" name="productDescription" rows="3"></textarea>
-                                </div>
-                            </div>
-                            
-                            <!-- Product Pricing & Inventory -->
-                            <div class="col-md-6">
-                                <h6 class="text-muted mb-3">Pricing & Inventory</h6>
-                                
-                                <div class="mb-3">
-                                    <label for="productPrice" class="form-label">Price *</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="productPrice" name="productPrice" step="0.01" min="0" required>
+                                    <div class="invalid-feedback">
+                                        Please select a category.
                                     </div>
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="productCost" class="form-label">Cost Price</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="productCost" name="productCost" step="0.01" min="0">
+                                    <label for="productImage" class="form-label">Image URL <span class="text-muted">(optional)</span></label>
+                                    <input type="url" class="form-control" id="productImage" name="productImage" 
+                                           placeholder="https://example.com/image.jpg">
+                                    <div class="form-text">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        Enter a valid image URL. If left empty, a placeholder image will be used.
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid URL (including http:// or https://).
                                     </div>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <label for="productStock" class="form-label">Stock Quantity *</label>
-                                    <input type="number" class="form-control" id="productStock" name="productStock" min="0" required>
+
+                                <!-- Image Preview -->
+                                <div class="mb-3 d-none" id="imagePreviewContainer">
+                                    <label class="form-label">Image Preview</label>
+                                    <div class="border rounded p-3 text-center bg-light">
+                                        <img id="imagePreview" src="" alt="Product preview" 
+                                             class="img-fluid rounded" style="max-height: 200px; max-width: 100%;">
+                                    </div>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <label for="productMinStock" class="form-label">Minimum Stock Level</label>
-                                    <input type="number" class="form-control" id="productMinStock" name="productMinStock" min="0" value="5">
-                                    <div class="form-text">Alert when stock falls below this level</div>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="productActive" name="productActive" checked>
-                                        <label class="form-check-label" for="productActive">
-                                            Active Product
-                                        </label>
+
+                                <!-- Additional fields for completeness -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="productStock" class="form-label">Stock Quantity</label>
+                                            <input type="number" class="form-control" id="productStock" name="productStock" 
+                                                   min="0" value="0" placeholder="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="productSku" class="form-label">SKU</label>
+                                            <input type="text" class="form-control" id="productSku" name="productSku" 
+                                                   placeholder="Auto-generated if empty">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -334,13 +343,174 @@
             
             // Initialize form handling
             const productForm = document.getElementById('productForm');
+            const productModal = document.getElementById('productModal');
+            const productModalLabel = document.getElementById('productModalLabel');
+
             if (productForm) {
                 productForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    // Form submission logic will be implemented here
-                    console.log('Product form submitted');
+                    
+                    // Validate form
+                    if (!productForm.checkValidity()) {
+                        e.stopPropagation();
+                        productForm.classList.add('was-validated');
+                        return;
+                    }
+
+                    // Get form data
+                    const formData = new FormData(productForm);
+                    const productData = {
+                        id: productForm.dataset.productId || Date.now(), // Use existing ID or generate new
+                        title: formData.get('productTitle'),
+                        price: parseFloat(formData.get('productPrice')).toFixed(2),
+                        category: formData.get('productCategory'),
+                        image: formData.get('productImage') || 'https://via.placeholder.com/300x200?text=No+Image',
+                        stock: parseInt(formData.get('productStock')) || 0,
+                        sku: formData.get('productSku') || `SKU-${Date.now().toString().slice(-6)}`
+                    };
+
+                    // Simulate saving product
+                    console.log('Product data:', productData);
+                    
+                    // Show success message
+                    showToast('Success!', `Product "${productData.title}" has been saved successfully.`, 'success');
+
+                    // Close modal and reset form
+                    const modal = bootstrap.Modal.getInstance(productModal);
+                    modal.hide();
+                    resetProductForm();
+                });
+
+                // Handle image URL input for preview
+                const imageInput = document.getElementById('productImage');
+                const imagePreview = document.getElementById('imagePreview');
+                const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+                if (imageInput && imagePreview && imagePreviewContainer) {
+                    imageInput.addEventListener('input', function() {
+                        const url = this.value.trim();
+                        if (url && isValidUrl(url)) {
+                            imagePreview.src = url;
+                            imagePreview.onload = function() {
+                                imagePreviewContainer.classList.remove('d-none');
+                            };
+                            imagePreview.onerror = function() {
+                                imagePreviewContainer.classList.add('d-none');
+                            };
+                        } else {
+                            imagePreviewContainer.classList.add('d-none');
+                        }
+                    });
+                }
+            }
+
+            // Helper function to validate URLs
+            function isValidUrl(string) {
+                try {
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            // Function to reset and prepare form for new product
+            function resetProductForm() {
+                const form = document.getElementById('productForm');
+                const modalLabel = document.getElementById('productModalLabel');
+                const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+                
+                if (form) {
+                    form.reset();
+                    form.classList.remove('was-validated');
+                    delete form.dataset.productId;
+                }
+                
+                if (modalLabel) {
+                    modalLabel.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Add New Product';
+                }
+                
+                if (imagePreviewContainer) {
+                    imagePreviewContainer.classList.add('d-none');
+                }
+            }
+
+            // Function to populate form for editing
+            function populateProductForm(product) {
+                const form = document.getElementById('productForm');
+                const modalLabel = document.getElementById('productModalLabel');
+                
+                if (form && product) {
+                    // Set form data
+                    document.getElementById('productTitle').value = product.title || '';
+                    document.getElementById('productPrice').value = product.price || '';
+                    document.getElementById('productCategory').value = product.category || '';
+                    document.getElementById('productImage').value = product.image || '';
+                    document.getElementById('productStock').value = product.stock || 0;
+                    document.getElementById('productSku').value = product.sku || '';
+                    
+                    // Store product ID for editing
+                    form.dataset.productId = product.id;
+                    
+                    // Update modal title
+                    if (modalLabel) {
+                        modalLabel.innerHTML = '<i class="bi bi-pencil me-2"></i>Edit Product';
+                    }
+                    
+                    // Trigger image preview if URL exists
+                    const imageInput = document.getElementById('productImage');
+                    if (imageInput && imageInput.value) {
+                        imageInput.dispatchEvent(new Event('input'));
+                    }
+                }
+            }
+
+            // Simple toast notification function
+            function showToast(title, message, type = 'info') {
+                // Create toast element
+                const toastContainer = document.getElementById('toastContainer') || createToastContainer();
+                const toastId = 'toast-' + Date.now();
+                
+                const toastHTML = `
+                    <div class="toast" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info-circle'} me-2 text-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'primary'}"></i>
+                            <strong class="me-auto">${title}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                        </div>
+                        <div class="toast-body">${message}</div>
+                    </div>
+                `;
+                
+                toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+                const toastElement = document.getElementById(toastId);
+                const toast = new bootstrap.Toast(toastElement);
+                toast.show();
+                
+                // Remove toast element after it's hidden
+                toastElement.addEventListener('hidden.bs.toast', function() {
+                    this.remove();
                 });
             }
+
+            // Create toast container if it doesn't exist
+            function createToastContainer() {
+                const container = document.createElement('div');
+                container.id = 'toastContainer';
+                container.className = 'toast-container position-fixed top-0 end-0 p-3';
+                container.style.zIndex = '9999';
+                document.body.appendChild(container);
+                return container;
+            }
+
+            // Reset form when modal is closed
+            if (productModal) {
+                productModal.addEventListener('hidden.bs.modal', resetProductForm);
+            }
+
+            // Make functions globally available
+            window.resetProductForm = resetProductForm;
+            window.populateProductForm = populateProductForm;
 
             // Handle view toggle between cards and table
             const cardViewBtn = document.getElementById('cardView');
@@ -619,8 +789,25 @@
             // Placeholder functions for product actions
             window.editProduct = function(productId) {
                 console.log('Edit product:', productId);
-                // Open modal with product data for editing
-                // Implementation will be added when connecting to backend
+                
+                // In a real app, you would fetch the product data from your backend
+                // For demonstration, we'll create sample data
+                const sampleProduct = {
+                    id: productId,
+                    title: 'Sample Product ' + productId,
+                    price: '99.99',
+                    category: 'electronics',
+                    image: 'https://via.placeholder.com/300x200?text=Product+' + productId,
+                    stock: 25,
+                    sku: 'SKU-' + productId.toString().padStart(3, '0')
+                };
+                
+                // Populate form with product data
+                populateProductForm(sampleProduct);
+                
+                // Open modal
+                const modal = new bootstrap.Modal(document.getElementById('productModal'));
+                modal.show();
             };
 
             window.deleteProduct = function(productId) {
