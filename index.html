@@ -1174,12 +1174,117 @@
                 }
             };
 
-            window.deleteProduct = function(productId) {
+            window.deleteProduct = async function(productId) {
                 console.log('Delete product:', productId);
-                if (confirm('Are you sure you want to delete this product?')) {
-                    // Delete product logic will be implemented here
+                
+                // Ask for confirmation before deleting
+                const confirmed = confirm('Are you sure you want to delete this product? This action cannot be undone.');
+                
+                if (!confirmed) {
+                    return; // User cancelled the deletion
+                }
+
+                try {
+                    console.log(`Sending DELETE request for product ID: ${productId}`);
+                    
+                    // Send DELETE request to DummyJSON API
+                    const response = await fetch(`https://dummyjson.com/products/${productId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    console.log('Delete response status:', response.status);
+
+                    // Check if deletion was successful (status 200)
+                    if (response.status === 200) {
+                        const result = await response.json();
+                        console.log('Product deleted successfully:', result);
+                        
+                        // Remove the product from the DOM
+                        removeProductFromUI(productId);
+                        
+                        // Show success alert
+                        alert('Product Deleted');
+                        
+                        // Show success toast
+                        showToast('Success!', `Product has been deleted successfully.`, 'success');
+                        
+                    } else {
+                        throw new Error(`Delete failed with status: ${response.status}`);
+                    }
+
+                } catch (error) {
+                    console.error('Error deleting product:', error);
+                    
+                    // Show error alert
+                    alert('Error deleting product: ' + error.message);
+                    
+                    // Show error toast
+                    showToast('Error!', `Failed to delete product: ${error.message}`, 'error');
                 }
             };
+
+            // Function to remove product from UI after successful deletion
+            function removeProductFromUI(productId) {
+                // Remove from card view
+                const cardContainer = document.getElementById('cardContainer');
+                if (cardContainer) {
+                    const productCard = cardContainer.querySelector(`[onclick*="editProduct(${productId})"]`)?.closest('.col-lg-3, .col-md-4, .col-sm-6');
+                    if (productCard) {
+                        // Add fade-out animation
+                        productCard.style.transition = 'opacity 0.3s ease-out';
+                        productCard.style.opacity = '0';
+                        setTimeout(() => {
+                            productCard.remove();
+                            checkIfEmpty();
+                        }, 300);
+                    }
+                }
+
+                // Remove from table view
+                const tableBody = document.getElementById('productTableBody');
+                if (tableBody) {
+                    const productRow = tableBody.querySelector(`[onclick*="editProduct(${productId})"]`)?.closest('tr');
+                    if (productRow) {
+                        // Add fade-out animation
+                        productRow.style.transition = 'opacity 0.3s ease-out';
+                        productRow.style.opacity = '0';
+                        setTimeout(() => {
+                            productRow.remove();
+                            checkIfEmpty();
+                        }, 300);
+                    }
+                }
+
+                console.log('Product removed from UI with ID:', productId);
+            }
+
+            // Function to check if product list is empty and show empty state
+            function checkIfEmpty() {
+                const cardContainer = document.getElementById('cardContainer');
+                const tableBody = document.getElementById('productTableBody');
+                const emptyStateCards = document.getElementById('emptyStateCards');
+                const emptyStateTable = document.getElementById('emptyStateTable');
+
+                // Check if card view is empty
+                if (cardContainer) {
+                    const remainingCards = cardContainer.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6').length;
+                    if (remainingCards === 0 && emptyStateCards) {
+                        cardContainer.appendChild(emptyStateCards);
+                        emptyStateCards.classList.remove('d-none');
+                    }
+                }
+
+                // Check if table view is empty
+                if (tableBody) {
+                    const remainingRows = tableBody.querySelectorAll('tr').length;
+                    if (remainingRows === 0 && emptyStateTable) {
+                        emptyStateTable.classList.remove('d-none');
+                    }
+                }
+            }
 
             // Updated loadProducts function to use renderProducts
             window.loadProducts = function(products) {
