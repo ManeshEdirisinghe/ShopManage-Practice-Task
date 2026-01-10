@@ -328,7 +328,7 @@
     <!-- Footer -->
     <footer class="bg-light text-center py-4 mt-5">
         <div class="container">
-            <p class="text-muted mb-0">&copy; 2026 ShopManage. Built with Bootstrap 5.</p>
+            <p class="text-muted mb-0">&copy; 2026 ShopManage | PR2511911-Manesh</p>
         </div>
     </footer>
 
@@ -347,7 +347,7 @@
             const productModalLabel = document.getElementById('productModalLabel');
 
             if (productForm) {
-                productForm.addEventListener('submit', function(e) {
+                productForm.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     
                     // Validate form
@@ -360,25 +360,71 @@
                     // Get form data
                     const formData = new FormData(productForm);
                     const productData = {
-                        id: productForm.dataset.productId || Date.now(), // Use existing ID or generate new
                         title: formData.get('productTitle'),
-                        price: parseFloat(formData.get('productPrice')).toFixed(2),
+                        price: parseFloat(formData.get('productPrice')),
                         category: formData.get('productCategory'),
                         image: formData.get('productImage') || 'https://via.placeholder.com/300x200?text=No+Image',
                         stock: parseInt(formData.get('productStock')) || 0,
-                        sku: formData.get('productSku') || `SKU-${Date.now().toString().slice(-6)}`
+                        brand: 'Generic', // DummyJSON requires this field
+                        description: `${formData.get('productTitle')} - Quality product in ${formData.get('productCategory')} category`
                     };
 
-                    // Simulate saving product
-                    console.log('Product data:', productData);
-                    
-                    // Show success message
-                    showToast('Success!', `Product "${productData.title}" has been saved successfully.`, 'success');
+                    try {
+                        // Show loading state on submit button
+                        const submitBtn = productForm.querySelector('button[type="submit"]');
+                        const originalText = submitBtn.innerHTML;
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Adding...';
 
-                    // Close modal and reset form
-                    const modal = bootstrap.Modal.getInstance(productModal);
-                    modal.hide();
-                    resetProductForm();
+                        console.log('Sending product data:', productData);
+
+                        // Send POST request to DummyJSON API
+                        const response = await fetch('https://dummyjson.com/products/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(productData)
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const result = await response.json();
+                        
+                        // Log the returned object with ID to console
+                        console.log('Product added successfully with ID:', result);
+                        
+                        // Show alert message
+                        alert('Product Added');
+                        
+                        // Show success toast as well
+                        showToast('Success!', `Product "${result.title}" has been added successfully with ID: ${result.id}`, 'success');
+
+                        // Close modal and reset form
+                        const modal = bootstrap.Modal.getInstance(productModal);
+                        modal.hide();
+                        resetProductForm();
+
+                        // Reset submit button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+
+                    } catch (error) {
+                        console.error('Error adding product:', error);
+                        
+                        // Show error alert
+                        alert('Error adding product: ' + error.message);
+                        
+                        // Show error toast
+                        showToast('Error!', `Failed to add product: ${error.message}`, 'error');
+
+                        // Reset submit button
+                        const submitBtn = productForm.querySelector('button[type="submit"]');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Save Product';
+                    }
                 });
 
                 // Handle image URL input for preview
