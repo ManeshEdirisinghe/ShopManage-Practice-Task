@@ -1,0 +1,205 @@
+/* ShopManage - Professional Product Management System Styles */
+
+/* Product Card Hover Effects */
+.product-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    border-color: var(--bs-primary);
+}
+
+/* Button Hover Enhancements */
+.btn {
+    transition: all 0.2s ease;
+}
+.btn:hover {
+    transform: translateY(-1px);
+}
+.btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+.btn-outline-primary:hover {
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.2);
+}
+.btn-outline-danger:hover {
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+}
+
+/* Navbar Enhancements */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+.navbar-brand:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+/* Statistics Cards */
+.stats-card {
+    transition: all 0.3s ease;
+    border: none;
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+}
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Main Container Styling */
+.main-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Card Container Improvements */
+.card {
+    border: none;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+.card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+/* Table Enhancements */
+.table th {
+    font-weight: 600;
+    color: #495057;
+    border-top: none;
+    padding: 1rem 0.75rem;
+}
+.table td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+}
+.table tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+/* Modal Enhancements */
+.modal-content {
+    border: none;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    border-radius: 15px;
+}
+.modal-header {
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    border-radius: 15px 15px 0 0;
+}
+
+/* Form Enhancements */
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    border-color: var(--bs-primary);
+}
+.form-control, .form-select {
+    transition: all 0.2s ease;
+}
+
+/* Badge Styling */
+.badge {
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+}
+
+/* Loading Spinner Enhancement */
+.spinner-border {
+    animation: spinner-grow 1.5s linear infinite;
+}
+
+/* Toast Improvements */
+.toast {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    .display-6 {
+        font-size: 1.5rem;
+    }
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.8rem;
+    }
+    .card-title {
+        font-size: 0.95rem;
+    }
+    .stats-card .display-6 {
+        font-size: 1.3rem;
+    }
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+}
+
+/* Professional Spacing */
+.section-spacing {
+    margin-bottom: 2.5rem;
+}
+.card-spacing {
+    margin-bottom: 1.5rem;
+}
+
+/* Animation for page elements */
+.fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Professional color scheme */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Enhanced search input */
+.navbar .form-control:focus {
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,0.95);
+}
+
+/* View toggle buttons */
+.btn-check:checked + .btn-outline-primary {
+    background: var(--bs-primary);
+    border-color: var(--bs-primary);
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+}
