@@ -11,41 +11,55 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark modern-nav">
         <div class="container">
-            <div class="navbar-brand">
-                <i class="bi bi-shop me-2"></i>ShopManage
-            </div>
+            <a href="#" class="navbar-brand brand-logo">
+                <div class="logo-icon">
+                    <i class="bi bi-shop"></i>
+                </div>
+                <span class="brand-text">ShopManage</span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav ms-auto me-4">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" aria-current="page">Products</a>
+                        <a class="nav-link active" href="#" aria-current="page">
+                            <i class="bi bi-grid me-1"></i>Products
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Categories</a>
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-tags me-1"></i>Categories
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Reports</a>
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-graph-up me-1"></i>Reports
+                        </a>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center gap-2">
-                    <button class="btn btn-outline-light me-2" type="button" data-bs-toggle="modal" data-bs-target="#productModal">
-                        <i class="bi bi-plus-circle me-1"></i>Add Product
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <button class="btn btn-gradient-primary px-4" type="button" data-bs-toggle="modal" data-bs-target="#productModal">
+                        <i class="bi bi-plus-circle me-2"></i>Add Product
                     </button>
-                    <form class="d-flex">
-                        <input class="form-control form-control-sm" type="search" placeholder="Search products..." aria-label="Search">
-                        <button class="btn btn-outline-light btn-sm ms-1" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
+                    <form class="search-form" onsubmit="return false;">
+                        <div class="search-wrapper">
+                            <i class="bi bi-search search-icon"></i>
+                            <input class="search-input" type="search" placeholder="Search products..." aria-label="Search">
+                        </div>
                     </form>
                 </div>
             </div>
@@ -53,62 +67,97 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container main-container fade-in">
+    <main class="container main-container">
         <!-- Page Header -->
         <header class="row section-spacing">
             <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                    <div>
-                        <h1 class="h3 mb-1">Product Management</h1>
-                        <p class="text-muted mb-0">Manage your inventory and product catalog</p>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-funnel me-1"></i>Filter
-                        </button>
-                        <button class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-arrow-down-up me-1"></i>Sort
-                        </button>
+                <div class="page-header-card">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div>
+                            <h1 class="page-title mb-2">Product Management</h1>
+                            <p class="page-subtitle mb-0">
+                                <i class="bi bi-layers me-2"></i>Manage your inventory and product catalog
+                            </p>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button class="btn btn-modern-outline">
+                                <i class="bi bi-funnel me-1"></i>Filter
+                            </button>
+                            <button class="btn btn-modern-outline">
+                                <i class="bi bi-arrow-down-up me-1"></i>Sort
+                            </button>
+                            <button class="btn btn-modern-outline">
+                                <i class="bi bi-download me-1"></i>Export
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </header>
 
         <!-- Product Statistics -->
-        <section class="row section-spacing" aria-label="Product Statistics">
-            <div class="col-md-3 col-sm-6 card-spacing">
-                <div class="card stats-card text-center border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-box-seam text-primary fs-1"></i>
-                        <h5 class="card-title mt-2">Total Products</h5>
-                        <p class="card-text display-6 text-primary">0</p>
+        <section class="row stats-section" aria-label="Product Statistics">
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="modern-stats-card gradient-blue">
+                    <div class="stats-content">
+                        <div class="stats-icon">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h5 class="stats-label">Total Products</h5>
+                            <p class="stats-value" id="totalProducts">0</p>
+                        </div>
+                    </div>
+                    <div class="stats-bg-icon">
+                        <i class="bi bi-box-seam"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card text-center border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-check-circle text-success fs-1"></i>
-                        <h5 class="card-title mt-2">In Stock</h5>
-                        <p class="card-text display-6 text-success">0</p>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="modern-stats-card gradient-green">
+                    <div class="stats-content">
+                        <div class="stats-icon">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h5 class="stats-label">In Stock</h5>
+                            <p class="stats-value" id="inStock">0</p>
+                        </div>
+                    </div>
+                    <div class="stats-bg-icon">
+                        <i class="bi bi-check-circle"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 card-spacing">
-                <div class="card stats-card text-center border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-exclamation-triangle text-warning fs-1"></i>
-                        <h5 class="card-title mt-2">Low Stock</h5>
-                        <p class="card-text display-6 text-warning">0</p>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="modern-stats-card gradient-orange">
+                    <div class="stats-content">
+                        <div class="stats-icon">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h5 class="stats-label">Low Stock</h5>
+                            <p class="stats-value" id="lowStock">0</p>
+                        </div>
+                    </div>
+                    <div class="stats-bg-icon">
+                        <i class="bi bi-exclamation-triangle"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 card-spacing">
-                <div class="card stats-card text-center border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-x-circle text-danger fs-1"></i>
-                        <h5 class="card-title mt-2">Out of Stock</h5>
-                        <p class="card-text display-6 text-danger">0</p>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="modern-stats-card gradient-red">
+                    <div class="stats-content">
+                        <div class="stats-icon">
+                            <i class="bi bi-x-circle"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h5 class="stats-label">Out of Stock</h5>
+                            <p class="stats-value" id="outOfStock">0</p>
+                        </div>
+                    </div>
+                    <div class="stats-bg-icon">
+                        <i class="bi bi-x-circle"></i>
                     </div>
                 </div>
             </div>
@@ -117,57 +166,62 @@
         <!-- Product Listing Container -->
         <section class="row section-spacing" id="productList" aria-label="Product Listing">
             <div class="col-12">
-                <div class="card border-0 shadow">
-                    <div class="card-header bg-light">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
+                <div class="modern-card">
+                    <div class="modern-card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <h5 class="card-header-title mb-0">
                                 <i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog
                             </h5>
-                            <div class="btn-group shadow-sm" role="group" aria-label="View toggle">
+                            <div class="btn-group modern-toggle" role="group" aria-label="View toggle">
                                 <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked>
-                                <label class="btn btn-outline-primary" for="cardView">
+                                <label class="btn btn-toggle" for="cardView">
                                     <i class="bi bi-grid-3x3-gap me-1"></i> Cards
                                 </label>
                                 <input type="radio" class="btn-check" name="viewToggle" id="tableView">
-                                <label class="btn btn-outline-primary" for="tableView">
+                                <label class="btn btn-toggle" for="tableView">
                                     <i class="bi bi-table me-1"></i> Table
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="modern-card-body">
                         <!-- Loading Spinner -->
                         <div id="loadingSpinner" class="text-center py-5 d-none">
-                            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                                <span class="visually-hidden">Loading...</span>
+                            <div class="modern-spinner">
+                                <div class="spinner-circle"></div>
+                                <div class="spinner-circle"></div>
+                                <div class="spinner-circle"></div>
                             </div>
-                            <div class="mt-3">
-                                <h5 class="text-muted">Loading Products...</h5>
-                                <p class="text-muted mb-0">Please wait while we fetch your product catalog</p>
+                            <div class="mt-4">
+                                <h5 class="loading-text">Loading Products...</h5>
+                                <p class="loading-subtext">Please wait while we fetch your product catalog</p>
                             </div>
                         </div>
 
                         <!-- Card Grid Layout -->
-                        <div id="cardContainer" class="row">
-                            <!-- Sample Product Cards (Dynamic Content) -->
+                        <div id="cardContainer" class="row g-4">
                             <!-- Product cards will be dynamically loaded here -->
                             
                             <!-- Placeholder for empty state -->
                             <div class="col-12 text-center py-5" id="emptyStateCards">
-                                <i class="bi bi-box text-muted" style="font-size: 4rem;"></i>
-                                <h4 class="text-muted mt-3">No Products Found</h4>
-                                <p class="text-muted">Start by adding your first product to the inventory.</p>
-                                <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#productModal">
-                                    <i class="bi bi-plus-circle me-2"></i>Add Your First Product
-                                </button>
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="bi bi-box-seam"></i>
+                                    </div>
+                                    <h4 class="empty-title">No Products Found</h4>
+                                    <p class="empty-text">Start by adding your first product to the inventory.</p>
+                                    <button class="btn btn-primary btn-lg px-5" data-bs-toggle="modal" data-bs-target="#productModal">
+                                        <i class="bi bi-plus-circle me-2"></i>Add Your First Product
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Table Layout -->
                         <div id="tableContainer" class="d-none">
                             <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
+                                <table class="table table-hover align-middle modern-table">
+                                    <thead>
                                         <tr>
                                             <th scope="col">Image</th>
                                             <th scope="col">Product</th>
@@ -185,12 +239,16 @@
                             
                             <!-- Empty state for table view -->
                             <div class="text-center py-5 d-none" id="emptyStateTable">
-                                <i class="bi bi-table text-muted" style="font-size: 4rem;"></i>
-                                <h4 class="text-muted mt-3">No Products Found</h4>
-                                <p class="text-muted">Start by adding your first product to the inventory.</p>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
-                                    <i class="bi bi-plus-circle me-2"></i>Add Your First Product
-                                </button>
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="bi bi-table"></i>
+                                    </div>
+                                    <h4 class="empty-title">No Products Found</h4>
+                                    <p class="empty-text">Start by adding your first product to the inventory.</p>
+                                    <button class="btn btn-primary btn-lg px-5" data-bs-toggle="modal" data-bs-target="#productModal">
+                                        <i class="bi bi-plus-circle me-2"></i>Add Your First Product
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -201,64 +259,81 @@
 
     <!-- Add/Edit Product Modal -->
     <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content modern-modal">
+                <div class="modal-header modern-modal-header">
                     <h5 class="modal-title" id="productModalLabel">
                         <i class="bi bi-plus-circle me-2"></i>Add New Product
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 
-                <div class="modal-body">
-                    <form id="productForm">
-                        <div class="row">
-                            <!-- Product Information -->
+                <div class="modal-body modern-modal-body">
+                    <form id="productForm" class="modern-form">
+                        <div class="row g-3">
+                            <!-- Product Title -->
                             <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="productTitle" class="form-label">Product Title *</label>
-                                    <input type="text" class="form-control" id="productTitle" name="productTitle" required 
+                                <div class="form-group-modern">
+                                    <label for="productTitle" class="form-label-modern">
+                                        <i class="bi bi-tag me-2"></i>Product Title *
+                                    </label>
+                                    <input type="text" class="form-control-modern" id="productTitle" name="productTitle" required 
                                            placeholder="Enter product title">
                                     <div class="invalid-feedback">
                                         Please provide a valid product title.
                                     </div>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <label for="productPrice" class="form-label">Price *</label>
+                            </div>
+                            
+                            <!-- Price and Category Row -->
+                            <div class="col-md-6">
+                                <div class="form-group-modern">
+                                    <label for="productPrice" class="form-label-modern">
+                                        <i class="bi bi-currency-dollar me-2"></i>Price *
+                                    </label>
                                     <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="productPrice" name="productPrice" 
+                                        <span class="input-group-text modern-input-addon">$</span>
+                                        <input type="number" class="form-control-modern" id="productPrice" name="productPrice" 
                                                step="0.01" min="0" required placeholder="0.00">
                                         <div class="invalid-feedback">
                                             Please provide a valid price.
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <label for="productCategory" class="form-label">Category *</label>
-                                    <select class="form-select" id="productCategory" name="productCategory" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group-modern">
+                                    <label for="productCategory" class="form-label-modern">
+                                        <i class="bi bi-collection me-2"></i>Category *
+                                    </label>
+                                    <select class="form-control-modern" id="productCategory" name="productCategory" required>
                                         <option value="">Select Category</option>
-                                        <option value="electronics">Electronics</option>
-                                        <option value="clothing">Clothing</option>
-                                        <option value="books">Books</option>
-                                        <option value="home">Home & Garden</option>
-                                        <option value="sports">Sports & Outdoors</option>
-                                        <option value="beauty">Beauty & Health</option>
-                                        <option value="automotive">Automotive</option>
-                                        <option value="toys">Toys & Games</option>
+                                        <option value="electronics">📱 Electronics</option>
+                                        <option value="clothing">👔 Clothing</option>
+                                        <option value="books">📚 Books</option>
+                                        <option value="home">🏠 Home & Garden</option>
+                                        <option value="sports">⚽ Sports & Outdoors</option>
+                                        <option value="beauty">💄 Beauty & Health</option>
+                                        <option value="automotive">🚗 Automotive</option>
+                                        <option value="toys">🎮 Toys & Games</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Please select a category.
                                     </div>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <label for="productImage" class="form-label">Image URL <span class="text-muted">(optional)</span></label>
-                                    <input type="url" class="form-control" id="productImage" name="productImage" 
+                            </div>
+                            
+                            <!-- Image URL -->
+                            <div class="col-12">
+                                <div class="form-group-modern">
+                                    <label for="productImage" class="form-label-modern">
+                                        <i class="bi bi-image me-2"></i>Image URL 
+                                        <span class="optional-badge">optional</span>
+                                    </label>
+                                    <input type="url" class="form-control-modern" id="productImage" name="productImage" 
                                            placeholder="https://example.com/image.jpg">
-                                    <div class="form-text">
+                                    <div class="form-hint">
                                         <i class="bi bi-info-circle me-1"></i>
                                         Enter a valid image URL. If left empty, a placeholder image will be used.
                                     </div>
@@ -266,44 +341,49 @@
                                         Please enter a valid URL (including http:// or https://).
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Image Preview -->
-                                <div class="mb-3 d-none" id="imagePreviewContainer">
-                                    <label class="form-label">Image Preview</label>
-                                    <div class="border rounded p-3 text-center bg-light">
-                                        <img id="imagePreview" src="" alt="Product preview" 
-                                             class="img-fluid rounded" style="max-height: 200px; max-width: 100%;">
+                            <!-- Image Preview -->
+                            <div class="col-12 d-none" id="imagePreviewContainer">
+                                <div class="image-preview-card">
+                                    <label class="form-label-modern">
+                                        <i class="bi bi-eye me-2"></i>Image Preview
+                                    </label>
+                                    <div class="preview-wrapper">
+                                        <img id="imagePreview" src="" alt="Product preview" class="preview-image">
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Additional fields for completeness -->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="productStock" class="form-label">Stock Quantity</label>
-                                            <input type="number" class="form-control" id="productStock" name="productStock" 
-                                                   min="0" value="0" placeholder="0">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="productSku" class="form-label">SKU</label>
-                                            <input type="text" class="form-control" id="productSku" name="productSku" 
-                                                   placeholder="Auto-generated if empty">
-                                        </div>
-                                    </div>
+                            <!-- Stock and SKU Row -->
+                            <div class="col-md-6">
+                                <div class="form-group-modern">
+                                    <label for="productStock" class="form-label-modern">
+                                        <i class="bi bi-boxes me-2"></i>Stock Quantity
+                                    </label>
+                                    <input type="number" class="form-control-modern" id="productStock" name="productStock" 
+                                           min="0" value="0" placeholder="0">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-modern">
+                                    <label for="productSku" class="form-label-modern">
+                                        <i class="bi bi-upc-scan me-2"></i>SKU
+                                    </label>
+                                    <input type="text" class="form-control-modern" id="productSku" name="productSku" 
+                                           placeholder="Auto-generated if empty">
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-1"></i>Cancel
+                <div class="modal-footer modern-modal-footer">
+                    <button type="button" class="btn btn-secondary-modern" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>Cancel
                     </button>
-                    <button type="submit" class="btn btn-primary" form="productForm">
-                        <i class="bi bi-check-circle me-1"></i>Save Product
+                    <button type="submit" class="btn btn-primary-modern" form="productForm">
+                        <i class="bi bi-check-circle me-2"></i>Save Product
                     </button>
                 </div>
             </div>
@@ -311,12 +391,27 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-light text-center py-5 mt-5 border-top">
+    <footer class="modern-footer">
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <p class="text-muted mb-2">&copy; 2026 ShopManage | PR2511911-Manesh</p>
-                    <small class="text-muted">Professional Product Management System</small>
+                    <div class="footer-content">
+                        <div class="footer-brand mb-3">
+                            <i class="bi bi-shop me-2"></i>
+                            <span class="fw-bold">ShopManage</span>
+                        </div>
+                        <p class="footer-text mb-2">&copy; 2026 ShopManage | PR2511911-Manesh</p>
+                        <p class="footer-tagline">Professional Product Management System</p>
+                        <div class="footer-links mt-3">
+                            <a href="#" class="footer-link">About</a>
+                            <span class="mx-2">•</span>
+                            <a href="#" class="footer-link">Contact</a>
+                            <span class="mx-2">•</span>
+                            <a href="#" class="footer-link">Privacy</a>
+                            <span class="mx-2">•</span>
+                            <a href="#" class="footer-link">Terms</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
