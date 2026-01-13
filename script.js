@@ -135,6 +135,49 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 console.error(`Error ${isEditMode ? 'updating' : 'adding'} product:`, error);
                 
+                // For ADD mode, add product locally even if API fails
+                if (!isEditMode) {
+                    // Create a local product with generated ID
+                    const localProduct = {
+                        id: Date.now(), // Use timestamp as unique ID
+                        title: productData.title,
+                        price: productData.price,
+                        category: productData.category,
+                        stock: productData.stock,
+                        image: productData.image
+                    };
+                    
+                    console.log('API failed, adding product locally:', localProduct);
+                    
+                    // Add to UI
+                    addProductToUI(localProduct);
+                    
+                    // Show success message (product added locally)
+                    alert('Product Added (Offline Mode)');
+                    showToast('Success!', `Product "${localProduct.title}" has been added locally (API unavailable).`, 'warning');
+                    
+                    // Re-enable form inputs before closing
+                    const formInputs2 = productForm.querySelectorAll('input, select, textarea, button');
+                    formInputs2.forEach(input => input.disabled = false);
+                    
+                    // Reset submit button
+                    const submitBtn = productForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Save Product';
+                    }
+                    
+                    // Close modal and reset form
+                    const modal = bootstrap.Modal.getInstance(productModal);
+                    modal.hide();
+                    
+                    setTimeout(() => {
+                        resetProductForm();
+                    }, 300);
+                    
+                    return; // Exit early - product was added locally
+                }
+                
                 // Determine error type and show appropriate message
                 let errorMessage = 'Unknown error occurred';
                 let alertTitle = 'Error';
