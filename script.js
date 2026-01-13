@@ -1011,14 +1011,19 @@ function updateProductInUI(updatedProduct) {
 // Function to add new product to UI after successful creation
 function addProductToUI(newProduct) {
     // Transform the new product to match our UI format
+    // Handle potential missing or differently-typed fields from API response
+    const price = typeof newProduct.price === 'number' ? newProduct.price : parseFloat(newProduct.price) || 0;
+    const stock = typeof newProduct.stock === 'number' ? newProduct.stock : parseInt(newProduct.stock) || 0;
+    const productId = newProduct.id || Date.now();
+    
     const transformedProduct = {
-        id: newProduct.id,
-        title: newProduct.title,
-        price: newProduct.price.toFixed(2),
-        category: newProduct.category,
-        stock: newProduct.stock,
-        sku: `SKU-${newProduct.id.toString().padStart(3, '0')}`,
-        image: newProduct.image || 'https://via.placeholder.com/300x200?text=No+Image'
+        id: productId,
+        title: newProduct.title || 'Untitled Product',
+        price: price.toFixed(2),
+        category: newProduct.category || 'Uncategorized',
+        stock: stock,
+        sku: `SKU-${productId.toString().padStart(3, '0')}`,
+        image: newProduct.thumbnail || newProduct.image || 'https://via.placeholder.com/300x200?text=No+Image'
     };
 
     // Add to card view
