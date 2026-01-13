@@ -180,6 +180,48 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 console.error(`Error ${isEditMode ? 'updating' : 'adding'} product:`, error);
                 
+                // For UPDATE mode, update product locally even if API fails
+                if (isEditMode && productId) {
+                    const localProduct = {
+                        id: parseInt(productId),
+                        title: productData.title,
+                        price: productData.price,
+                        category: productData.category,
+                        stock: productData.stock,
+                        image: productData.image
+                    };
+                    
+                    console.log('API failed, updating product locally:', localProduct);
+                    
+                    // Update in UI and localStorage
+                    updateProductInUI(localProduct);
+                    
+                    // Show success message
+                    alert('Product Updated (Offline Mode)');
+                    showToast('Success!', `Product "${localProduct.title}" has been updated locally (API unavailable).`, 'warning');
+                    
+                    // Re-enable form inputs before closing
+                    const formInputs2 = productForm.querySelectorAll('input, select, textarea, button');
+                    formInputs2.forEach(input => input.disabled = false);
+                    
+                    // Reset submit button
+                    const submitBtn = productForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Update Product';
+                    }
+                    
+                    // Close modal and reset form
+                    const modal = bootstrap.Modal.getInstance(productModal);
+                    modal.hide();
+                    
+                    setTimeout(() => {
+                        resetProductForm();
+                    }, 300);
+                    
+                    return; // Exit early - product was updated locally
+                }
+                
                 // For ADD mode, add product locally even if API fails
                 if (!isEditMode) {
                     // Create a local product with generated ID
@@ -1065,15 +1107,21 @@ window.fetchProductsWithCatch = function() {
 // Function to update product in UI after successful edit
 function updateProductInUI(updatedProduct) {
     // Transform the updated product to match our UI format
+    const price = typeof updatedProduct.price === 'number' ? updatedProduct.price : parseFloat(updatedProduct.price) || 0;
+    const stock = typeof updatedProduct.stock === 'number' ? updatedProduct.stock : parseInt(updatedProduct.stock) || 0;
+    
     const transformedProduct = {
         id: updatedProduct.id,
         title: updatedProduct.title,
-        price: updatedProduct.price.toFixed(2),
+        price: price.toFixed(2),
         category: updatedProduct.category,
-        stock: updatedProduct.stock,
+        stock: stock,
         sku: `SKU-${updatedProduct.id.toString().padStart(3, '0')}`,
-        image: updatedProduct.image || 'https://via.placeholder.com/300x200?text=No+Image'
+        image: updatedProduct.thumbnail || updatedProduct.image || 'https://via.placeholder.com/300x200?text=No+Image'
     };
+
+    // Update in localStorage
+    updateLocalProduct(transformedProduct);
 
     // Update card view if visible
     const cardContainer = document.getElementById('cardContainer');
@@ -1095,7 +1143,7 @@ function updateProductInUI(updatedProduct) {
         }
     }
 
-    console.log('UI updated for product ID:', updatedProduct.id);
+    console.log('UI and localStorage updated for product ID:', updatedProduct.id);
 }
 
 // Function to add new product to UI after successful creation
