@@ -1,5 +1,50 @@
 // ShopManage - Professional Product Management System JavaScript
 
+// Local Storage Key for products
+const LOCAL_STORAGE_KEY = 'shopmanage_products';
+
+// Helper functions for localStorage
+function getLocalProducts() {
+    try {
+        const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+        console.error('Error reading from localStorage:', e);
+        return [];
+    }
+}
+
+function saveLocalProducts(products) {
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(products));
+        console.log('Products saved to localStorage:', products.length);
+    } catch (e) {
+        console.error('Error saving to localStorage:', e);
+    }
+}
+
+function addLocalProduct(product) {
+    const products = getLocalProducts();
+    // Add new product at the beginning
+    products.unshift(product);
+    saveLocalProducts(products);
+}
+
+function removeLocalProduct(productId) {
+    const products = getLocalProducts();
+    const filtered = products.filter(p => p.id !== productId);
+    saveLocalProducts(filtered);
+}
+
+function updateLocalProduct(updatedProduct) {
+    const products = getLocalProducts();
+    const index = products.findIndex(p => p.id === updatedProduct.id);
+    if (index !== -1) {
+        products[index] = { ...products[index], ...updatedProduct };
+        saveLocalProducts(products);
+    }
+}
+
 // Application initialization
 document.addEventListener('DOMContentLoaded', function() {
     console.log('ShopManage application loaded successfully!');
@@ -773,33 +818,20 @@ window.deleteProduct = async function(productId) {
     } catch (error) {
         console.error('Error deleting product:', error);
         
-        // Determine error type and show appropriate message
-        let errorMessage = 'Unknown error occurred while deleting the product.';
-        let alertTitle = 'Delete Error';
+        // Delete locally even if API fails
+        console.log('API failed, deleting product locally');
+        removeProductFromUI(productId);
         
-        if (!navigator.onLine) {
-            errorMessage = 'No internet connection. Please check your network and try again.';
-            alertTitle = 'Connection Error';
-        } else if (error.name === 'TypeError' || error.message.includes('fetch')) {
-            errorMessage = 'Unable to connect to the server. The product may still exist.';
-            alertTitle = 'Network Error';
-        } else if (error.message.includes('HTTP error') || error.message.includes('status')) {
-            errorMessage = `Server error while deleting product. Please try again or contact support.`;
-            alertTitle = 'Server Error';
-        } else {
-            errorMessage = error.message;
-        }
-        
-        // Show user-friendly error alert
-        alert(`${alertTitle}: ${errorMessage}`);
-        
-        // Show detailed error toast
-        showToast(alertTitle, `Failed to delete product: ${errorMessage}`, 'error');
+        alert('Product Deleted (Offline Mode)');
+        showToast('Success!', 'Product deleted locally (API unavailable).', 'warning');
     }
 };
 
 // Function to remove product from UI after successful deletion
 function removeProductFromUI(productId) {
+    // Remove from localStorage
+    removeLocalProduct(productId);
+    
     // Remove from card view
     const cardContainer = document.getElementById('cardContainer');
     if (cardContainer) {
@@ -893,7 +925,7 @@ async function fetchProducts() {
         const data = await response.json();
         
         // Transform API data to match our UI format
-        const transformedProducts = data.products.map(product => ({
+        const apiProducts = data.products.map(product => ({
             id: product.id,
             title: product.title,
             price: product.price.toFixed(2),
@@ -903,10 +935,16 @@ async function fetchProducts() {
             image: product.thumbnail || product.images[0]
         }));
         
-        // Load products into UI (this will hide the loading spinner)
-        loadProducts(transformedProducts);
+        // Get locally stored products and merge with API products
+        const localProducts = getLocalProducts();
         
-        console.log('Successfully loaded', transformedProducts.length, 'products');
+        // Combine: local products first, then API products
+        const allProducts = [...localProducts, ...apiProducts];
+        
+        // Load products into UI (this will hide the loading spinner)
+        loadProducts(allProducts);
+        
+        console.log('Successfully loaded', apiProducts.length, 'API products +', localProducts.length, 'local products');
         
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -916,6 +954,15 @@ async function fetchProducts() {
         const cardContainer = document.getElementById('cardContainer');
         
         if (loadingSpinner) loadingSpinner.classList.add('d-none');
+        
+        // Try to load local products even if API fails
+        const localProducts = getLocalProducts();
+        if (localProducts.length > 0) {
+            loadProducts(localProducts);
+            showToast('Offline Mode', 'Loaded products from local storage. API is unavailable.', 'warning');
+            console.log('Loaded', localProducts.length, 'products from localStorage');
+            return;
+        }
         
         // Determine error type and show appropriate message
         let errorMessage = 'Unknown error occurred while loading products.';
@@ -1068,6 +1115,9 @@ function addProductToUI(newProduct) {
         sku: `SKU-${productId.toString().padStart(3, '0')}`,
         image: newProduct.thumbnail || newProduct.image || 'https://via.placeholder.com/300x200?text=No+Image'
     };
+
+    // Save to localStorage for persistence
+    addLocalProduct(transformedProduct);
 
     // Add to card view
     const cardContainer = document.getElementById('cardContainer');
