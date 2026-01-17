@@ -6,18 +6,291 @@
     <title>ShopManage - Product Management System</title>
     
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            --hover-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            --bg-body: #f8f9fa;
+            --text-primary: #2d3748;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+        }
+
+        /* Navigation */
+        .modern-nav {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+            padding: 1rem 0;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-link {
+            color: #718096 !important;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: #764ba2 !important;
+        }
+
+        /* Buttons */
+        .btn-gradient-primary {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-gradient-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+            color: white;
+        }
+
+        .btn-modern-outline {
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-modern-outline:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        /* Search */
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            border: 1px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            width: 250px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        /* Cards & Stats */
+        .page-header-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .modern-stats-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            height: 100%;
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: transform 0.3s;
+        }
+
+        .modern-stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .stats-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-bg-icon {
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 8rem;
+            opacity: 0.05;
+            transform: rotate(-15deg);
+            z-index: 1;
+        }
+
+        /* Gradient Accents for Stats */
+        .gradient-blue .stats-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .gradient-green .stats-icon { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .gradient-orange .stats-icon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .gradient-red .stats-icon { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+        .stats-value { font-size: 2rem; font-weight: 700; color: #1e293b; margin: 0; }
+        .stats-label { color: #64748b; font-size: 0.9rem; margin-bottom: 0.25rem; }
+
+        /* Product Cards */
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
+            height: 100%;
+            position: relative;
+            border: 1px solid #f1f5f9;
+        }
+
+        .product-card:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-5px);
+        }
+
+        .product-img-wrapper {
+            height: 200px;
+            background: #f8fafc;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .card-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover .card-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #4a5568;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .action-btn.edit:hover { background: #3b82f6; color: white; }
+        .action-btn.delete:hover { background: #ef4444; color: white; }
+
+        .product-details { padding: 1.5rem; }
+        .product-category { font-size: 0.75rem; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 0.5rem; display: block; }
+        .product-title { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-price { font-size: 1.25rem; font-weight: 700; color: #764ba2; }
+        
+        .stock-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .bg-stock-green { background: #dcfce7; color: #166534; }
+        .bg-stock-orange { background: #ffedd5; color: #9a3412; }
+        .bg-stock-red { background: #fee2e2; color: #991b1b; }
+
+        /* Modal Styles */
+        .modern-modal .modal-content { border-radius: 20px; border: none; overflow: hidden; }
+        .modern-modal-header { background: var(--primary-gradient); color: white; border: none; padding: 1.5rem; }
+        .modern-modal-body { padding: 2rem; }
+        .form-control-modern, .form-select-modern {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s;
+        }
+        .form-control-modern:focus { border-color: #764ba2; box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.1); outline: none; }
+        .image-preview-card { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 1rem; text-align: center; margin-top: 10px; }
+        .preview-image { max-height: 200px; max-width: 100%; border-radius: 8px; object-fit: contain; }
+
+        /* Table View */
+        .modern-table thead th { background: #f8fafc; color: #64748b; font-weight: 600; border-bottom: 2px solid #e2e8f0; padding: 1rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+        .modern-table td { padding: 1rem; vertical-align: middle; border-bottom: 1px solid #f1f5f9; }
+        .table-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -29,36 +302,23 @@
                 </div>
                 <span class="brand-text">ShopManage</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-4">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" aria-current="page">
-                            <i class="bi bi-grid me-1"></i>Products
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="bi bi-tags me-1"></i>Categories
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="bi bi-graph-up me-1"></i>Reports
-                        </a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-grid me-1"></i>Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-tags me-1"></i>Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-graph-up me-1"></i>Reports</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <button class="btn btn-gradient-primary px-4" type="button" data-bs-toggle="modal" data-bs-target="#productModal">
+                    <button class="btn btn-gradient-primary px-4" type="button" onclick="openAddModal()">
                         <i class="bi bi-plus-circle me-2"></i>Add Product
                     </button>
                     <form class="search-form" onsubmit="return false;">
                         <div class="search-wrapper">
                             <i class="bi bi-search search-icon"></i>
-                            <input class="search-input" type="search" placeholder="Search products..." aria-label="Search">
+                            <input class="search-input" id="searchInput" type="search" placeholder="Search products..." aria-label="Search">
                         </div>
                     </form>
                 </div>
@@ -67,28 +327,15 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container main-container">
+    <main class="container main-container mt-4">
         <!-- Page Header -->
-        <header class="row section-spacing">
+        <header class="row mb-4">
             <div class="col-12">
                 <div class="page-header-card">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                         <div>
-                            <h1 class="page-title mb-2">Product Management</h1>
-                            <p class="page-subtitle mb-0">
-                                <i class="bi bi-layers me-2"></i>Manage your inventory and product catalog
-                            </p>
-                        </div>
-                        <div class="d-flex gap-2 flex-wrap">
-                            <button class="btn btn-modern-outline">
-                                <i class="bi bi-funnel me-1"></i>Filter
-                            </button>
-                            <button class="btn btn-modern-outline">
-                                <i class="bi bi-arrow-down-up me-1"></i>Sort
-                            </button>
-                            <button class="btn btn-modern-outline">
-                                <i class="bi bi-download me-1"></i>Export
-                            </button>
+                            <h1 class="h3 mb-2 fw-bold">Product Management</h1>
+                            <p class="text-muted mb-0"><i class="bi bi-layers me-2"></i>Manage your inventory and product catalog</p>
                         </div>
                     </div>
                 </div>
@@ -96,160 +343,103 @@
         </header>
 
         <!-- Product Statistics -->
-        <section class="row stats-section" aria-label="Product Statistics">
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+        <section class="row stats-section mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
                 <div class="modern-stats-card gradient-blue">
                     <div class="stats-content">
-                        <div class="stats-icon">
-                            <i class="bi bi-box-seam"></i>
-                        </div>
+                        <div class="stats-icon"><i class="bi bi-box-seam"></i></div>
                         <div class="stats-info">
                             <h5 class="stats-label">Total Products</h5>
                             <p class="stats-value" id="totalProducts">0</p>
                         </div>
                     </div>
-                    <div class="stats-bg-icon">
-                        <i class="bi bi-box-seam"></i>
-                    </div>
+                    <div class="stats-bg-icon"><i class="bi bi-box-seam"></i></div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
                 <div class="modern-stats-card gradient-green">
                     <div class="stats-content">
-                        <div class="stats-icon">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
+                        <div class="stats-icon"><i class="bi bi-check-circle"></i></div>
                         <div class="stats-info">
                             <h5 class="stats-label">In Stock</h5>
                             <p class="stats-value" id="inStock">0</p>
                         </div>
                     </div>
-                    <div class="stats-bg-icon">
-                        <i class="bi bi-check-circle"></i>
-                    </div>
+                    <div class="stats-bg-icon"><i class="bi bi-check-circle"></i></div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
                 <div class="modern-stats-card gradient-orange">
                     <div class="stats-content">
-                        <div class="stats-icon">
-                            <i class="bi bi-exclamation-triangle"></i>
-                        </div>
+                        <div class="stats-icon"><i class="bi bi-exclamation-triangle"></i></div>
                         <div class="stats-info">
                             <h5 class="stats-label">Low Stock</h5>
                             <p class="stats-value" id="lowStock">0</p>
                         </div>
                     </div>
-                    <div class="stats-bg-icon">
-                        <i class="bi bi-exclamation-triangle"></i>
-                    </div>
+                    <div class="stats-bg-icon"><i class="bi bi-exclamation-triangle"></i></div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
                 <div class="modern-stats-card gradient-red">
                     <div class="stats-content">
-                        <div class="stats-icon">
-                            <i class="bi bi-x-circle"></i>
-                        </div>
+                        <div class="stats-icon"><i class="bi bi-x-circle"></i></div>
                         <div class="stats-info">
                             <h5 class="stats-label">Out of Stock</h5>
                             <p class="stats-value" id="outOfStock">0</p>
                         </div>
                     </div>
-                    <div class="stats-bg-icon">
-                        <i class="bi bi-x-circle"></i>
-                    </div>
+                    <div class="stats-bg-icon"><i class="bi bi-x-circle"></i></div>
                 </div>
             </div>
         </section>
 
-        <!-- Product Listing Container -->
-        <section class="row section-spacing" id="productList" aria-label="Product Listing">
+        <!-- Product Listing -->
+        <section class="row" id="productList">
             <div class="col-12">
-                <div class="modern-card">
-                    <div class="modern-card-header">
-                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <h5 class="card-header-title mb-0">
-                                <i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog
-                            </h5>
-                            <div class="btn-group modern-toggle" role="group" aria-label="View toggle">
-                                <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked>
-                                <label class="btn btn-toggle" for="cardView">
-                                    <i class="bi bi-grid-3x3-gap me-1"></i> Cards
-                                </label>
-                                <input type="radio" class="btn-check" name="viewToggle" id="tableView">
-                                <label class="btn btn-toggle" for="tableView">
-                                    <i class="bi bi-table me-1"></i> Table
-                                </label>
-                            </div>
+                <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                    <div class="card-header bg-white p-4 border-bottom-0 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog</h5>
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked autocomplete="off">
+                            <label class="btn btn-outline-secondary btn-sm" for="cardView"><i class="bi bi-grid-3x3-gap"></i></label>
+                            <input type="radio" class="btn-check" name="viewToggle" id="tableView" autocomplete="off">
+                            <label class="btn btn-outline-secondary btn-sm" for="tableView"><i class="bi bi-table"></i></label>
                         </div>
                     </div>
-                    <div class="modern-card-body">
-                        <!-- Loading Spinner -->
+                    <div class="card-body p-4">
+                        <!-- Loading -->
                         <div id="loadingSpinner" class="text-center py-5 d-none">
-                            <div class="modern-spinner">
-                                <div class="spinner-circle"></div>
-                                <div class="spinner-circle"></div>
-                                <div class="spinner-circle"></div>
-                            </div>
-                            <div class="mt-4">
-                                <h5 class="loading-text">Loading Products...</h5>
-                                <p class="loading-subtext">Please wait while we fetch your product catalog</p>
-                            </div>
+                            <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
                         </div>
 
-                        <!-- Card Grid Layout -->
-                        <div id="cardContainer" class="row g-4">
-                            <!-- Product cards will be dynamically loaded here -->
-                            
-                            <!-- Placeholder for empty state -->
-                            <div class="col-12 text-center py-5" id="emptyStateCards">
-                                <div class="empty-state">
-                                    <div class="empty-icon">
-                                        <i class="bi bi-box-seam"></i>
-                                    </div>
-                                    <h4 class="empty-title">No Products Found</h4>
-                                    <p class="empty-text">Start by adding your first product to the inventory.</p>
-                                    <button class="btn btn-primary btn-lg px-5" data-bs-toggle="modal" data-bs-target="#productModal">
-                                        <i class="bi bi-plus-circle me-2"></i>Add Your First Product
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Card Grid -->
+                        <div id="cardContainer" class="row g-4"></div>
 
-                        <!-- Table Layout -->
+                        <!-- Table View -->
                         <div id="tableContainer" class="d-none">
                             <div class="table-responsive">
-                                <table class="table table-hover align-middle modern-table">
+                                <table class="table modern-table table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Product</th>
-                                            <th scope="col">Category</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Stock</th>
-                                            <th scope="col" class="text-center">Actions</th>
+                                            <th>Image</th>
+                                            <th>Product</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
+                                            <th>Stock</th>
+                                            <th class="text-end">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="productTableBody">
-                                        <!-- Product rows will be dynamically loaded here -->
-                                    </tbody>
+                                    <tbody id="productTableBody"></tbody>
                                 </table>
                             </div>
-                            
-                            <!-- Empty state for table view -->
-                            <div class="text-center py-5 d-none" id="emptyStateTable">
-                                <div class="empty-state">
-                                    <div class="empty-icon">
-                                        <i class="bi bi-table"></i>
-                                    </div>
-                                    <h4 class="empty-title">No Products Found</h4>
-                                    <p class="empty-text">Start by adding your first product to the inventory.</p>
-                                    <button class="btn btn-primary btn-lg px-5" data-bs-toggle="modal" data-bs-target="#productModal">
-                                        <i class="bi bi-plus-circle me-2"></i>Add Your First Product
-                                    </button>
-                                </div>
-                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="emptyState" class="text-center py-5 d-none">
+                            <div class="mb-3 text-muted" style="font-size: 3rem;"><i class="bi bi-inbox"></i></div>
+                            <h4>No Products Found</h4>
+                            <p class="text-muted">Start by adding your first product.</p>
                         </div>
                     </div>
                 </div>
@@ -258,169 +448,321 @@
     </main>
 
     <!-- Add/Edit Product Modal -->
-    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content modern-modal">
                 <div class="modal-header modern-modal-header">
-                    <h5 class="modal-title" id="productModalLabel">
-                        <i class="bi bi-plus-circle me-2"></i>Add New Product
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="productModalLabel">Add New Product</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                
                 <div class="modal-body modern-modal-body">
-                    <form id="productForm" class="modern-form">
+                    <form id="productForm">
+                        <!-- CRITICAL FIX: Hidden Input to store the ID of the product being edited -->
+                        <input type="hidden" id="editProductId" value="">
+                        
                         <div class="row g-3">
-                            <!-- Product Title -->
                             <div class="col-12">
-                                <div class="form-group-modern">
-                                    <label for="productTitle" class="form-label-modern">
-                                        <i class="bi bi-tag me-2"></i>Product Title *
-                                    </label>
-                                    <input type="text" class="form-control-modern" id="productTitle" name="productTitle" required 
-                                           placeholder="Enter product title">
-                                    <div class="invalid-feedback">
-                                        Please provide a valid product title.
-                                    </div>
-                                </div>
+                                <label class="form-label fw-bold">Product Title</label>
+                                <input type="text" class="form-control form-control-modern" id="productTitle" required>
                             </div>
-                            
-                            <!-- Price and Category Row -->
                             <div class="col-md-6">
-                                <div class="form-group-modern">
-                                    <label for="productPrice" class="form-label-modern">
-                                        <i class="bi bi-currency-dollar me-2"></i>Price *
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text modern-input-addon">$</span>
-                                        <input type="number" class="form-control-modern" id="productPrice" name="productPrice" 
-                                               step="0.01" min="0" required placeholder="0.00">
-                                        <div class="invalid-feedback">
-                                            Please provide a valid price.
-                                        </div>
-                                    </div>
+                                <label class="form-label fw-bold">Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0">$</span>
+                                    <input type="number" class="form-control form-control-modern" id="productPrice" step="0.01" min="0" required>
                                 </div>
                             </div>
-                            
                             <div class="col-md-6">
-                                <div class="form-group-modern">
-                                    <label for="productCategory" class="form-label-modern">
-                                        <i class="bi bi-collection me-2"></i>Category *
-                                    </label>
-                                    <select class="form-control-modern" id="productCategory" name="productCategory" required>
-                                        <option value="">Select Category</option>
-                                        <option value="electronics">📱 Electronics</option>
-                                        <option value="clothing">👔 Clothing</option>
-                                        <option value="books">📚 Books</option>
-                                        <option value="home">🏠 Home & Garden</option>
-                                        <option value="sports">⚽ Sports & Outdoors</option>
-                                        <option value="beauty">💄 Beauty & Health</option>
-                                        <option value="automotive">🚗 Automotive</option>
-                                        <option value="toys">🎮 Toys & Games</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a category.
-                                    </div>
-                                </div>
+                                <label class="form-label fw-bold">Category</label>
+                                <select class="form-select form-control-modern" id="productCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Clothing">Clothing</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Home">Home & Garden</option>
+                                    <option value="Beauty">Beauty & Health</option>
+                                    <option value="Sports">Sports & Outdoors</option>
+                                </select>
                             </div>
-                            
-                            <!-- Image URL -->
                             <div class="col-12">
-                                <div class="form-group-modern">
-                                    <label for="productImage" class="form-label-modern">
-                                        <i class="bi bi-image me-2"></i>Image URL 
-                                        <span class="optional-badge">optional</span>
-                                    </label>
-                                    <input type="url" class="form-control-modern" id="productImage" name="productImage" 
-                                           placeholder="https://example.com/image.jpg">
-                                    <div class="form-hint">
-                                        <i class="bi bi-info-circle me-1"></i>
-                                        Enter a valid image URL. If left empty, a placeholder image will be used.
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Please enter a valid URL (including http:// or https://).
-                                    </div>
-                                </div>
+                                <label class="form-label fw-bold">Image URL</label>
+                                <input type="url" class="form-control form-control-modern" id="productImage" placeholder="https://">
                             </div>
-
                             <!-- Image Preview -->
                             <div class="col-12 d-none" id="imagePreviewContainer">
                                 <div class="image-preview-card">
-                                    <label class="form-label-modern">
-                                        <i class="bi bi-eye me-2"></i>Image Preview
-                                    </label>
-                                    <div class="preview-wrapper">
-                                        <img id="imagePreview" src="" alt="Product preview" class="preview-image">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Stock and SKU Row -->
-                            <div class="col-md-6">
-                                <div class="form-group-modern">
-                                    <label for="productStock" class="form-label-modern">
-                                        <i class="bi bi-boxes me-2"></i>Stock Quantity
-                                    </label>
-                                    <input type="number" class="form-control-modern" id="productStock" name="productStock" 
-                                           min="0" value="0" placeholder="0">
+                                    <img id="imagePreview" src="" alt="Preview" class="preview-image">
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group-modern">
-                                    <label for="productSku" class="form-label-modern">
-                                        <i class="bi bi-upc-scan me-2"></i>SKU
-                                    </label>
-                                    <input type="text" class="form-control-modern" id="productSku" name="productSku" 
-                                           placeholder="Auto-generated if empty">
-                                </div>
+                                <label class="form-label fw-bold">Stock Quantity</label>
+                                <input type="number" class="form-control form-control-modern" id="productStock" min="0" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">SKU</label>
+                                <input type="text" class="form-control form-control-modern" id="productSku" placeholder="Auto-generated if empty">
                             </div>
                         </div>
+                        <div class="mt-4 text-end">
+                            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-gradient-primary">Save Product</button>
+                        </div>
                     </form>
-                </div>
-                
-                <div class="modal-footer modern-modal-footer">
-                    <button type="button" class="btn btn-secondary-modern" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-2"></i>Cancel
-                    </button>
-                    <button type="submit" class="btn btn-primary-modern" form="productForm">
-                        <i class="bi bi-check-circle me-2"></i>Save Product
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="modern-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="footer-content">
-                        <div class="footer-brand mb-3">
-                            <i class="bi bi-shop me-2"></i>
-                            <span class="fw-bold">ShopManage</span>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // --- State Management ---
+        let products = [];
+        const STORAGE_KEY = 'shopManage_products';
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            setupEventListeners();
+        });
+
+        // --- Core Functions ---
+
+        function loadProducts() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                products = JSON.parse(stored);
+            }
+            renderProducts();
+            updateStats();
+        }
+
+        function saveProducts() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+            updateStats();
+            renderProducts();
+        }
+
+        // --- Render Logic ---
+
+        function renderProducts(filterText = '') {
+            const cardContainer = document.getElementById('cardContainer');
+            const tableBody = document.getElementById('productTableBody');
+            const emptyState = document.getElementById('emptyState');
+            
+            cardContainer.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            const filteredProducts = products.filter(p => 
+                p.title.toLowerCase().includes(filterText.toLowerCase()) || 
+                p.category.toLowerCase().includes(filterText.toLowerCase())
+            );
+
+            if (filteredProducts.length === 0) {
+                emptyState.classList.remove('d-none');
+                return;
+            } else {
+                emptyState.classList.add('d-none');
+            }
+
+            filteredProducts.forEach(product => {
+                // 1. Render Card
+                const cardCol = document.createElement('div');
+                cardCol.className = 'col-md-6 col-lg-4 col-xl-3';
+                cardCol.innerHTML = `
+                    <div class="product-card">
+                        <div class="product-img-wrapper">
+                            <img src="${product.image || 'https://via.placeholder.com/300x200?text=No+Image'}" 
+                                 class="product-img" 
+                                 onerror="this.src='https://via.placeholder.com/300x200?text=Error'" 
+                                 alt="${product.title}">
+                            <div class="card-actions">
+                                <button class="action-btn edit" onclick="editProduct(${product.id})">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="deleteProduct(${product.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
                         </div>
-                        <p class="footer-text mb-2">&copy; 2026 ShopManage | PR2511911-Manesh</p>
-                        <p class="footer-tagline">Professional Product Management System</p>
-                        <div class="footer-links mt-3">
-                            <a href="#" class="footer-link">About</a>
-                            <span class="mx-2">•</span>
-                            <a href="#" class="footer-link">Contact</a>
-                            <span class="mx-2">•</span>
-                            <a href="#" class="footer-link">Privacy</a>
-                            <span class="mx-2">•</span>
-                            <a href="#" class="footer-link">Terms</a>
+                        <div class="product-details">
+                            <span class="product-category">${product.category}</span>
+                            <h5 class="product-title" title="${product.title}">${product.title}</h5>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="product-price">$${parseFloat(product.price).toFixed(2)}</span>
+                                ${getStockBadge(product.stock)}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+                `;
+                cardContainer.appendChild(cardCol);
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    
-    <!-- Custom JavaScript -->
-    <script src="script.js"></script>
+                // 2. Render Table Row
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <img src="${product.image || 'https://via.placeholder.com/50?text=Img'}" 
+                             class="table-img" 
+                             onerror="this.src='https://via.placeholder.com/50?text=Error'">
+                    </td>
+                    <td>
+                        <div class="fw-bold text-dark">${product.title}</div>
+                        <small class="text-muted">SKU: ${product.sku}</small>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">${product.category}</span></td>
+                    <td class="fw-bold">$${parseFloat(product.price).toFixed(2)}</td>
+                    <td>${getStockBadge(product.stock)}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editProduct(${product.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${product.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function getStockBadge(stock) {
+            stock = parseInt(stock);
+            if (stock === 0) return '<span class="stock-badge bg-stock-red">Out of Stock</span>';
+            if (stock < 10) return '<span class="stock-badge bg-stock-orange">Low: ' + stock + '</span>';
+            return '<span class="stock-badge bg-stock-green">In Stock: ' + stock + '</span>';
+        }
+
+        function updateStats() {
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('inStock').textContent = products.filter(p => parseInt(p.stock) >= 10).length;
+            document.getElementById('lowStock').textContent = products.filter(p => parseInt(p.stock) > 0 && parseInt(p.stock) < 10).length;
+            document.getElementById('outOfStock').textContent = products.filter(p => parseInt(p.stock) === 0).length;
+        }
+
+        // --- Event Listeners ---
+
+        function setupEventListeners() {
+            // View Toggles
+            document.getElementById('cardView').addEventListener('change', () => {
+                document.getElementById('cardContainer').classList.remove('d-none');
+                document.getElementById('tableContainer').classList.add('d-none');
+            });
+            
+            document.getElementById('tableView').addEventListener('change', () => {
+                document.getElementById('cardContainer').classList.add('d-none');
+                document.getElementById('tableContainer').classList.remove('d-none');
+            });
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                renderProducts(e.target.value);
+            });
+
+            // Image Preview
+            document.getElementById('productImage').addEventListener('input', (e) => {
+                const url = e.target.value;
+                const container = document.getElementById('imagePreviewContainer');
+                const img = document.getElementById('imagePreview');
+                if (url) {
+                    container.classList.remove('d-none');
+                    img.src = url;
+                    img.onerror = () => { container.classList.add('d-none'); };
+                } else {
+                    container.classList.add('d-none');
+                }
+            });
+
+            // Form Submit (The Fix Logic is here)
+            document.getElementById('productForm').addEventListener('submit', handleFormSubmit);
+        }
+
+        // --- Actions ---
+
+        function openAddModal() {
+            // Reset form for adding
+            document.getElementById('productForm').reset();
+            document.getElementById('editProductId').value = ""; // Clear hidden ID
+            document.getElementById('imagePreviewContainer').classList.add('d-none');
+            document.getElementById('productModalLabel').textContent = "Add New Product";
+            
+            new bootstrap.Modal(document.getElementById('productModal')).show();
+        }
+
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            // Fill form with product data
+            document.getElementById('productTitle').value = product.title;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productImage').value = product.image;
+            document.getElementById('productStock').value = product.stock;
+            document.getElementById('productSku').value = product.sku;
+
+            // Handle Preview
+            if(product.image) {
+                document.getElementById('imagePreview').src = product.image;
+                document.getElementById('imagePreviewContainer').classList.remove('d-none');
+            } else {
+                document.getElementById('imagePreviewContainer').classList.add('d-none');
+            }
+
+            // SET THE HIDDEN ID (The Fix)
+            document.getElementById('editProductId').value = product.id;
+            
+            // Update UI
+            document.getElementById('productModalLabel').textContent = "Edit Product";
+            new bootstrap.Modal(document.getElementById('productModal')).show();
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // 1. Gather Data
+            const title = document.getElementById('productTitle').value;
+            const price = document.getElementById('productPrice').value;
+            const category = document.getElementById('productCategory').value;
+            const image = document.getElementById('productImage').value;
+            const stock = document.getElementById('productStock').value;
+            let sku = document.getElementById('productSku').value;
+            const editId = document.getElementById('editProductId').value; // Get the hidden ID
+
+            if (!sku) sku = 'SKU-' + Date.now().toString().slice(-6);
+
+            // 2. Check if Updating or Adding
+            if (editId) {
+                // --- UPDATE LOGIC (Fixing the bug) ---
+                const index = products.findIndex(p => p.id == editId);
+                if (index !== -1) {
+                    products[index] = {
+                        id: parseInt(editId),
+                        title, price, category, image, stock, sku
+                    };
+                }
+            } else {
+                // --- ADD LOGIC ---
+                const newProduct = {
+                    id: Date.now(),
+                    title, price, category, image, stock, sku
+                };
+                products.push(newProduct);
+            }
+
+            // 3. Save and Close
+            saveProducts(); // Writes to LocalStorage
+            
+            const modalEl = document.getElementById('productModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+        }
+
+        function deleteProduct(id) {
+            if(confirm("Are you sure you want to delete this product?")) {
+                products = products.filter(p => p.id !== id);
+                saveProducts();
+            }
+        }
+    </script>
 </body>
 </html>
