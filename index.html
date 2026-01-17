@@ -759,7 +759,11 @@
 
         function deleteProduct(id) {
             if(confirm("Are you sure you want to delete this product?")) {
-                products = products.filter(p => p.id !== id);
+                // Robust deletion: Filter out the product by ID
+                // We use String conversion to ensure 123 matches "123" regardless of type
+                products = products.filter(p => String(p.id) !== String(id));
+                
+                // Save to localStorage immediately
                 saveProducts();
             }
         }
