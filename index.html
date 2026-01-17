@@ -457,7 +457,7 @@
                 </div>
                 <div class="modal-body modern-modal-body">
                     <form id="productForm">
-                        <!-- CRITICAL FIX: Hidden Input to store the ID of the product being edited -->
+                        <!-- Hidden Input for ID -->
                         <input type="hidden" id="editProductId" value="">
                         
                         <div class="row g-3">
@@ -516,9 +516,40 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // --- State Management ---
-        let products = [];
-        const STORAGE_KEY = 'shopManage_products';
+        // --- SAFE DEFAULT DATA ---
+        // We initialize with data so something always shows, even if storage fails.
+        const defaultData = [
+            {
+                id: 1,
+                title: "Wireless Headphones",
+                price: "99.99",
+                category: "Electronics",
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+                stock: 15,
+                sku: "AUDIO-001"
+            },
+            {
+                id: 2,
+                title: "Running Shoes",
+                price: "79.50",
+                category: "Sports",
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80",
+                stock: 5,
+                sku: "SPORT-002"
+            },
+            {
+                id: 3,
+                title: "Minimalist Watch",
+                price: "120.00",
+                category: "Clothing",
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
+                stock: 0,
+                sku: "TIME-003"
+            }
+        ];
+
+        let products = [...defaultData]; // Start with defaults
+        const STORAGE_KEY = 'shopManage_products_v2'; // Changed key to ensure fresh start
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -529,16 +560,32 @@
         // --- Core Functions ---
 
         function loadProducts() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                products = JSON.parse(stored);
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        products = parsed; // Only overwrite if we found valid data
+                    }
+                } else {
+                    // Nothing in storage? Save our defaults so they persist next time
+                    saveProducts();
+                }
+            } catch(e) {
+                console.warn("LocalStorage access denied or error. Using default in-memory data.", e);
+                // We don't change 'products' here, so it keeps the defaultData
             }
+            
             renderProducts();
             updateStats();
         }
 
         function saveProducts() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+            } catch(e) {
+                console.warn("Could not save to localStorage. Data will reset on reload.", e);
+            }
             updateStats();
             renderProducts();
         }
@@ -550,6 +597,8 @@
             const tableBody = document.getElementById('productTableBody');
             const emptyState = document.getElementById('emptyState');
             
+            if (!cardContainer || !tableBody || !emptyState) return;
+
             cardContainer.innerHTML = '';
             tableBody.innerHTML = '';
 
@@ -560,7 +609,9 @@
 
             if (filteredProducts.length === 0) {
                 emptyState.classList.remove('d-none');
-                return;
+                // Don't return here, just hide the other containers if you want, 
+                // but usually keeping them empty is fine. 
+                // However, making sure we don't accidentally hide the empty state:
             } else {
                 emptyState.classList.add('d-none');
             }
@@ -654,34 +705,42 @@
             });
 
             // Search
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                renderProducts(e.target.value);
-            });
+            const searchInput = document.getElementById('searchInput');
+            if(searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    renderProducts(e.target.value);
+                });
+            }
 
             // Image Preview
-            document.getElementById('productImage').addEventListener('input', (e) => {
-                const url = e.target.value;
-                const container = document.getElementById('imagePreviewContainer');
-                const img = document.getElementById('imagePreview');
-                if (url) {
-                    container.classList.remove('d-none');
-                    img.src = url;
-                    img.onerror = () => { container.classList.add('d-none'); };
-                } else {
-                    container.classList.add('d-none');
-                }
-            });
+            const imgInput = document.getElementById('productImage');
+            if(imgInput) {
+                imgInput.addEventListener('input', (e) => {
+                    const url = e.target.value;
+                    const container = document.getElementById('imagePreviewContainer');
+                    const img = document.getElementById('imagePreview');
+                    if (url) {
+                        container.classList.remove('d-none');
+                        img.src = url;
+                        img.onerror = () => { container.classList.add('d-none'); };
+                    } else {
+                        container.classList.add('d-none');
+                    }
+                });
+            }
 
-            // Form Submit (The Fix Logic is here)
-            document.getElementById('productForm').addEventListener('submit', handleFormSubmit);
+            // Form Submit
+            const form = document.getElementById('productForm');
+            if(form) {
+                form.addEventListener('submit', handleFormSubmit);
+            }
         }
 
         // --- Actions ---
 
         function openAddModal() {
-            // Reset form for adding
             document.getElementById('productForm').reset();
-            document.getElementById('editProductId').value = ""; // Clear hidden ID
+            document.getElementById('editProductId').value = ""; 
             document.getElementById('imagePreviewContainer').classList.add('d-none');
             document.getElementById('productModalLabel').textContent = "Add New Product";
             
@@ -689,10 +748,10 @@
         }
 
         function editProduct(id) {
-            const product = products.find(p => p.id === id);
+            // Type safety check
+            const product = products.find(p => String(p.id) === String(id));
             if (!product) return;
 
-            // Fill form with product data
             document.getElementById('productTitle').value = product.title;
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productCategory').value = product.category;
@@ -700,7 +759,6 @@
             document.getElementById('productStock').value = product.stock;
             document.getElementById('productSku').value = product.sku;
 
-            // Handle Preview
             if(product.image) {
                 document.getElementById('imagePreview').src = product.image;
                 document.getElementById('imagePreviewContainer').classList.remove('d-none');
@@ -708,10 +766,8 @@
                 document.getElementById('imagePreviewContainer').classList.add('d-none');
             }
 
-            // SET THE HIDDEN ID (The Fix)
             document.getElementById('editProductId').value = product.id;
             
-            // Update UI
             document.getElementById('productModalLabel').textContent = "Edit Product";
             new bootstrap.Modal(document.getElementById('productModal')).show();
         }
@@ -719,29 +775,25 @@
         function handleFormSubmit(e) {
             e.preventDefault();
             
-            // 1. Gather Data
             const title = document.getElementById('productTitle').value;
             const price = document.getElementById('productPrice').value;
             const category = document.getElementById('productCategory').value;
             const image = document.getElementById('productImage').value;
             const stock = document.getElementById('productStock').value;
             let sku = document.getElementById('productSku').value;
-            const editId = document.getElementById('editProductId').value; // Get the hidden ID
+            const editId = document.getElementById('editProductId').value; 
 
             if (!sku) sku = 'SKU-' + Date.now().toString().slice(-6);
 
-            // 2. Check if Updating or Adding
             if (editId) {
-                // --- UPDATE LOGIC (Fixing the bug) ---
-                const index = products.findIndex(p => p.id == editId);
+                const index = products.findIndex(p => String(p.id) === String(editId));
                 if (index !== -1) {
                     products[index] = {
-                        id: parseInt(editId),
+                        id: parseInt(editId), // maintain ID consistency
                         title, price, category, image, stock, sku
                     };
                 }
             } else {
-                // --- ADD LOGIC ---
                 const newProduct = {
                     id: Date.now(),
                     title, price, category, image, stock, sku
@@ -749,8 +801,7 @@
                 products.push(newProduct);
             }
 
-            // 3. Save and Close
-            saveProducts(); // Writes to LocalStorage
+            saveProducts();
             
             const modalEl = document.getElementById('productModal');
             const modal = bootstrap.Modal.getInstance(modalEl);
@@ -759,11 +810,7 @@
 
         function deleteProduct(id) {
             if(confirm("Are you sure you want to delete this product?")) {
-                // Robust deletion: Filter out the product by ID
-                // We use String conversion to ensure 123 matches "123" regardless of type
                 products = products.filter(p => String(p.id) !== String(id));
-                
-                // Save to localStorage immediately
                 saveProducts();
             }
         }
