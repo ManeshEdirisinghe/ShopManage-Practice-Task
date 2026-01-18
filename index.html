@@ -15,6 +15,350 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            /* Theme Variables - Light Mode Default */
+            --bg-body: #f8f9fa;
+            --bg-surface: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #ffffff;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            --hover-shadow: 0 15px 30px rgba(0,0,0,0.1);
+
+            /* Gradients remain constant */
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
+        }
+
+        /* Dark Mode Overrides */
+        body.dark-mode {
+            --bg-body: #0f172a;
+            --bg-surface: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            --hover-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Navigation */
+        .modern-nav {
+            background: var(--bg-surface);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+            padding: 1rem 0;
+            transition: background-color 0.3s;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--text-primary) !important;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: #764ba2 !important;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .theme-toggle-btn:hover {
+            background: var(--bg-body);
+            transform: rotate(15deg);
+        }
+
+        /* Buttons */
+        .btn-gradient-primary {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-gradient-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+            color: white;
+        }
+
+        .btn-modern-outline {
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-modern-outline:hover {
+            border-color: #cbd5e1;
+            background: var(--bg-body);
+            color: var(--text-primary);
+        }
+
+        /* Search */
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            width: 250px;
+            transition: all 0.3s;
+            outline: none;
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+        }
+
+        .search-input:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Cards & Stats */
+        .page-header-card {
+            background: var(--bg-surface);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .modern-stats-card {
+            background: var(--bg-surface);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            height: 100%;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s;
+        }
+
+        .modern-stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .stats-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-bg-icon {
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 8rem;
+            opacity: 0.05;
+            transform: rotate(-15deg);
+            z-index: 1;
+        }
+
+        /* Gradient Accents for Stats */
+        .gradient-blue .stats-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .gradient-green .stats-icon { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .gradient-orange .stats-icon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .gradient-red .stats-icon { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+        .stats-value { font-size: 2rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+        .stats-label { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.25rem; }
+
+        /* Product Cards */
+        .product-card {
+            background: var(--bg-surface);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
+            height: 100%;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-card:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-5px);
+        }
+
+        .product-img-wrapper {
+            height: 200px;
+            background: var(--bg-body);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .card-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover .card-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: var(--bg-surface);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .action-btn.edit:hover { background: #3b82f6; color: white; }
+        .action-btn.delete:hover { background: #ef4444; color: white; }
+
+        .product-details { padding: 1.5rem; }
+        .product-category { font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px; font-weight: 600; margin-bottom: 0.5rem; display: block; }
+        .product-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-price { font-size: 1.25rem; font-weight: 700; color: #764ba2; }
+        
+        .stock-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .bg-stock-green { background: #dcfce7; color: #166534; }
+        .bg-stock-orange { background: #ffedd5; color: #9a3412; }
+        .bg-stock-red { background: #fee2e2; color: #991b1b; }
+
+        /* Modal Styles */
+        .modern-modal .modal-content { border-radius: 20px; border: none; overflow: hidden; background-color: var(--bg-surface); }
+        .modern-modal-header { background: var(--primary-gradient); color: white; border: none; padding: 1.5rem; }
+        .modern-modal-body { padding: 2rem; color: var(--text-primary); }
+        
+        .form-control-modern, .form-select-modern {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s;
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+        }
+        .form-control-modern:focus, .form-select-modern:focus { 
+            border-color: #764ba2; 
+            box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.1); 
+            outline: none; 
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+        }
+        
+        .image-preview-card { border: 2px dashed var(--border-color); border-radius: 12px; padding: 1rem; text-align: center; margin-top: 10px; }
+        .preview-image { max-height: 200px; max-width: 100%; border-radius: 8px; object-fit: contain; }
+
+        /* Table View */
+        .modern-table { color: var(--text-primary); }
+        .modern-table thead th { 
+            background: var(--bg-body); 
+            color: var(--text-secondary); 
+            font-weight: 600; 
+            border-bottom: 2px solid var(--border-color); 
+            padding: 1rem; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.05em; 
+        }
+        .modern-table td { padding: 1rem; vertical-align: middle; border-bottom: 1px solid var(--border-color); }
+        .table-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+        .table-hover tbody tr:hover { background-color: var(--bg-body); color: var(--text-primary); }
+        
+        /* Catalog Card */
+        .catalog-card { background: var(--bg-surface); border-radius: 16px; border: none; box-shadow: var(--card-shadow); }
+        .catalog-header { background: var(--bg-surface); color: var(--text-primary); border-bottom: 1px solid var(--border-color); }
         
     </style>
 </head>
@@ -29,7 +373,7 @@
                 <span class="brand-text">ShopManage</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon" style="filter: invert(0.5);"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-4">
@@ -38,6 +382,11 @@
                     <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-graph-up me-1"></i>Reports</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <!-- Theme Toggle Button -->
+                    <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark Mode">
+                        <i class="bi bi-moon-fill" id="themeIcon"></i>
+                    </button>
+
                     <button class="btn btn-gradient-primary px-4" type="button" onclick="openAddModal()">
                         <i class="bi bi-plus-circle me-2"></i>Add Product
                     </button>
@@ -61,7 +410,7 @@
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                         <div>
                             <h1 class="h3 mb-2 fw-bold">Product Management</h1>
-                            <p class="text-muted mb-0"><i class="bi bi-layers me-2"></i>Manage your inventory and product catalog</p>
+                            <p class="mb-0" style="color: var(--text-secondary)"><i class="bi bi-layers me-2"></i>Manage your inventory and product catalog</p>
                         </div>
                     </div>
                 </div>
@@ -123,8 +472,8 @@
         <!-- Product Listing -->
         <section class="row" id="productList">
             <div class="col-12">
-                <div class="card border-0 shadow-sm" style="border-radius: 16px;">
-                    <div class="card-header bg-white p-4 border-bottom-0 d-flex justify-content-between align-items-center">
+                <div class="card catalog-card">
+                    <div class="card-header catalog-header p-4 border-bottom-0 d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog</h5>
                         <div class="btn-group" role="group">
                             <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked autocomplete="off">
@@ -194,7 +543,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Price</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-0">$</span>
+                                    <span class="input-group-text bg-light border-0" style="background-color: var(--border-color) !important; color: var(--text-primary);">$</span>
                                     <input type="number" class="form-control form-control-modern" id="productPrice" step="0.01" min="0" required>
                                 </div>
                             </div>
@@ -230,7 +579,7 @@
                             </div>
                         </div>
                         <div class="mt-4 text-end">
-                            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-gradient-primary">Save Product</button>
                         </div>
                     </form>
@@ -243,7 +592,6 @@
     
     <script>
         // --- SAFE DEFAULT DATA ---
-        // We initialize with data so something always shows, even if storage fails.
         const defaultData = [
             {
                 id: 1,
@@ -319,18 +667,46 @@
             }
         ];
 
-        let products = [...defaultData]; // Start with defaults
-        
-        // --- CRITICAL CHANGE: UPDATED STORAGE KEY ---
-        // Changed from '_v2' to '_v3' to ignore old cached data (the 3 items)
-        // and force the new defaultData (8 items) to load.
+        let products = [...defaultData]; 
         const STORAGE_KEY = 'shopManage_products_v3'; 
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
             loadProducts();
             setupEventListeners();
         });
+
+        // --- Theme Management ---
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                if(themeIcon) {
+                    themeIcon.classList.remove('bi-moon-fill');
+                    themeIcon.classList.add('bi-sun-fill');
+                }
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            // Update Icon
+            if (isDark) {
+                themeIcon.classList.remove('bi-moon-fill');
+                themeIcon.classList.add('bi-sun-fill');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-fill');
+                localStorage.setItem('theme', 'light');
+            }
+        }
 
         // --- Core Functions ---
 
@@ -340,15 +716,13 @@
                 if (stored) {
                     const parsed = JSON.parse(stored);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        products = parsed; // Only overwrite if we found valid data
+                        products = parsed; 
                     }
                 } else {
-                    // Nothing in storage? Save our defaults so they persist next time
                     saveProducts();
                 }
             } catch(e) {
-                console.warn("LocalStorage access denied or error. Using default in-memory data.", e);
-                // We don't change 'products' here, so it keeps the defaultData
+                console.warn("LocalStorage error", e);
             }
             
             renderProducts();
@@ -359,7 +733,7 @@
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
             } catch(e) {
-                console.warn("Could not save to localStorage. Data will reset on reload.", e);
+                console.warn("Could not save to localStorage", e);
             }
             updateStats();
             renderProducts();
@@ -429,8 +803,8 @@
                              onerror="this.src='https://via.placeholder.com/50?text=Error'">
                     </td>
                     <td>
-                        <div class="fw-bold text-dark">${product.title}</div>
-                        <small class="text-muted">SKU: ${product.sku}</small>
+                        <div class="fw-bold" style="color: var(--text-primary)">${product.title}</div>
+                        <small style="color: var(--text-secondary)">SKU: ${product.sku}</small>
                     </td>
                     <td><span class="badge bg-light text-dark border">${product.category}</span></td>
                     <td class="fw-bold">$${parseFloat(product.price).toFixed(2)}</td>
@@ -520,7 +894,6 @@
         }
 
         function editProduct(id) {
-            // Type safety check
             const product = products.find(p => String(p.id) === String(id));
             if (!product) return;
 
@@ -561,7 +934,7 @@
                 const index = products.findIndex(p => String(p.id) === String(editId));
                 if (index !== -1) {
                     products[index] = {
-                        id: parseInt(editId), // maintain ID consistency
+                        id: parseInt(editId), 
                         title, price, category, image, stock, sku
                     };
                 }
