@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopManage - Product Management System</title>
-
+    
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-
+    
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             /* Theme Variables - Light Mode Default */
@@ -26,8 +23,8 @@
             --text-secondary: #64748b;
             --border-color: #e2e8f0;
             --input-bg: #ffffff;
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            --hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            --hover-shadow: 0 15px 30px rgba(0,0,0,0.1);
 
             /* Gradients remain constant */
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -42,8 +39,8 @@
             --text-secondary: #94a3b8;
             --border-color: #334155;
             --input-bg: #0f172a;
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            --hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            --hover-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
 
         body {
@@ -56,7 +53,7 @@
         /* Navigation */
         .modern-nav {
             background: var(--bg-surface);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
             padding: 1rem 0;
             transition: background-color 0.3s;
         }
@@ -89,8 +86,7 @@
             transition: color 0.3s;
         }
 
-        .nav-link.active,
-        .nav-link:hover {
+        .nav-link.active, .nav-link:hover {
             color: #764ba2 !important;
         }
 
@@ -108,7 +104,6 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
         .theme-toggle-btn:hover {
             background: var(--bg-body);
             transform: rotate(15deg);
@@ -227,38 +222,13 @@
         }
 
         /* Gradient Accents for Stats */
-        .gradient-blue .stats-icon {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
-        }
+        .gradient-blue .stats-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .gradient-green .stats-icon { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .gradient-orange .stats-icon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .gradient-red .stats-icon { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
 
-        .gradient-green .stats-icon {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-        }
-
-        .gradient-orange .stats-icon {
-            background: rgba(245, 158, 11, 0.1);
-            color: #f59e0b;
-        }
-
-        .gradient-red .stats-icon {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
-
-        .stats-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin: 0;
-        }
-
-        .stats-label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 0.25rem;
-        }
+        .stats-value { font-size: 2rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+        .stats-label { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.25rem; }
 
         /* Product Cards */
         .product-card {
@@ -293,7 +263,7 @@
             object-fit: cover;
             transition: transform 0.5s;
         }
-
+        
         .product-card:hover .product-img {
             transform: scale(1.05);
         }
@@ -323,96 +293,35 @@
             justify-content: center;
             border: none;
             background: var(--bg-surface);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             color: var(--text-secondary);
             transition: all 0.2s;
             cursor: pointer;
         }
+        .action-btn.edit:hover { background: #3b82f6; color: white; }
+        .action-btn.delete:hover { background: #ef4444; color: white; }
 
-        .action-btn.edit:hover {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .action-btn.delete:hover {
-            background: #ef4444;
-            color: white;
-        }
-
-        .product-details {
-            padding: 1.5rem;
-        }
-
-        .product-category {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .product-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .product-price {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #764ba2;
-        }
-
+        .product-details { padding: 1.5rem; }
+        .product-category { font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px; font-weight: 600; margin-bottom: 0.5rem; display: block; }
+        .product-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-price { font-size: 1.25rem; font-weight: 700; color: #764ba2; }
+        
         .stock-badge {
             padding: 4px 8px;
             border-radius: 6px;
             font-size: 0.75rem;
             font-weight: 600;
         }
-
-        .bg-stock-green {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .bg-stock-orange {
-            background: #ffedd5;
-            color: #9a3412;
-        }
-
-        .bg-stock-red {
-            background: #fee2e2;
-            color: #991b1b;
-        }
+        .bg-stock-green { background: #dcfce7; color: #166534; }
+        .bg-stock-orange { background: #ffedd5; color: #9a3412; }
+        .bg-stock-red { background: #fee2e2; color: #991b1b; }
 
         /* Modal Styles */
-        .modern-modal .modal-content {
-            border-radius: 20px;
-            border: none;
-            overflow: hidden;
-            background-color: var(--bg-surface);
-        }
-
-        .modern-modal-header {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 1.5rem;
-        }
-
-        .modern-modal-body {
-            padding: 2rem;
-            color: var(--text-primary);
-        }
-
-        .form-control-modern,
-        .form-select-modern {
+        .modern-modal .modal-content { border-radius: 20px; border: none; overflow: hidden; background-color: var(--bg-surface); }
+        .modern-modal-header { background: var(--primary-gradient); color: white; border: none; padding: 1.5rem; }
+        .modern-modal-body { padding: 2rem; color: var(--text-primary); }
+        
+        .form-control-modern, .form-select-modern {
             border: 2px solid var(--border-color);
             border-radius: 10px;
             padding: 0.75rem 1rem;
@@ -420,81 +329,39 @@
             background-color: var(--input-bg);
             color: var(--text-primary);
         }
-
-        .form-control-modern:focus,
-        .form-select-modern:focus {
-            border-color: #764ba2;
-            box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.1);
-            outline: none;
+        .form-control-modern:focus, .form-select-modern:focus { 
+            border-color: #764ba2; 
+            box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.1); 
+            outline: none; 
             background-color: var(--input-bg);
             color: var(--text-primary);
         }
-
-        .image-preview-card {
-            border: 2px dashed var(--border-color);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .preview-image {
-            max-height: 200px;
-            max-width: 100%;
-            border-radius: 8px;
-            object-fit: contain;
-        }
+        
+        .image-preview-card { border: 2px dashed var(--border-color); border-radius: 12px; padding: 1rem; text-align: center; margin-top: 10px; }
+        .preview-image { max-height: 200px; max-width: 100%; border-radius: 8px; object-fit: contain; }
 
         /* Table View */
-        .modern-table {
-            color: var(--text-primary);
+        .modern-table { color: var(--text-primary); }
+        .modern-table thead th { 
+            background: var(--bg-body); 
+            color: var(--text-secondary); 
+            font-weight: 600; 
+            border-bottom: 2px solid var(--border-color); 
+            padding: 1rem; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.05em; 
         }
-
-        .modern-table thead th {
-            background: var(--bg-body);
-            color: var(--text-secondary);
-            font-weight: 600;
-            border-bottom: 2px solid var(--border-color);
-            padding: 1rem;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-        }
-
-        .modern-table td {
-            padding: 1rem;
-            vertical-align: middle;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .table-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: var(--bg-body);
-            color: var(--text-primary);
-        }
-
+        .modern-table td { padding: 1rem; vertical-align: middle; border-bottom: 1px solid var(--border-color); }
+        .table-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+        .table-hover tbody tr:hover { background-color: var(--bg-body); color: var(--text-primary); }
+        
         /* Catalog Card */
-        .catalog-card {
-            background: var(--bg-surface);
-            border-radius: 16px;
-            border: none;
-            box-shadow: var(--card-shadow);
-        }
-
-        .catalog-header {
-            background: var(--bg-surface);
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-        }
+        .catalog-card { background: var(--bg-surface); border-radius: 16px; border: none; box-shadow: var(--card-shadow); }
+        .catalog-header { background: var(--bg-surface); color: var(--text-primary); border-bottom: 1px solid var(--border-color); }
+        
     </style>
 </head>
-
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark modern-nav">
@@ -510,11 +377,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-4">
-                    <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-grid me-1"></i>Products</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-grid me-1"></i>Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-tags me-1"></i>Categories</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-graph-up me-1"></i>Reports</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-graph-up me-1"></i>Reports</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-3 flex-wrap">
                     <!-- Theme Toggle Button -->
@@ -528,8 +393,7 @@
                     <form class="search-form" onsubmit="return false;">
                         <div class="search-wrapper">
                             <i class="bi bi-search search-icon"></i>
-                            <input class="search-input" id="searchInput" type="search" placeholder="Search products..."
-                                aria-label="Search">
+                            <input class="search-input" id="searchInput" type="search" placeholder="Search products..." aria-label="Search">
                         </div>
                     </form>
                 </div>
@@ -546,8 +410,7 @@
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                         <div>
                             <h1 class="h3 mb-2 fw-bold">Product Management</h1>
-                            <p class="mb-0" style="color: var(--text-secondary)"><i class="bi bi-layers me-2"></i>Manage
-                                your inventory and product catalog</p>
+                            <p class="mb-0" style="color: var(--text-secondary)"><i class="bi bi-layers me-2"></i>Manage your inventory and product catalog</p>
                         </div>
                     </div>
                 </div>
@@ -610,24 +473,19 @@
         <section class="row" id="productList">
             <div class="col-12">
                 <div class="card catalog-card">
-                    <div
-                        class="card-header catalog-header p-4 border-bottom-0 d-flex justify-content-between align-items-center">
+                    <div class="card-header catalog-header p-4 border-bottom-0 d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog</h5>
                         <div class="btn-group" role="group">
-                            <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked
-                                autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm" for="cardView"><i
-                                    class="bi bi-grid-3x3-gap"></i></label>
+                            <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked autocomplete="off">
+                            <label class="btn btn-outline-secondary btn-sm" for="cardView"><i class="bi bi-grid-3x3-gap"></i></label>
                             <input type="radio" class="btn-check" name="viewToggle" id="tableView" autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm" for="tableView"><i
-                                    class="bi bi-table"></i></label>
+                            <label class="btn btn-outline-secondary btn-sm" for="tableView"><i class="bi bi-table"></i></label>
                         </div>
                     </div>
                     <div class="card-body p-4">
                         <!-- Loading -->
                         <div id="loadingSpinner" class="text-center py-5 d-none">
-                            <div class="spinner-border text-primary" role="status"><span
-                                    class="visually-hidden">Loading...</span></div>
+                            <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
                         </div>
 
                         <!-- Card Grid -->
@@ -676,7 +534,7 @@
                     <form id="productForm">
                         <!-- Hidden Input for ID -->
                         <input type="hidden" id="editProductId" value="">
-
+                        
                         <div class="row g-3">
                             <div class="col-12">
                                 <label class="form-label fw-bold">Product Title</label>
@@ -685,10 +543,8 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Price</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-0"
-                                        style="background-color: var(--border-color) !important; color: var(--text-primary);">$</span>
-                                    <input type="number" class="form-control form-control-modern" id="productPrice"
-                                        step="0.01" min="0" required>
+                                    <span class="input-group-text bg-light border-0" style="background-color: var(--border-color) !important; color: var(--text-primary);">$</span>
+                                    <input type="number" class="form-control form-control-modern" id="productPrice" step="0.01" min="0" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -705,8 +561,7 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label fw-bold">Image URL</label>
-                                <input type="url" class="form-control form-control-modern" id="productImage"
-                                    placeholder="https://">
+                                <input type="url" class="form-control form-control-modern" id="productImage" placeholder="https://">
                             </div>
                             <!-- Image Preview -->
                             <div class="col-12 d-none" id="imagePreviewContainer">
@@ -716,13 +571,11 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Stock Quantity</label>
-                                <input type="number" class="form-control form-control-modern" id="productStock" min="0"
-                                    required>
+                                <input type="number" class="form-control form-control-modern" id="productStock" min="0" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">SKU</label>
-                                <input type="text" class="form-control form-control-modern" id="productSku"
-                                    placeholder="Auto-generated if empty">
+                                <input type="text" class="form-control form-control-modern" id="productSku" placeholder="Auto-generated if empty">
                             </div>
                         </div>
                         <div class="mt-4 text-end">
@@ -736,7 +589,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    
     <script>
         // --- SAFE DEFAULT DATA ---
         const defaultData = [
@@ -811,7 +664,7 @@
                 image: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?w=500&q=80",
                 stock: 25,
                 sku: "BEAUTY-008"
-            }
+            },
             {
                 id: 9,
                 title: "Bluetooth Fitness Tracker",
@@ -877,8 +730,8 @@
             }
         ];
 
-        let products = [...defaultData];
-        const STORAGE_KEY = 'shopManage_products_v3';
+        let products = [...defaultData]; 
+        const STORAGE_KEY = 'shopManage_products_v3'; 
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -891,10 +744,10 @@
         function initTheme() {
             const savedTheme = localStorage.getItem('theme');
             const themeIcon = document.getElementById('themeIcon');
-
+            
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-mode');
-                if (themeIcon) {
+                if(themeIcon) {
                     themeIcon.classList.remove('bi-moon-fill');
                     themeIcon.classList.add('bi-sun-fill');
                 }
@@ -905,7 +758,7 @@
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             const themeIcon = document.getElementById('themeIcon');
-
+            
             // Update Icon
             if (isDark) {
                 themeIcon.classList.remove('bi-moon-fill');
@@ -926,15 +779,15 @@
                 if (stored) {
                     const parsed = JSON.parse(stored);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        products = parsed;
+                        products = parsed; 
                     }
                 } else {
                     saveProducts();
                 }
-            } catch (e) {
+            } catch(e) {
                 console.warn("LocalStorage error", e);
             }
-
+            
             renderProducts();
             updateStats();
         }
@@ -942,7 +795,7 @@
         function saveProducts() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-            } catch (e) {
+            } catch(e) {
                 console.warn("Could not save to localStorage", e);
             }
             updateStats();
@@ -955,14 +808,14 @@
             const cardContainer = document.getElementById('cardContainer');
             const tableBody = document.getElementById('productTableBody');
             const emptyState = document.getElementById('emptyState');
-
+            
             if (!cardContainer || !tableBody || !emptyState) return;
 
             cardContainer.innerHTML = '';
             tableBody.innerHTML = '';
 
-            const filteredProducts = products.filter(p =>
-                p.title.toLowerCase().includes(filterText.toLowerCase()) ||
+            const filteredProducts = products.filter(p => 
+                p.title.toLowerCase().includes(filterText.toLowerCase()) || 
                 p.category.toLowerCase().includes(filterText.toLowerCase())
             );
 
@@ -1054,7 +907,7 @@
                 document.getElementById('cardContainer').classList.remove('d-none');
                 document.getElementById('tableContainer').classList.add('d-none');
             });
-
+            
             document.getElementById('tableView').addEventListener('change', () => {
                 document.getElementById('cardContainer').classList.add('d-none');
                 document.getElementById('tableContainer').classList.remove('d-none');
@@ -1062,7 +915,7 @@
 
             // Search
             const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
+            if(searchInput) {
                 searchInput.addEventListener('input', (e) => {
                     renderProducts(e.target.value);
                 });
@@ -1070,7 +923,7 @@
 
             // Image Preview
             const imgInput = document.getElementById('productImage');
-            if (imgInput) {
+            if(imgInput) {
                 imgInput.addEventListener('input', (e) => {
                     const url = e.target.value;
                     const container = document.getElementById('imagePreviewContainer');
@@ -1087,7 +940,7 @@
 
             // Form Submit
             const form = document.getElementById('productForm');
-            if (form) {
+            if(form) {
                 form.addEventListener('submit', handleFormSubmit);
             }
         }
@@ -1096,10 +949,10 @@
 
         function openAddModal() {
             document.getElementById('productForm').reset();
-            document.getElementById('editProductId').value = "";
+            document.getElementById('editProductId').value = ""; 
             document.getElementById('imagePreviewContainer').classList.add('d-none');
             document.getElementById('productModalLabel').textContent = "Add New Product";
-
+            
             new bootstrap.Modal(document.getElementById('productModal')).show();
         }
 
@@ -1114,7 +967,7 @@
             document.getElementById('productStock').value = product.stock;
             document.getElementById('productSku').value = product.sku;
 
-            if (product.image) {
+            if(product.image) {
                 document.getElementById('imagePreview').src = product.image;
                 document.getElementById('imagePreviewContainer').classList.remove('d-none');
             } else {
@@ -1122,21 +975,21 @@
             }
 
             document.getElementById('editProductId').value = product.id;
-
+            
             document.getElementById('productModalLabel').textContent = "Edit Product";
             new bootstrap.Modal(document.getElementById('productModal')).show();
         }
 
         function handleFormSubmit(e) {
             e.preventDefault();
-
+            
             const title = document.getElementById('productTitle').value;
             const price = document.getElementById('productPrice').value;
             const category = document.getElementById('productCategory').value;
             const image = document.getElementById('productImage').value;
             const stock = document.getElementById('productStock').value;
             let sku = document.getElementById('productSku').value;
-            const editId = document.getElementById('editProductId').value;
+            const editId = document.getElementById('editProductId').value; 
 
             if (!sku) sku = 'SKU-' + Date.now().toString().slice(-6);
 
@@ -1144,7 +997,7 @@
                 const index = products.findIndex(p => String(p.id) === String(editId));
                 if (index !== -1) {
                     products[index] = {
-                        id: parseInt(editId),
+                        id: parseInt(editId), 
                         title, price, category, image, stock, sku
                     };
                 }
@@ -1157,19 +1010,18 @@
             }
 
             saveProducts();
-
+            
             const modalEl = document.getElementById('productModal');
             const modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
         }
 
         function deleteProduct(id) {
-            if (confirm("Are you sure you want to delete this product?")) {
+            if(confirm("Are you sure you want to delete this product?")) {
                 products = products.filter(p => String(p.id) !== String(id));
                 saveProducts();
             }
         }
     </script>
 </body>
-
 </html>
