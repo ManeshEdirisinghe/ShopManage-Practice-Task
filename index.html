@@ -594,7 +594,11 @@
         ];
 
         let products = [...defaultData]; // Start with defaults
-        const STORAGE_KEY = 'shopManage_products_v2'; // Changed key to ensure fresh start
+        
+        // --- CRITICAL CHANGE: UPDATED STORAGE KEY ---
+        // Changed from '_v2' to '_v3' to ignore old cached data (the 3 items)
+        // and force the new defaultData (8 items) to load.
+        const STORAGE_KEY = 'shopManage_products_v3'; 
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -654,9 +658,6 @@
 
             if (filteredProducts.length === 0) {
                 emptyState.classList.remove('d-none');
-                // Don't return here, just hide the other containers if you want, 
-                // but usually keeping them empty is fine. 
-                // However, making sure we don't accidentally hide the empty state:
             } else {
                 emptyState.classList.add('d-none');
             }
