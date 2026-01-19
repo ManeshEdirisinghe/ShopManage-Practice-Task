@@ -503,13 +503,23 @@
         <section class="row" id="productList">
             <div class="col-12">
                 <div class="card catalog-card">
-                    <div class="card-header catalog-header p-4 border-bottom-0 d-flex justify-content-between align-items-center">
+                    <div class="card-header catalog-header p-4 border-bottom-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <h5 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog</h5>
-                        <div class="btn-group" role="group">
-                            <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm" for="cardView"><i class="bi bi-grid-3x3-gap"></i></label>
-                            <input type="radio" class="btn-check" name="viewToggle" id="tableView" autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm" for="tableView"><i class="bi bi-table"></i></label>
+                        
+                        <div class="d-flex align-items-center gap-2">
+                            <!-- Sort Dropdown -->
+                            <select class="form-select-modern py-1" id="sortSelect" style="min-width: 150px; font-size: 0.9rem;">
+                                <option value="name_asc">Name (A-Z)</option>
+                                <option value="price_asc">Price (Low to High)</option>
+                                <option value="price_desc">Price (High to Low)</option>
+                            </select>
+
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked autocomplete="off">
+                                <label class="btn btn-outline-secondary btn-sm" for="cardView"><i class="bi bi-grid-3x3-gap"></i></label>
+                                <input type="radio" class="btn-check" name="viewToggle" id="tableView" autocomplete="off">
+                                <label class="btn btn-outline-secondary btn-sm" for="tableView"><i class="bi bi-table"></i></label>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body p-4">
@@ -887,16 +897,32 @@
             const cardContainer = document.getElementById('cardContainer');
             const tableBody = document.getElementById('productTableBody');
             const emptyState = document.getElementById('emptyState');
+            const sortSelect = document.getElementById('sortSelect');
             
             if (!cardContainer || !tableBody || !emptyState) return;
 
             cardContainer.innerHTML = '';
             tableBody.innerHTML = '';
 
-            const filteredProducts = products.filter(p => 
+            let filteredProducts = products.filter(p => 
                 p.title.toLowerCase().includes(filterText.toLowerCase()) || 
                 p.category.toLowerCase().includes(filterText.toLowerCase())
             );
+
+            // Sorting Logic
+            if(sortSelect) {
+                const sortValue = sortSelect.value;
+                filteredProducts.sort((a, b) => {
+                    if (sortValue === 'price_asc') {
+                        return parseFloat(a.price) - parseFloat(b.price);
+                    } else if (sortValue === 'price_desc') {
+                        return parseFloat(b.price) - parseFloat(a.price);
+                    } else {
+                        // Default: name_asc
+                        return a.title.localeCompare(b.title);
+                    }
+                });
+            }
 
             if (filteredProducts.length === 0) {
                 emptyState.classList.remove('d-none');
@@ -997,6 +1023,15 @@
             if(searchInput) {
                 searchInput.addEventListener('input', (e) => {
                     renderProducts(e.target.value);
+                });
+            }
+
+            // Sort Dropdown
+            const sortSelect = document.getElementById('sortSelect');
+            if(sortSelect) {
+                sortSelect.addEventListener('change', () => {
+                    const searchValue = document.getElementById('searchInput').value;
+                    renderProducts(searchValue);
                 });
             }
 
