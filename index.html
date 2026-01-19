@@ -389,7 +389,31 @@
         }
         .custom-toast.success { border-left-color: #10b981; }
         .custom-toast.error { border-left-color: #ef4444; }
-        
+
+        /* Pagination Styles */
+        .page-link {
+            color: var(--text-primary);
+            background-color: var(--bg-surface);
+            border-color: var(--border-color);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .page-link:hover {
+            color: #764ba2;
+            background-color: var(--bg-body);
+            border-color: #cbd5e1;
+        }
+        .page-item.active .page-link {
+            background: var(--primary-gradient);
+            border-color: transparent;
+            color: white;
+        }
+        .page-item.disabled .page-link {
+            background-color: var(--bg-body);
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -555,6 +579,15 @@
                             <div class="mb-3 text-muted" style="font-size: 3rem;"><i class="bi bi-inbox"></i></div>
                             <h4>No Products Found</h4>
                             <p class="text-muted">Start by adding your first product.</p>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div id="paginationContainer" class="mt-4 pt-3 border-top" style="border-color: var(--border-color) !important;">
+                            <nav aria-label="Product pagination">
+                                <ul class="pagination justify-content-center mb-0" id="paginationControls">
+                                    <!-- Pagination items will be injected here -->
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -794,6 +827,10 @@
 
         let products = [...defaultData]; 
         const STORAGE_KEY = 'shopManage_products_v4'; 
+        
+        // --- Pagination State ---
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 8; // 8 items per page (2 rows on large screens)
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -898,6 +935,7 @@
             const tableBody = document.getElementById('productTableBody');
             const emptyState = document.getElementById('emptyState');
             const sortSelect = document.getElementById('sortSelect');
+            const paginationContainer = document.getElementById('paginationContainer');
             
             if (!cardContainer || !tableBody || !emptyState) return;
 
@@ -926,11 +964,28 @@
 
             if (filteredProducts.length === 0) {
                 emptyState.classList.remove('d-none');
+                paginationContainer.classList.add('d-none');
+                return;
             } else {
                 emptyState.classList.add('d-none');
+                paginationContainer.classList.remove('d-none');
             }
 
-            filteredProducts.forEach(product => {
+            // --- Pagination Logic ---
+            const totalItems = filteredProducts.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            
+            // Ensure currentPage is valid
+            if (currentPage > totalPages) currentPage = 1;
+            if (currentPage < 1) currentPage = 1;
+
+            // Slice items for current page
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const paginatedItems = filteredProducts.slice(startIndex, endIndex);
+
+            // Render Items
+            paginatedItems.forEach(product => {
                 // 1. Render Card
                 const cardCol = document.createElement('div');
                 cardCol.className = 'col-md-6 col-lg-4 col-xl-3';
@@ -988,6 +1043,42 @@
                 `;
                 tableBody.appendChild(tr);
             });
+
+            // Render Pagination Controls
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const paginationControls = document.getElementById('paginationControls');
+            paginationControls.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous Button
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" onclick="changePage(${currentPage - 1})"><i class="bi bi-chevron-left"></i></a>`;
+            paginationControls.appendChild(prevLi);
+
+            // Page Numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${currentPage === i ? 'active' : ''}`;
+                li.innerHTML = `<a class="page-link" onclick="changePage(${i})">${i}</a>`;
+                paginationControls.appendChild(li);
+            }
+
+            // Next Button
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" onclick="changePage(${currentPage + 1})"><i class="bi bi-chevron-right"></i></a>`;
+            paginationControls.appendChild(nextLi);
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            const searchValue = document.getElementById('searchInput').value;
+            renderProducts(searchValue);
         }
 
         function getStockBadge(stock) {
@@ -1022,6 +1113,7 @@
             const searchInput = document.getElementById('searchInput');
             if(searchInput) {
                 searchInput.addEventListener('input', (e) => {
+                    currentPage = 1; // Reset to page 1 on search
                     renderProducts(e.target.value);
                 });
             }
@@ -1030,6 +1122,7 @@
             const sortSelect = document.getElementById('sortSelect');
             if(sortSelect) {
                 sortSelect.addEventListener('change', () => {
+                    currentPage = 1; // Reset to page 1 on sort
                     const searchValue = document.getElementById('searchInput').value;
                     renderProducts(searchValue);
                 });
