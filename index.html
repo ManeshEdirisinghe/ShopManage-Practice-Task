@@ -652,8 +652,16 @@
                                     <option value="Home">Home & Garden</option>
                                     <option value="Beauty">Beauty & Health</option>
                                     <option value="Sports">Sports & Outdoors</option>
+                                    <option value="Accessories">Accessories</option>
                                 </select>
                             </div>
+
+                            <!-- NEW: Product Description -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Product Description</label>
+                                <textarea class="form-control form-control-modern" id="productDescription" rows="3" placeholder="Enter detailed product description..."></textarea>
+                            </div>
+
                             <div class="col-12">
                                 <label class="form-label fw-bold">Image URL</label>
                                 <input type="url" class="form-control form-control-modern" id="productImage" placeholder="https://">
@@ -693,6 +701,7 @@
                 title: "Wireless Headphones",
                 price: "99.99",
                 category: "Electronics",
+                description: "High-fidelity wireless headphones with active noise cancellation and 20-hour battery life.",
                 image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
                 stock: 15,
                 sku: "AUDIO-001"
@@ -702,6 +711,7 @@
                 title: "Running Shoes",
                 price: "79.50",
                 category: "Sports",
+                description: "Lightweight running shoes designed for marathon distance comfort and durability.",
                 image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80",
                 stock: 5,
                 sku: "SPORT-002"
@@ -711,6 +721,7 @@
                 title: "Minimalist Watch",
                 price: "120.00",
                 category: "Clothing",
+                description: "A classic analog watch with a genuine leather strap and water resistance up to 50m.",
                 image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
                 stock: 0,
                 sku: "TIME-003"
@@ -720,6 +731,7 @@
                 title: "Smart Speaker Home",
                 price: "49.99",
                 category: "Home",
+                description: "Voice-controlled smart speaker that connects to your home automation system.",
                 image: "https://images.unsplash.com/photo-1589492477829-5e65395b66cc?w=500&q=80",
                 stock: 22,
                 sku: "HOME-004"
@@ -729,6 +741,7 @@
                 title: "Premium Yoga Mat",
                 price: "29.95",
                 category: "Sports",
+                description: "Non-slip, eco-friendly yoga mat perfect for all types of yoga and pilates.",
                 image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500&q=80",
                 stock: 8,
                 sku: "YOGA-005"
@@ -738,6 +751,7 @@
                 title: "Ceramic Coffee Set",
                 price: "65.00",
                 category: "Home",
+                description: "Handcrafted ceramic coffee set including 4 mugs and a serving pot.",
                 image: "https://images.unsplash.com/photo-1567748154382-72352885971a?w=500&q=80",
                 stock: 12,
                 sku: "COFFEE-006"
@@ -747,6 +761,7 @@
                 title: "Gaming Mouse RGB",
                 price: "45.00",
                 category: "Electronics",
+                description: "Ergonomic gaming mouse with customizable RGB lighting and programmable buttons.",
                 image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&q=80",
                 stock: 4,
                 sku: "GAME-007"
@@ -756,6 +771,7 @@
                 title: "Organic Face Oil",
                 price: "32.00",
                 category: "Beauty",
+                description: "100% organic cold-pressed face oil rich in antioxidants and vitamins.",
                 image: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?w=500&q=80",
                 stock: 25,
                 sku: "BEAUTY-008"
@@ -765,6 +781,7 @@
                 title: "Bluetooth Fitness Tracker",
                 price: "55.00",
                 category: "Electronics",
+                description: "Track your steps, heart rate, and sleep with this waterproof fitness tracker.",
                 image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=500&q=80",
                 stock: 18,
                 sku: "FIT-009"
@@ -774,6 +791,7 @@
                 title: "Leather Office Backpack",
                 price: "110.00",
                 category: "Accessories",
+                description: "Stylish and durable leather backpack with a dedicated laptop compartment.",
                 image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&q=80",
                 stock: 9,
                 sku: "BAG-010"
@@ -783,6 +801,7 @@
                 title: "Mechanical Keyboard",
                 price: "89.99",
                 category: "Electronics",
+                description: "Compact mechanical keyboard with blue switches for a tactile typing experience.",
                 image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80",
                 stock: 6,
                 sku: "KEY-011"
@@ -792,6 +811,7 @@
                 title: "Scented Candle Set",
                 price: "24.99",
                 category: "Home",
+                description: "Set of 3 scented candles (Lavender, Vanilla, Sandalwood) made from soy wax.",
                 image: "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?w=500&q=80",
                 stock: 20,
                 sku: "CANDLE-012"
@@ -801,6 +821,7 @@
                 title: "Classic Sunglasses",
                 price: "39.00",
                 category: "Accessories",
+                description: "UV400 protected sunglasses with a timeless frame design.",
                 image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&q=80",
                 stock: 14,
                 sku: "SUN-013"
@@ -810,6 +831,7 @@
                 title: "Stainless Steel Water Bottle",
                 price: "22.50",
                 category: "Sports",
+                description: "Double-walled vacuum insulated water bottle keeps drinks cold for 24 hours.",
                 image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=500&q=80",
                 stock: 30,
                 sku: "WATER-014"
@@ -819,6 +841,7 @@
                 title: "Desk Plant Decor",
                 price: "18.00",
                 category: "Home",
+                description: "Artificial succulent plant in a modern geometric pot, perfect for desk decor.",
                 image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=500&q=80",
                 stock: 17,
                 sku: "PLANT-015"
@@ -826,7 +849,7 @@
         ];
 
         let products = [...defaultData]; 
-        const STORAGE_KEY = 'shopManage_products_v4'; 
+        const STORAGE_KEY = 'shopManage_products_v5'; 
         
         // --- Pagination State ---
         let currentPage = 1;
@@ -1176,6 +1199,8 @@
             document.getElementById('productTitle').value = product.title;
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productCategory').value = product.category;
+            // Load description
+            document.getElementById('productDescription').value = product.description || '';
             document.getElementById('productImage').value = product.image;
             document.getElementById('productStock').value = product.stock;
             document.getElementById('productSku').value = product.sku;
@@ -1199,6 +1224,7 @@
             const title = document.getElementById('productTitle').value;
             const price = document.getElementById('productPrice').value;
             const category = document.getElementById('productCategory').value;
+            const description = document.getElementById('productDescription').value; // Get description
             const image = document.getElementById('productImage').value;
             const stock = document.getElementById('productStock').value;
             let sku = document.getElementById('productSku').value;
@@ -1211,14 +1237,14 @@
                 if (index !== -1) {
                     products[index] = {
                         id: parseInt(editId), 
-                        title, price, category, image, stock, sku
+                        title, price, category, description, image, stock, sku // Save description
                     };
                     showToast('Product updated successfully', 'success');
                 }
             } else {
                 const newProduct = {
                     id: Date.now(),
-                    title, price, category, image, stock, sku
+                    title, price, category, description, image, stock, sku // Save description
                 };
                 products.push(newProduct);
                 showToast('Product added successfully', 'success');
