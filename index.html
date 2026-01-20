@@ -305,6 +305,7 @@
         .product-category { font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px; font-weight: 600; margin-bottom: 0.5rem; display: block; }
         .product-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .product-price { font-size: 1.25rem; font-weight: 700; color: #764ba2; }
+        .product-price-sale { font-size: 1.25rem; font-weight: 700; color: #ef4444; }
         
         .stock-badge {
             padding: 4px 8px;
@@ -335,6 +336,11 @@
             outline: none; 
             background-color: var(--input-bg);
             color: var(--text-primary);
+        }
+        .form-control-modern[readonly] {
+            background-color: var(--bg-body);
+            color: #10b981;
+            font-weight: 700;
         }
         
         .image-preview-card { border: 2px dashed var(--border-color); border-radius: 12px; padding: 1rem; text-align: center; margin-top: 10px; }
@@ -635,13 +641,27 @@
                                 <label class="form-label fw-bold">Product Title</label>
                                 <input type="text" class="form-control form-control-modern" id="productTitle" required>
                             </div>
-                            <div class="col-md-6">
+                            
+                            <!-- Price, Sale Price, Discount Row -->
+                            <div class="col-md-4">
                                 <label class="form-label fw-bold">Price</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-0" style="background-color: var(--border-color) !important; color: var(--text-primary);">$</span>
                                     <input type="number" class="form-control form-control-modern" id="productPrice" step="0.01" min="0" required>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Sale Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0" style="background-color: var(--border-color) !important; color: var(--text-primary);">$</span>
+                                    <input type="number" class="form-control form-control-modern" id="productSalePrice" step="0.01" min="0" placeholder="Optional">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Discount %</label>
+                                <input type="text" class="form-control form-control-modern" id="productDiscount" readonly placeholder="Auto">
+                            </div>
+
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Category</label>
                                 <select class="form-select form-control-modern" id="productCategory" required>
@@ -655,8 +675,13 @@
                                     <option value="Accessories">Accessories</option>
                                 </select>
                             </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Stock Quantity</label>
+                                <input type="number" class="form-control form-control-modern" id="productStock" min="0" required>
+                            </div>
 
-                            <!-- NEW: Product Description -->
+                            <!-- Product Description -->
                             <div class="col-12">
                                 <label class="form-label fw-bold">Product Description</label>
                                 <textarea class="form-control form-control-modern" id="productDescription" rows="3" placeholder="Enter detailed product description..."></textarea>
@@ -672,11 +697,8 @@
                                     <img id="imagePreview" src="" alt="Preview" class="preview-image">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Stock Quantity</label>
-                                <input type="number" class="form-control form-control-modern" id="productStock" min="0" required>
-                            </div>
-                            <div class="col-md-6">
+                            
+                            <div class="col-12">
                                 <label class="form-label fw-bold">SKU</label>
                                 <input type="text" class="form-control form-control-modern" id="productSku" placeholder="Auto-generated if empty">
                             </div>
@@ -700,6 +722,7 @@
                 id: 1,
                 title: "Wireless Headphones",
                 price: "99.99",
+                salePrice: "79.99",
                 category: "Electronics",
                 description: "High-fidelity wireless headphones with active noise cancellation and 20-hour battery life.",
                 image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
@@ -720,6 +743,7 @@
                 id: 3,
                 title: "Minimalist Watch",
                 price: "120.00",
+                salePrice: "89.99",
                 category: "Clothing",
                 description: "A classic analog watch with a genuine leather strap and water resistance up to 50m.",
                 image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
@@ -740,6 +764,7 @@
                 id: 5,
                 title: "Premium Yoga Mat",
                 price: "29.95",
+                salePrice: "24.95",
                 category: "Sports",
                 description: "Non-slip, eco-friendly yoga mat perfect for all types of yoga and pilates.",
                 image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500&q=80",
@@ -760,6 +785,7 @@
                 id: 7,
                 title: "Gaming Mouse RGB",
                 price: "45.00",
+                salePrice: "29.99",
                 category: "Electronics",
                 description: "Ergonomic gaming mouse with customizable RGB lighting and programmable buttons.",
                 image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&q=80",
@@ -790,6 +816,7 @@
                 id: 10,
                 title: "Leather Office Backpack",
                 price: "110.00",
+                salePrice: "95.00",
                 category: "Accessories",
                 description: "Stylish and durable leather backpack with a dedicated laptop compartment.",
                 image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&q=80",
@@ -840,6 +867,7 @@
                 id: 15,
                 title: "Desk Plant Decor",
                 price: "18.00",
+                salePrice: "12.99",
                 category: "Home",
                 description: "Artificial succulent plant in a modern geometric pot, perfect for desk decor.",
                 image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=500&q=80",
@@ -849,7 +877,7 @@
         ];
 
         let products = [...defaultData]; 
-        const STORAGE_KEY = 'shopManage_products_v5'; 
+        const STORAGE_KEY = 'shopManage_products_v6'; 
         
         // --- Pagination State ---
         let currentPage = 1;
@@ -974,10 +1002,13 @@
             if(sortSelect) {
                 const sortValue = sortSelect.value;
                 filteredProducts.sort((a, b) => {
+                    const priceA = a.salePrice ? parseFloat(a.salePrice) : parseFloat(a.price);
+                    const priceB = b.salePrice ? parseFloat(b.salePrice) : parseFloat(b.price);
+
                     if (sortValue === 'price_asc') {
-                        return parseFloat(a.price) - parseFloat(b.price);
+                        return priceA - priceB;
                     } else if (sortValue === 'price_desc') {
-                        return parseFloat(b.price) - parseFloat(a.price);
+                        return priceB - priceA;
                     } else {
                         // Default: name_asc
                         return a.title.localeCompare(b.title);
@@ -1009,12 +1040,28 @@
 
             // Render Items
             paginatedItems.forEach(product => {
+                // Calculation Logic for Display
+                const hasSale = product.salePrice && parseFloat(product.salePrice) < parseFloat(product.price);
+                const currentPrice = hasSale ? parseFloat(product.salePrice) : parseFloat(product.price);
+                
+                const priceDisplay = hasSale 
+                    ? `<span class="text-decoration-line-through text-secondary me-2 small">$${parseFloat(product.price).toFixed(2)}</span>
+                       <span class="product-price-sale">$${parseFloat(product.salePrice).toFixed(2)}</span>`
+                    : `<span class="product-price">$${parseFloat(product.price).toFixed(2)}</span>`;
+
+                const discountBadge = hasSale
+                    ? `<div class="position-absolute top-0 start-0 m-2 badge bg-danger shadow-sm">
+                         -${Math.round(((product.price - product.salePrice) / product.price) * 100)}%
+                       </div>`
+                    : '';
+
                 // 1. Render Card
                 const cardCol = document.createElement('div');
                 cardCol.className = 'col-md-6 col-lg-4 col-xl-3';
                 cardCol.innerHTML = `
                     <div class="product-card">
                         <div class="product-img-wrapper">
+                            ${discountBadge}
                             <img src="${product.image || 'https://via.placeholder.com/300x200?text=No+Image'}" 
                                  class="product-img" 
                                  onerror="this.src='https://via.placeholder.com/300x200?text=Error'" 
@@ -1032,7 +1079,9 @@
                             <span class="product-category">${product.category}</span>
                             <h5 class="product-title" title="${product.title}">${product.title}</h5>
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="product-price">$${parseFloat(product.price).toFixed(2)}</span>
+                                <div class="d-flex align-items-center">
+                                    ${priceDisplay}
+                                </div>
                                 ${getStockBadge(product.stock)}
                             </div>
                         </div>
@@ -1053,7 +1102,7 @@
                         <small style="color: var(--text-secondary)">SKU: ${product.sku}</small>
                     </td>
                     <td><span class="badge bg-light text-dark border">${product.category}</span></td>
-                    <td class="fw-bold">$${parseFloat(product.price).toFixed(2)}</td>
+                    <td>${priceDisplay}</td>
                     <td>${getStockBadge(product.stock)}</td>
                     <td class="text-end">
                         <button class="btn btn-sm btn-outline-primary me-1" onclick="editProduct(${product.id})">
@@ -1168,6 +1217,27 @@
                 });
             }
 
+            // Discount Calculation Inputs
+            const priceIn = document.getElementById('productPrice');
+            const saleIn = document.getElementById('productSalePrice');
+            if(priceIn && saleIn) {
+                const calc = () => {
+                    const p = parseFloat(priceIn.value);
+                    const s = parseFloat(saleIn.value);
+                    const disc = document.getElementById('productDiscount');
+                    
+                    if(p && s && s < p) {
+                        const pct = Math.round(((p-s)/p)*100);
+                        disc.value = `${pct}% OFF`;
+                        disc.style.color = '#10b981';
+                    } else {
+                        disc.value = '';
+                    }
+                };
+                priceIn.addEventListener('input', calc);
+                saleIn.addEventListener('input', calc);
+            }
+
             // Form Submit
             const form = document.getElementById('productForm');
             if(form) {
@@ -1187,6 +1257,7 @@
             document.getElementById('productForm').reset();
             document.getElementById('editProductId').value = ""; 
             document.getElementById('imagePreviewContainer').classList.add('d-none');
+            document.getElementById('productDiscount').value = "";
             document.getElementById('productModalLabel').textContent = "Add New Product";
             
             new bootstrap.Modal(document.getElementById('productModal')).show();
@@ -1198,12 +1269,22 @@
 
             document.getElementById('productTitle').value = product.title;
             document.getElementById('productPrice').value = product.price;
+            document.getElementById('productSalePrice').value = product.salePrice || '';
             document.getElementById('productCategory').value = product.category;
             // Load description
             document.getElementById('productDescription').value = product.description || '';
             document.getElementById('productImage').value = product.image;
             document.getElementById('productStock').value = product.stock;
             document.getElementById('productSku').value = product.sku;
+
+            // Trigger discount calc
+            const p = parseFloat(product.price);
+            const s = parseFloat(product.salePrice);
+            if(p && s && s < p) {
+                document.getElementById('productDiscount').value = `${Math.round(((p-s)/p)*100)}% OFF`;
+            } else {
+                document.getElementById('productDiscount').value = "";
+            }
 
             if(product.image) {
                 document.getElementById('imagePreview').src = product.image;
@@ -1223,8 +1304,9 @@
             
             const title = document.getElementById('productTitle').value;
             const price = document.getElementById('productPrice').value;
+            const salePrice = document.getElementById('productSalePrice').value;
             const category = document.getElementById('productCategory').value;
-            const description = document.getElementById('productDescription').value; // Get description
+            const description = document.getElementById('productDescription').value; 
             const image = document.getElementById('productImage').value;
             const stock = document.getElementById('productStock').value;
             let sku = document.getElementById('productSku').value;
@@ -1237,14 +1319,14 @@
                 if (index !== -1) {
                     products[index] = {
                         id: parseInt(editId), 
-                        title, price, category, description, image, stock, sku // Save description
+                        title, price, salePrice, category, description, image, stock, sku 
                     };
                     showToast('Product updated successfully', 'success');
                 }
             } else {
                 const newProduct = {
                     id: Date.now(),
-                    title, price, category, description, image, stock, sku // Save description
+                    title, price, salePrice, category, description, image, stock, sku 
                 };
                 products.push(newProduct);
                 showToast('Product added successfully', 'success');
