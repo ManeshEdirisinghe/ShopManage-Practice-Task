@@ -423,6 +423,21 @@
             color: var(--text-secondary);
             cursor: not-allowed;
         }
+
+        /* Table Row Alerts */
+        .modern-table tr.row-low-stock {
+            background-color: rgba(245, 158, 11, 0.15); /* Orange tint for Low Stock */
+        }
+        .modern-table tr.row-out-stock {
+            background-color: rgba(239, 68, 68, 0.15); /* Red tint for Out of Stock */
+        }
+        /* Ensure hover still works comfortably */
+        .modern-table tr.row-low-stock:hover {
+            background-color: rgba(245, 158, 11, 0.25) !important;
+        }
+        .modern-table tr.row-out-stock:hover {
+            background-color: rgba(239, 68, 68, 0.25) !important;
+        }
     </style>
 </head>
 <body>
@@ -1252,6 +1267,15 @@
 
                 // 2. Render Table Row
                 const tr = document.createElement('tr');
+                
+                // --- LOW STOCK ALERT LOGIC ---
+                const stockLevel = parseInt(product.stock);
+                if (stockLevel === 0) {
+                    tr.classList.add('row-out-stock');
+                } else if (stockLevel < 5) {
+                    tr.classList.add('row-low-stock');
+                }
+
                 tr.innerHTML = `
                     <td>
                         <img src="${product.image || 'https://via.placeholder.com/50?text=Img'}" 
