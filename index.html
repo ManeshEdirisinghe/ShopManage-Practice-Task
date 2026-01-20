@@ -676,6 +676,18 @@
                                 </select>
                             </div>
                             
+                            <!-- Brand -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Brand</label>
+                                <input type="text" class="form-control form-control-modern" id="productBrand" placeholder="e.g. Sony, Nike">
+                            </div>
+
+                            <!-- Supplier -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Supplier Name</label>
+                                <input type="text" class="form-control form-control-modern" id="productSupplier" placeholder="e.g. TechDistro Inc.">
+                            </div>
+                            
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Stock Quantity</label>
                                 <input type="number" class="form-control form-control-modern" id="productStock" min="0" required>
@@ -724,6 +736,8 @@
                 price: "99.99",
                 salePrice: "79.99",
                 category: "Electronics",
+                brand: "SoundMax",
+                supplier: "Audio Imports Ltd",
                 description: "High-fidelity wireless headphones with active noise cancellation and 20-hour battery life.",
                 image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
                 stock: 15,
@@ -734,6 +748,8 @@
                 title: "Running Shoes",
                 price: "79.50",
                 category: "Sports",
+                brand: "RunFast",
+                supplier: "Sporty Goods Inc",
                 description: "Lightweight running shoes designed for marathon distance comfort and durability.",
                 image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80",
                 stock: 5,
@@ -745,6 +761,8 @@
                 price: "120.00",
                 salePrice: "89.99",
                 category: "Clothing",
+                brand: "Timeless",
+                supplier: "Lux Watch Co",
                 description: "A classic analog watch with a genuine leather strap and water resistance up to 50m.",
                 image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
                 stock: 0,
@@ -755,6 +773,8 @@
                 title: "Smart Speaker Home",
                 price: "49.99",
                 category: "Home",
+                brand: "ConnectHome",
+                supplier: "Smart Living Tech",
                 description: "Voice-controlled smart speaker that connects to your home automation system.",
                 image: "https://images.unsplash.com/photo-1589492477829-5e65395b66cc?w=500&q=80",
                 stock: 22,
@@ -766,6 +786,8 @@
                 price: "29.95",
                 salePrice: "24.95",
                 category: "Sports",
+                brand: "ZenFlex",
+                supplier: "Wellness Supply",
                 description: "Non-slip, eco-friendly yoga mat perfect for all types of yoga and pilates.",
                 image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500&q=80",
                 stock: 8,
@@ -776,6 +798,8 @@
                 title: "Ceramic Coffee Set",
                 price: "65.00",
                 category: "Home",
+                brand: "ArtisanCraft",
+                supplier: "Home Decor Imports",
                 description: "Handcrafted ceramic coffee set including 4 mugs and a serving pot.",
                 image: "https://images.unsplash.com/photo-1567748154382-72352885971a?w=500&q=80",
                 stock: 12,
@@ -787,6 +811,8 @@
                 price: "45.00",
                 salePrice: "29.99",
                 category: "Electronics",
+                brand: "ProGamer",
+                supplier: "TechWorld Distributors",
                 description: "Ergonomic gaming mouse with customizable RGB lighting and programmable buttons.",
                 image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&q=80",
                 stock: 4,
@@ -797,6 +823,8 @@
                 title: "Organic Face Oil",
                 price: "32.00",
                 category: "Beauty",
+                brand: "PureGlow",
+                supplier: "Nature's Best",
                 description: "100% organic cold-pressed face oil rich in antioxidants and vitamins.",
                 image: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?w=500&q=80",
                 stock: 25,
@@ -807,6 +835,8 @@
                 title: "Bluetooth Fitness Tracker",
                 price: "55.00",
                 category: "Electronics",
+                brand: "ActiveLife",
+                supplier: "Gadget Central",
                 description: "Track your steps, heart rate, and sleep with this waterproof fitness tracker.",
                 image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=500&q=80",
                 stock: 18,
@@ -818,6 +848,8 @@
                 price: "110.00",
                 salePrice: "95.00",
                 category: "Accessories",
+                brand: "UrbanCarry",
+                supplier: "LeatherWorks Co",
                 description: "Stylish and durable leather backpack with a dedicated laptop compartment.",
                 image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&q=80",
                 stock: 9,
@@ -828,6 +860,8 @@
                 title: "Mechanical Keyboard",
                 price: "89.99",
                 category: "Electronics",
+                brand: "ClickMaster",
+                supplier: "TechWorld Distributors",
                 description: "Compact mechanical keyboard with blue switches for a tactile typing experience.",
                 image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80",
                 stock: 6,
@@ -838,6 +872,8 @@
                 title: "Scented Candle Set",
                 price: "24.99",
                 category: "Home",
+                brand: "Lumina",
+                supplier: "Home Decor Imports",
                 description: "Set of 3 scented candles (Lavender, Vanilla, Sandalwood) made from soy wax.",
                 image: "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?w=500&q=80",
                 stock: 20,
@@ -848,6 +884,8 @@
                 title: "Classic Sunglasses",
                 price: "39.00",
                 category: "Accessories",
+                brand: "SunGuard",
+                supplier: "Fashion Eyes",
                 description: "UV400 protected sunglasses with a timeless frame design.",
                 image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&q=80",
                 stock: 14,
@@ -858,6 +896,8 @@
                 title: "Stainless Steel Water Bottle",
                 price: "22.50",
                 category: "Sports",
+                brand: "HydroKeep",
+                supplier: "Sporty Goods Inc",
                 description: "Double-walled vacuum insulated water bottle keeps drinks cold for 24 hours.",
                 image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=500&q=80",
                 stock: 30,
@@ -869,6 +909,8 @@
                 price: "18.00",
                 salePrice: "12.99",
                 category: "Home",
+                brand: "GreenSpace",
+                supplier: "Nature's Best",
                 description: "Artificial succulent plant in a modern geometric pot, perfect for desk decor.",
                 image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=500&q=80",
                 stock: 17,
@@ -877,7 +919,7 @@
         ];
 
         let products = [...defaultData]; 
-        const STORAGE_KEY = 'shopManage_products_v6'; 
+        const STORAGE_KEY = 'shopManage_products_v7'; 
         
         // --- Pagination State ---
         let currentPage = 1;
@@ -1076,7 +1118,10 @@
                             </div>
                         </div>
                         <div class="product-details">
-                            <span class="product-category">${product.category}</span>
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <span class="product-category">${product.category}</span>
+                                <span class="product-category text-end" style="color: #764ba2;">${product.brand || ''}</span>
+                            </div>
                             <h5 class="product-title" title="${product.title}">${product.title}</h5>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <div class="d-flex align-items-center">
@@ -1099,6 +1144,7 @@
                     </td>
                     <td>
                         <div class="fw-bold" style="color: var(--text-primary)">${product.title}</div>
+                        <small class="text-muted d-block">Brand: ${product.brand || 'N/A'}</small>
                         <small style="color: var(--text-secondary)">SKU: ${product.sku}</small>
                     </td>
                     <td><span class="badge bg-light text-dark border">${product.category}</span></td>
@@ -1276,6 +1322,9 @@
             document.getElementById('productImage').value = product.image;
             document.getElementById('productStock').value = product.stock;
             document.getElementById('productSku').value = product.sku;
+            // Load Brand and Supplier
+            document.getElementById('productBrand').value = product.brand || '';
+            document.getElementById('productSupplier').value = product.supplier || '';
 
             // Trigger discount calc
             const p = parseFloat(product.price);
@@ -1310,6 +1359,8 @@
             const image = document.getElementById('productImage').value;
             const stock = document.getElementById('productStock').value;
             let sku = document.getElementById('productSku').value;
+            const brand = document.getElementById('productBrand').value;
+            const supplier = document.getElementById('productSupplier').value;
             const editId = document.getElementById('editProductId').value; 
 
             if (!sku) sku = 'SKU-' + Date.now().toString().slice(-6);
@@ -1319,14 +1370,14 @@
                 if (index !== -1) {
                     products[index] = {
                         id: parseInt(editId), 
-                        title, price, salePrice, category, description, image, stock, sku 
+                        title, price, salePrice, category, description, image, stock, sku, brand, supplier
                     };
                     showToast('Product updated successfully', 'success');
                 }
             } else {
                 const newProduct = {
                     id: Date.now(),
-                    title, price, salePrice, category, description, image, stock, sku 
+                    title, price, salePrice, category, description, image, stock, sku, brand, supplier
                 };
                 products.push(newProduct);
                 showToast('Product added successfully', 'success');
