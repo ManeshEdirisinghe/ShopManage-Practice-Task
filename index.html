@@ -14,6 +14,9 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         :root {
             /* Theme Variables - Light Mode Default */
@@ -439,7 +442,7 @@
                 <ul class="navbar-nav ms-auto me-4">
                     <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-grid me-1"></i>Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-tags me-1"></i>Categories</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-graph-up me-1"></i>Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#analyticsSection"><i class="bi bi-graph-up me-1"></i>Reports</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-3 flex-wrap">
                     <!-- Theme Toggle Button -->
@@ -525,6 +528,46 @@
                         </div>
                     </div>
                     <div class="stats-bg-icon"><i class="bi bi-x-circle"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section class="row mb-4" id="analyticsSection">
+            <div class="col-12">
+                <div class="card catalog-card">
+                    <div class="card-header catalog-header p-4 border-bottom-0">
+                        <h5 class="mb-0 fw-bold"><i class="bi bi-pie-chart me-2"></i>Analytics Dashboard</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 mb-4 mb-md-0">
+                                <h6 class="fw-bold text-center mb-3" style="color: var(--text-secondary);">Product Distribution by Category</h6>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="categoryChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <div class="p-4 rounded-3" style="background-color: var(--bg-body); border: 1px solid var(--border-color);">
+                                    <h6 class="fw-bold mb-3" style="color: var(--text-secondary);">Inventory Summary</h6>
+                                    <div class="row text-center g-3">
+                                        <div class="col-6">
+                                            <h2 class="fw-bold mb-0" style="color: #764ba2;" id="totalStockValue">0</h2>
+                                            <small class="text-muted">Total Categories</small>
+                                        </div>
+                                        <div class="col-6">
+                                            <h2 class="fw-bold mb-0" style="color: #10b981;" id="mostStocked">0</h2>
+                                            <small class="text-muted">Top Category</small>
+                                        </div>
+                                    </div>
+                                    <p class="mt-4 text-muted small">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        This chart visualizes the distribution of your inventory across different categories.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -961,6 +1004,8 @@
                 themeIcon.classList.add('bi-moon-fill');
                 localStorage.setItem('theme', 'light');
             }
+            // Update chart colors if theme changes
+            renderCharts();
         }
 
         // --- Core Functions ---
@@ -982,6 +1027,7 @@
             
             renderProducts();
             updateStats();
+            renderCharts(); // Load charts
         }
 
         function saveProducts() {
@@ -992,6 +1038,76 @@
             }
             updateStats();
             renderProducts();
+            renderCharts(); // Update charts on save
+        }
+
+        // --- Chart Logic ---
+        let categoryChartInstance = null;
+
+        function renderCharts() {
+            const ctx = document.getElementById('categoryChart');
+            if(!ctx) return;
+
+            // Calculate Counts
+            const counts = {};
+            products.forEach(p => {
+                const cat = p.category || 'Uncategorized';
+                counts[cat] = (counts[cat] || 0) + 1;
+            });
+
+            // Update Summary Stats
+            const totalStockVal = document.getElementById('totalStockValue');
+            const mostStocked = document.getElementById('mostStocked');
+            
+            if(totalStockVal) totalStockVal.textContent = Object.keys(counts).length;
+            
+            if(mostStocked) {
+                let maxCat = '-';
+                let maxVal = 0;
+                for(const [cat, val] of Object.entries(counts)) {
+                    if(val > maxVal) { maxVal = val; maxCat = cat; }
+                }
+                mostStocked.textContent = maxCat;
+            }
+
+            // Destroy existing
+            if(categoryChartInstance) {
+                categoryChartInstance.destroy();
+            }
+
+            // Theme Colors
+            const isDark = document.body.classList.contains('dark-mode');
+            const textColor = isDark ? '#e2e8f0' : '#2d3748';
+            const borderColor = isDark ? '#1e293b' : '#ffffff';
+
+            categoryChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(counts),
+                    datasets: [{
+                        data: Object.values(counts),
+                        backgroundColor: [
+                            '#667eea', '#764ba2', '#2af598', '#009efd', 
+                            '#f59e0b', '#ef4444', '#ec4899', '#6366f1'
+                        ],
+                        borderWidth: 2,
+                        borderColor: borderColor
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: textColor,
+                                font: { family: 'Inter', size: 11 }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         // --- Toast Functions ---
