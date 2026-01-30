@@ -595,6 +595,11 @@
                         <h5 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog</h5>
                         
                         <div class="d-flex align-items-center gap-2">
+                            <!-- NEW: Export Button -->
+                            <button class="btn btn-modern-outline btn-sm" onclick="exportToCSV()" title="Download as CSV">
+                                <i class="bi bi-download me-1"></i> <span class="d-none d-sm-inline">Export</span>
+                            </button>
+
                             <!-- Sort Dropdown -->
                             <select class="form-select-modern py-1" id="sortSelect" style="min-width: 150px; font-size: 0.9rem;">
                                 <option value="name_asc">Name (A-Z)</option>
@@ -1123,6 +1128,51 @@
                     }
                 }
             });
+        }
+
+        // --- Export CSV Function ---
+        function exportToCSV() {
+            if (!products || products.length === 0) {
+                showToast('No products to export', 'error');
+                return;
+            }
+
+            // Define CSV Headers
+            const headers = ['ID', 'Title', 'Category', 'Price', 'Sale Price', 'Stock', 'SKU', 'Brand', 'Supplier', 'Description'];
+            
+            // Map Data to CSV Format
+            const csvRows = [headers.join(',')];
+            
+            products.forEach(p => {
+                const row = [
+                    p.id,
+                    `"${(p.title || '').replace(/"/g, '""')}"`, // Escape quotes
+                    `"${(p.category || '').replace(/"/g, '""')}"`,
+                    p.price,
+                    p.salePrice || '',
+                    p.stock,
+                    `"${(p.sku || '').replace(/"/g, '""')}"`,
+                    `"${(p.brand || '').replace(/"/g, '""')}"`,
+                    `"${(p.supplier || '').replace(/"/g, '""')}"`,
+                    `"${(p.description || '').replace(/"/g, '""')}"`
+                ];
+                csvRows.push(row.join(','));
+            });
+
+            // Create File and Trigger Download
+            const csvString = csvRows.join('\n');
+            const blob = new Blob([csvString], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `products_export_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showToast('Product catalog exported successfully', 'success');
         }
 
         // --- Toast Functions ---
