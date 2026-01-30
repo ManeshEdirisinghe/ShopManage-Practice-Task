@@ -17,6 +17,9 @@
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- HTML5-QRCode Library -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <style>
         :root {
             /* Theme Variables - Light Mode Default */
@@ -440,6 +443,14 @@
         .modern-table tr.row-out-stock:hover {
             background-color: rgba(239, 68, 68, 0.25) !important;
         }
+
+        /* Scanner Specific */
+        #reader {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -482,10 +493,17 @@
                     <button class="btn btn-gradient-primary px-4" type="button" onclick="openAddModal()">
                         <i class="bi bi-plus-circle me-2"></i>Add Product
                     </button>
+                    
+                    <!-- Search & Scan -->
                     <form class="search-form" onsubmit="return false;">
-                        <div class="search-wrapper">
-                            <i class="bi bi-search search-icon"></i>
-                            <input class="search-input" id="searchInput" type="search" placeholder="Search products..." aria-label="Search">
+                        <div class="search-wrapper d-flex align-items-center gap-2">
+                            <div class="position-relative">
+                                <i class="bi bi-search search-icon"></i>
+                                <input class="search-input" id="searchInput" type="search" placeholder="Search..." aria-label="Search">
+                            </div>
+                            <button class="btn btn-modern-outline" type="button" onclick="openScannerModal()" title="Scan Barcode">
+                                <i class="bi bi-upc-scan"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -762,6 +780,24 @@
 
     <!-- Toast Container -->
     <div id="toastContainer" class="toast-container-custom"></div>
+
+    <!-- Scanner Modal -->
+    <div class="modal fade" id="scannerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modern-modal">
+                <div class="modal-header modern-modal-header bg-dark text-white">
+                    <h5 class="modal-title"><i class="bi bi-upc-scan me-2"></i>Scan Barcode</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="closeScanner()"></button>
+                </div>
+                <div class="modal-body modern-modal-body p-0">
+                    <div id="reader" style="width: 100%;"></div>
+                    <div class="p-3 text-center text-muted small">
+                        Point your camera at a product barcode to search.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
@@ -1253,6 +1289,65 @@
             renderSalesHistory();
         }
 
+        // --- Barcode Scanner Logic ---
+        let html5QrcodeScanner = null;
+
+        function openScannerModal() {
+            new bootstrap.Modal(document.getElementById('scannerModal')).show();
+            // Initialize scanner after modal is shown to ensure DOM element exists
+            setTimeout(() => {
+                if(!html5QrcodeScanner) {
+                    // Using Html5QrcodeScanner for built-in UI
+                    html5QrcodeScanner = new Html5QrcodeScanner(
+                        "reader",
+                        { fps: 10, qrbox: {width: 250, height: 250} },
+                        /* verbose= */ false
+                    );
+                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                }
+            }, 500);
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // Stop scanning
+            closeScanner();
+
+            // Populate Search & Filter
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = decodedText;
+            renderProducts(decodedText);
+            
+            // Check if product found
+            const found = products.some(p => 
+                (p.sku && p.sku.toLowerCase() === decodedText.toLowerCase()) || 
+                p.title.toLowerCase().includes(decodedText.toLowerCase())
+            );
+
+            if(found) {
+                showToast(`Product found: ${decodedText}`, 'success');
+            } else {
+                showToast(`No product found for: ${decodedText}`, 'error');
+            }
+        }
+
+        function onScanFailure(error) {
+            // handle scan failure, usually better to ignore and keep scanning.
+            // console.warn(`Code scan error = ${error}`);
+        }
+        
+        function closeScanner() {
+            const modalEl = document.getElementById('scannerModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+            
+            if(html5QrcodeScanner) {
+                html5QrcodeScanner.clear().catch(error => {
+                    console.error("Failed to clear html5QrcodeScanner. ", error);
+                });
+                html5QrcodeScanner = null;
+            }
+        }
+
         // --- Chart Logic ---
         let categoryChartInstance = null;
 
@@ -1410,7 +1505,8 @@
 
             let filteredProducts = products.filter(p => 
                 p.title.toLowerCase().includes(filterText.toLowerCase()) || 
-                p.category.toLowerCase().includes(filterText.toLowerCase())
+                p.category.toLowerCase().includes(filterText.toLowerCase()) ||
+                (p.sku && p.sku.toLowerCase().includes(filterText.toLowerCase())) // Search by SKU too
             );
 
             // Sorting Logic
