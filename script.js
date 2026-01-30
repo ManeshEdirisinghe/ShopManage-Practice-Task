@@ -1,1299 +1,1068 @@
-// ShopManage - Professional Product Management System JavaScript
-
-// Local Storage Key for products
-const LOCAL_STORAGE_KEY = 'shopmanage_products';
-
-// Helper functions for localStorage
-function getLocalProducts() {
-    try {
-        const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
-    } catch (e) {
-        console.error('Error reading from localStorage:', e);
-        return [];
+// --- SAFE DEFAULT DATA ---
+const defaultData = [
+    {
+        id: 1,
+        title: "Wireless Headphones",
+        price: "99.99",
+        salePrice: "79.99",
+        category: "Electronics",
+        brand: "SoundMax",
+        supplier: "Audio Imports Ltd",
+        description: "High-fidelity wireless headphones with active noise cancellation and 20-hour battery life.",
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+        stock: 15,
+        sku: "AUDIO-001"
+    },
+    {
+        id: 2,
+        title: "Running Shoes",
+        price: "79.50",
+        category: "Sports",
+        brand: "RunFast",
+        supplier: "Sporty Goods Inc",
+        description: "Lightweight running shoes designed for marathon distance comfort and durability.",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80",
+        stock: 5,
+        sku: "SPORT-002"
+    },
+    {
+        id: 3,
+        title: "Minimalist Watch",
+        price: "120.00",
+        salePrice: "89.99",
+        category: "Clothing",
+        brand: "Timeless",
+        supplier: "Lux Watch Co",
+        description: "A classic analog watch with a genuine leather strap and water resistance up to 50m.",
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
+        stock: 0,
+        sku: "TIME-003"
+    },
+    {
+        id: 4,
+        title: "Smart Speaker Home",
+        price: "49.99",
+        category: "Home",
+        brand: "ConnectHome",
+        supplier: "Smart Living Tech",
+        description: "Voice-controlled smart speaker that connects to your home automation system.",
+        image: "https://images.unsplash.com/photo-1589492477829-5e65395b66cc?w=500&q=80",
+        stock: 22,
+        sku: "HOME-004"
+    },
+    {
+        id: 5,
+        title: "Premium Yoga Mat",
+        price: "29.95",
+        salePrice: "24.95",
+        category: "Sports",
+        brand: "ZenFlex",
+        supplier: "Wellness Supply",
+        description: "Non-slip, eco-friendly yoga mat perfect for all types of yoga and pilates.",
+        image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500&q=80",
+        stock: 8,
+        sku: "YOGA-005"
+    },
+    {
+        id: 6,
+        title: "Ceramic Coffee Set",
+        price: "65.00",
+        category: "Home",
+        brand: "ArtisanCraft",
+        supplier: "Home Decor Imports",
+        description: "Handcrafted ceramic coffee set including 4 mugs and a serving pot.",
+        image: "https://images.unsplash.com/photo-1567748154382-72352885971a?w=500&q=80",
+        stock: 12,
+        sku: "COFFEE-006"
+    },
+    {
+        id: 7,
+        title: "Gaming Mouse RGB",
+        price: "45.00",
+        salePrice: "29.99",
+        category: "Electronics",
+        brand: "ProGamer",
+        supplier: "TechWorld Distributors",
+        description: "Ergonomic gaming mouse with customizable RGB lighting and programmable buttons.",
+        image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&q=80",
+        stock: 4,
+        sku: "GAME-007"
+    },
+    {
+        id: 8,
+        title: "Organic Face Oil",
+        price: "32.00",
+        category: "Beauty",
+        brand: "PureGlow",
+        supplier: "Nature's Best",
+        description: "100% organic cold-pressed face oil rich in antioxidants and vitamins.",
+        image: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?w=500&q=80",
+        stock: 25,
+        sku: "BEAUTY-008"
+    },
+    {
+        id: 9,
+        title: "Bluetooth Fitness Tracker",
+        price: "55.00",
+        category: "Electronics",
+        brand: "ActiveLife",
+        supplier: "Gadget Central",
+        description: "Track your steps, heart rate, and sleep with this waterproof fitness tracker.",
+        image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=500&q=80",
+        stock: 18,
+        sku: "FIT-009"
+    },
+    {
+        id: 10,
+        title: "Leather Office Backpack",
+        price: "110.00",
+        salePrice: "95.00",
+        category: "Accessories",
+        brand: "UrbanCarry",
+        supplier: "LeatherWorks Co",
+        description: "Stylish and durable leather backpack with a dedicated laptop compartment.",
+        image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&q=80",
+        stock: 9,
+        sku: "BAG-010"
+    },
+    {
+        id: 11,
+        title: "Mechanical Keyboard",
+        price: "89.99",
+        category: "Electronics",
+        brand: "ClickMaster",
+        supplier: "TechWorld Distributors",
+        description: "Compact mechanical keyboard with blue switches for a tactile typing experience.",
+        image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80",
+        stock: 6,
+        sku: "KEY-011"
+    },
+    {
+        id: 12,
+        title: "Scented Candle Set",
+        price: "24.99",
+        category: "Home",
+        brand: "Lumina",
+        supplier: "Home Decor Imports",
+        description: "Set of 3 scented candles (Lavender, Vanilla, Sandalwood) made from soy wax.",
+        image: "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?w=500&q=80",
+        stock: 20,
+        sku: "CANDLE-012"
+    },
+    {
+        id: 13,
+        title: "Classic Sunglasses",
+        price: "39.00",
+        category: "Accessories",
+        brand: "SunGuard",
+        supplier: "Fashion Eyes",
+        description: "UV400 protected sunglasses with a timeless frame design.",
+        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&q=80",
+        stock: 14,
+        sku: "SUN-013"
+    },
+    {
+        id: 14,
+        title: "Stainless Steel Water Bottle",
+        price: "22.50",
+        category: "Sports",
+        brand: "HydroKeep",
+        supplier: "Sporty Goods Inc",
+        description: "Double-walled vacuum insulated water bottle keeps drinks cold for 24 hours.",
+        image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=500&q=80",
+        stock: 30,
+        sku: "WATER-014"
+    },
+    {
+        id: 15,
+        title: "Desk Plant Decor",
+        price: "18.00",
+        salePrice: "12.99",
+        category: "Home",
+        brand: "GreenSpace",
+        supplier: "Nature's Best",
+        description: "Artificial succulent plant in a modern geometric pot, perfect for desk decor.",
+        image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=500&q=80",
+        stock: 17,
+        sku: "PLANT-015"
     }
-}
+];
 
-function saveLocalProducts(products) {
-    try {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(products));
-        console.log('Products saved to localStorage:', products.length);
-    } catch (e) {
-        console.error('Error saving to localStorage:', e);
-    }
-}
+let products = [...defaultData];
+let sales = []; 
+const STORAGE_KEY = 'shopManage_products_v7'; 
+const SALES_STORAGE_KEY = 'shopManage_sales_v1';
 
-function addLocalProduct(product) {
-    const products = getLocalProducts();
-    // Add new product at the beginning
-    products.unshift(product);
-    saveLocalProducts(products);
-}
+// --- Pagination State ---
+let currentPage = 1;
+const ITEMS_PER_PAGE = 8; // 8 items per page (2 rows on large screens)
 
-function removeLocalProduct(productId) {
-    const products = getLocalProducts();
-    const filtered = products.filter(p => p.id !== productId);
-    saveLocalProducts(filtered);
-}
-
-function updateLocalProduct(updatedProduct) {
-    const products = getLocalProducts();
-    const index = products.findIndex(p => p.id === updatedProduct.id);
-    if (index !== -1) {
-        products[index] = { ...products[index], ...updatedProduct };
-        saveLocalProducts(products);
-    }
-}
-
-// Application initialization
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('ShopManage application loaded successfully!');
-    
-    // Initialize enhanced features
-    initNetworkMonitoring();
-    enhanceFormValidation();
-    
-    // Initialize form handling
-    const productForm = document.getElementById('productForm');
-    const productModal = document.getElementById('productModal');
-    const productModalLabel = document.getElementById('productModalLabel');
-
-    if (productForm) {
-        productForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Validate form
-            if (!productForm.checkValidity()) {
-                e.stopPropagation();
-                productForm.classList.add('was-validated');
-                return;
-            }
-
-            // Detect edit mode vs add mode
-            const isEditMode = productForm.dataset.editMode === 'true';
-            const productId = productForm.dataset.productId;
-
-            // Get form data
-            const formData = new FormData(productForm);
-            const productData = {
-                title: formData.get('productTitle'),
-                price: parseFloat(formData.get('productPrice')),
-                category: formData.get('productCategory'),
-                image: formData.get('productImage') || 'https://via.placeholder.com/300x200?text=No+Image',
-                stock: parseInt(formData.get('productStock')) || 0,
-                brand: 'Generic', // DummyJSON requires this field
-                description: `${formData.get('productTitle')} - Quality product in ${formData.get('productCategory')} category`
-            };
-
-            try {
-                // Show loading state and disable all form inputs
-                const submitBtn = productForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                
-                // Disable submit button and all form inputs to prevent changes
-                submitBtn.disabled = true;
-                const formInputs = productForm.querySelectorAll('input, select, textarea, button');
-                formInputs.forEach(input => input.disabled = true);
-
-                let response, result;
-
-                if (isEditMode && productId) {
-                    // UPDATE MODE - Send PUT request
-                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Updating...';
-                    console.log(`Updating product ${productId} with data:`, productData);
-
-                    response = await fetch(`https://dummyjson.com/products/${productId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(productData)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    result = await response.json();
-                    
-                    // Log the updated object to console
-                    console.log('Product updated successfully:', result);
-                    
-                    // Show success alert for update
-                    alert('Product Updated');
-                    
-                    // Show success toast
-                    showToast('Success!', `Product "${result.title}" has been updated successfully!`, 'success');
-
-                    // Update the UI instantly without page reload
-                    updateProductInUI(result);
-
-                } else {
-                    // ADD MODE - Send POST request
-                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Adding...';
-                    console.log('Adding new product with data:', productData);
-
-                    response = await fetch('https://dummyjson.com/products/add', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(productData)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    result = await response.json();
-                    
-                    // Log the returned object with ID to console
-                    console.log('Product added successfully with ID:', result);
-                    
-                    // Show success alert for add
-                    alert('Product Added');
-                    
-                    // Show success toast
-                    showToast('Success!', `Product "${result.title}" has been added successfully with ID: ${result.id}`, 'success');
-
-                    // Add the new product to UI instantly
-                    addProductToUI(result);
-                }
-
-                // Re-enable form inputs before closing
-                const formInputs2 = productForm.querySelectorAll('input, select, textarea, button');
-                formInputs2.forEach(input => input.disabled = false);
-                
-                // Reset submit button
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                
-                // Close modal and reset form after successful operation
-                const modal = bootstrap.Modal.getInstance(productModal);
-                modal.hide();
-                
-                // Reset form completely (clears all fields and validation states)
-                setTimeout(() => {
-                    resetProductForm();
-                }, 300); // Small delay to ensure modal closes smoothly
-
-            } catch (error) {
-                console.error(`Error ${isEditMode ? 'updating' : 'adding'} product:`, error);
-                
-                // For UPDATE mode, update product locally even if API fails
-                if (isEditMode && productId) {
-                    const localProduct = {
-                        id: parseInt(productId),
-                        title: productData.title,
-                        price: productData.price,
-                        category: productData.category,
-                        stock: productData.stock,
-                        image: productData.image
-                    };
-                    
-                    console.log('API failed, updating product locally:', localProduct);
-                    
-                    // Update in UI and localStorage
-                    updateProductInUI(localProduct);
-                    
-                    // Show success message
-                    alert('Product Updated (Offline Mode)');
-                    showToast('Success!', `Product "${localProduct.title}" has been updated locally (API unavailable).`, 'warning');
-                    
-                    // Re-enable form inputs before closing
-                    const formInputs2 = productForm.querySelectorAll('input, select, textarea, button');
-                    formInputs2.forEach(input => input.disabled = false);
-                    
-                    // Reset submit button
-                    const submitBtn = productForm.querySelector('button[type="submit"]');
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Update Product';
-                    }
-                    
-                    // Close modal and reset form
-                    const modal = bootstrap.Modal.getInstance(productModal);
-                    modal.hide();
-                    
-                    setTimeout(() => {
-                        resetProductForm();
-                    }, 300);
-                    
-                    return; // Exit early - product was updated locally
-                }
-                
-                // For ADD mode, add product locally even if API fails
-                if (!isEditMode) {
-                    // Create a local product with generated ID
-                    const localProduct = {
-                        id: Date.now(), // Use timestamp as unique ID
-                        title: productData.title,
-                        price: productData.price,
-                        category: productData.category,
-                        stock: productData.stock,
-                        image: productData.image
-                    };
-                    
-                    console.log('API failed, adding product locally:', localProduct);
-                    
-                    // Add to UI
-                    addProductToUI(localProduct);
-                    
-                    // Show success message (product added locally)
-                    alert('Product Added (Offline Mode)');
-                    showToast('Success!', `Product "${localProduct.title}" has been added locally (API unavailable).`, 'warning');
-                    
-                    // Re-enable form inputs before closing
-                    const formInputs2 = productForm.querySelectorAll('input, select, textarea, button');
-                    formInputs2.forEach(input => input.disabled = false);
-                    
-                    // Reset submit button
-                    const submitBtn = productForm.querySelector('button[type="submit"]');
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Save Product';
-                    }
-                    
-                    // Close modal and reset form
-                    const modal = bootstrap.Modal.getInstance(productModal);
-                    modal.hide();
-                    
-                    setTimeout(() => {
-                        resetProductForm();
-                    }, 300);
-                    
-                    return; // Exit early - product was added locally
-                }
-                
-                // Determine error type and show appropriate message
-                let errorMessage = 'Unknown error occurred';
-                let alertTitle = 'Error';
-                
-                if (!navigator.onLine) {
-                    errorMessage = 'No internet connection. Please check your network and try again.';
-                    alertTitle = 'Connection Error';
-                } else if (error.name === 'TypeError' || error.message.includes('fetch')) {
-                    errorMessage = 'Unable to connect to the server. Please try again later.';
-                    alertTitle = 'Network Error';
-                } else if (error.message.includes('HTTP error')) {
-                    errorMessage = `Server error (${error.message}). Please try again or contact support.`;
-                    alertTitle = 'Server Error';
-                } else {
-                    errorMessage = error.message;
-                }
-                
-                // Show user-friendly error alert
-                alert(`${alertTitle}: ${errorMessage}`);
-                
-                // Show detailed error toast
-                showToast(alertTitle, `Failed to ${isEditMode ? 'update' : 'add'} product: ${errorMessage}`, 'error');
-
-                // Reset submit button with proper state
-                const submitBtn = productForm.querySelector('button[type="submit"]');
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = isEditMode ? '<i class="bi bi-check-circle me-1"></i>Update Product' : '<i class="bi bi-check-circle me-1"></i>Save Product';
-                }
-                
-                // Re-enable form inputs
-                const formInputs = productForm.querySelectorAll('input, select, textarea, button');
-                formInputs.forEach(input => input.disabled = false);
-            }
-        });
-
-        // Handle image URL input for preview
-        const imageInput = document.getElementById('productImage');
-        const imagePreview = document.getElementById('imagePreview');
-        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-
-        if (imageInput && imagePreview && imagePreviewContainer) {
-            imageInput.addEventListener('input', function() {
-                const url = this.value.trim();
-                if (url && isValidUrl(url)) {
-                    imagePreview.src = url;
-                    imagePreview.onload = function() {
-                        imagePreviewContainer.classList.remove('d-none');
-                    };
-                    imagePreview.onerror = function() {
-                        imagePreviewContainer.classList.add('d-none');
-                    };
-                } else {
-                    imagePreviewContainer.classList.add('d-none');
-                }
-            });
-        }
-    }
-
-    // Handle view toggle between cards and table
-    const cardViewBtn = document.getElementById('cardView');
-    const tableViewBtn = document.getElementById('tableView');
-    const cardContainer = document.getElementById('cardContainer');
-    const tableContainer = document.getElementById('tableContainer');
-
-    function showCardView() {
-        cardContainer.classList.remove('d-none');
-        tableContainer.classList.add('d-none');
-    }
-
-    function showTableView() {
-        cardContainer.classList.add('d-none');
-        tableContainer.classList.remove('d-none');
-    }
-
-    cardViewBtn.addEventListener('change', function() {
-        if (this.checked) showCardView();
-    });
-
-    tableViewBtn.addEventListener('change', function() {
-        if (this.checked) showTableView();
-    });
-
-    // Reset form when modal is closed
-    if (productModal) {
-        productModal.addEventListener('hidden.bs.modal', resetProductForm);
-    }
-
-    // Initialize with fetching products
-    fetchProducts().catch(() => {
-        console.log('Initial fetch failed, showing empty state');
-        loadProducts([]);
-    });
+// --- Initialization ---
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    loadProducts();
+    loadSales();
+    setupEventListeners();
 });
 
-// Helper function to validate URLs
-function isValidUrl(string) {
+// --- View Switching ---
+function switchView(viewName) {
+    const inventoryView = document.getElementById('inventoryView');
+    const salesView = document.getElementById('salesView');
+    const navInventory = document.getElementById('navInventory');
+    const navSales = document.getElementById('navSales');
+    const navReports = document.getElementById('navReports');
+
+    navInventory.classList.remove('active');
+    navSales.classList.remove('active');
+    navReports.classList.remove('active');
+
+    if (viewName === 'inventory') {
+        inventoryView.classList.remove('d-none');
+        salesView.classList.add('d-none');
+        navInventory.classList.add('active');
+    } else if (viewName === 'sales') {
+        inventoryView.classList.add('d-none');
+        salesView.classList.remove('d-none');
+        navSales.classList.add('active');
+        renderSalesHistory();
+    }
+}
+
+// --- Theme Management ---
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if(themeIcon) {
+            themeIcon.classList.remove('bi-moon-fill');
+            themeIcon.classList.add('bi-sun-fill');
+        }
+    }
+}
+
+function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    // Update Icon
+    if (isDark) {
+        themeIcon.classList.remove('bi-moon-fill');
+        themeIcon.classList.add('bi-sun-fill');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        themeIcon.classList.remove('bi-sun-fill');
+        themeIcon.classList.add('bi-moon-fill');
+        localStorage.setItem('theme', 'light');
+    }
+    // Update chart colors if theme changes
+    renderCharts();
+}
+
+// --- Core Functions ---
+
+function loadProducts() {
     try {
-        new URL(string);
-        return true;
-    } catch (_) {
-        return false;
-    }
-}
-
-// Function to reset and prepare form for new product
-function resetProductForm() {
-    const form = document.getElementById('productForm');
-    const modalLabel = document.getElementById('productModalLabel');
-    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-    
-    if (form) {
-        form.reset();
-        form.classList.remove('was-validated');
-        delete form.dataset.productId;
-        delete form.dataset.editMode;
-    }
-    
-    if (modalLabel) {
-        modalLabel.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Add New Product';
-    }
-    
-    // Reset submit button text
-    const submitBtn = form?.querySelector('button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Save Product';
-    }
-    
-    if (imagePreviewContainer) {
-        imagePreviewContainer.classList.add('d-none');
-    }
-}
-
-// Function to populate form for editing
-function populateProductForm(product) {
-    const form = document.getElementById('productForm');
-    const modalLabel = document.getElementById('productModalLabel');
-    
-    if (form && product) {
-        // Handle DummyJSON API format - use thumbnail or first image
-        const imageUrl = product.thumbnail || (product.images && product.images[0]) || product.image || '';
-        
-        // Set form data with API response format
-        document.getElementById('productTitle').value = product.title || '';
-        document.getElementById('productPrice').value = product.price || '';
-        document.getElementById('productCategory').value = product.category || '';
-        document.getElementById('productImage').value = imageUrl;
-        document.getElementById('productStock').value = product.stock || 0;
-        document.getElementById('productSku').value = product.sku || `SKU-${product.id}`;
-        
-        // Store product ID for editing and mark form as editing mode
-        form.dataset.productId = product.id;
-        form.dataset.editMode = 'true';
-        
-        // Update modal title
-        if (modalLabel) {
-            modalLabel.innerHTML = '<i class="bi bi-pencil me-2"></i>Edit Product';
-        }
-        
-        // Update submit button text
-        const submitBtn = form.querySelector('button[type="submit"]');
-        if (submitBtn) {
-            submitBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Update Product';
-        }
-        
-        // Trigger image preview if URL exists
-        const imageInput = document.getElementById('productImage');
-        if (imageInput && imageInput.value) {
-            imageInput.dispatchEvent(new Event('input'));
-        }
-        
-        console.log('Form populated for editing product ID:', product.id);
-    }
-}
-
-// Function to initialize form event listeners (needed after modal content reload)
-function initializeFormEventListeners() {
-    const imageInput = document.getElementById('productImage');
-    const imagePreview = document.getElementById('imagePreview');
-    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-
-    if (imageInput && imagePreview && imagePreviewContainer) {
-        // Remove existing listeners to avoid duplicates
-        const newImageInput = imageInput.cloneNode(true);
-        imageInput.parentNode.replaceChild(newImageInput, imageInput);
-        
-        newImageInput.addEventListener('input', function() {
-            const url = this.value.trim();
-            if (url && isValidUrl(url)) {
-                imagePreview.src = url;
-                imagePreview.onload = function() {
-                    imagePreviewContainer.classList.remove('d-none');
-                };
-                imagePreview.onerror = function() {
-                    imagePreviewContainer.classList.add('d-none');
-                };
-            } else {
-                imagePreviewContainer.classList.add('d-none');
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+                products = parsed; 
             }
+        } else {
+            saveProducts();
+        }
+    } catch(e) {
+        console.warn("LocalStorage error", e);
+    }
+    
+    renderProducts();
+    updateStats();
+    renderCharts(); // Load charts
+}
+
+function saveProducts() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+    } catch(e) {
+        console.warn("Could not save to localStorage", e);
+    }
+    updateStats();
+    renderProducts();
+    renderCharts(); // Update charts on save
+}
+
+function loadSales() {
+    try {
+        const stored = localStorage.getItem(SALES_STORAGE_KEY);
+        if (stored) {
+            sales = JSON.parse(stored);
+        }
+    } catch(e) {
+        console.warn("Sales storage error", e);
+    }
+}
+
+function saveSales() {
+    try {
+        localStorage.setItem(SALES_STORAGE_KEY, JSON.stringify(sales));
+    } catch(e) {
+        console.warn("Could not save sales", e);
+    }
+    renderSalesHistory();
+}
+
+// --- Barcode Scanner Logic ---
+let html5QrcodeScanner = null;
+
+function openScannerModal() {
+    new bootstrap.Modal(document.getElementById('scannerModal')).show();
+    // Initialize scanner after modal is shown to ensure DOM element exists
+    setTimeout(() => {
+        if(!html5QrcodeScanner) {
+            // Using Html5QrcodeScanner for built-in UI
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader",
+                { fps: 10, qrbox: {width: 250, height: 250} },
+                /* verbose= */ false
+            );
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        }
+    }, 500);
+}
+
+function onScanSuccess(decodedText, decodedResult) {
+    // Stop scanning
+    closeScanner();
+
+    // Populate Search & Filter
+    const searchInput = document.getElementById('searchInput');
+    searchInput.value = decodedText;
+    renderProducts(decodedText);
+    
+    // Check if product found
+    const found = products.some(p => 
+        (p.sku && p.sku.toLowerCase() === decodedText.toLowerCase()) || 
+        p.title.toLowerCase().includes(decodedText.toLowerCase())
+    );
+
+    if(found) {
+        showToast(`Product found: ${decodedText}`, 'success');
+    } else {
+        showToast(`No product found for: ${decodedText}`, 'error');
+    }
+}
+
+function onScanFailure(error) {
+    // handle scan failure, usually better to ignore and keep scanning.
+    // console.warn(`Code scan error = ${error}`);
+}
+
+function closeScanner() {
+    const modalEl = document.getElementById('scannerModal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+    
+    if(html5QrcodeScanner) {
+        html5QrcodeScanner.clear().catch(error => {
+            console.error("Failed to clear html5QrcodeScanner. ", error);
         });
+        html5QrcodeScanner = null;
     }
 }
 
-// Enhanced toast notification function with better styling
-function showToast(title, message, type = 'info') {
-    // Create toast element
-    const toastContainer = document.getElementById('toastContainer') || createToastContainer();
-    const toastId = 'toast-' + Date.now();
-    
-    // Map toast types to Bootstrap classes and icons
-    const typeConfig = {
-        'success': { class: 'text-success', icon: 'check-circle-fill' },
-        'error': { class: 'text-danger', icon: 'exclamation-triangle-fill' },
-        'warning': { class: 'text-warning', icon: 'exclamation-triangle-fill' },
-        'info': { class: 'text-primary', icon: 'info-circle-fill' }
-    };
-    
-    const config = typeConfig[type] || typeConfig['info'];
-    
-    const toastHTML = `
-        <div class="toast" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <i class="bi bi-${config.icon} me-2 ${config.class}"></i>
-                <strong class="me-auto">${title}</strong>
-                <small class="text-muted">Now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">${message}</div>
-        </div>
-    `;
-    
-    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-    const toastElement = document.getElementById(toastId);
-    const toast = new bootstrap.Toast(toastElement, {
-        autohide: type === 'error' ? false : true, // Keep error toasts visible longer
-        delay: type === 'success' ? 3000 : 5000
-    });
-    toast.show();
-    
-    // Remove toast element after it's hidden
-    toastElement.addEventListener('hidden.bs.toast', function() {
-        this.remove();
-    });
-}
+// --- Chart Logic ---
+let categoryChartInstance = null;
 
-// Create toast container if it doesn't exist
-function createToastContainer() {
-    const container = document.createElement('div');
-    container.id = 'toastContainer';
-    container.className = 'toast-container position-fixed top-0 end-0 p-3';
-    container.style.zIndex = '9999';
-    document.body.appendChild(container);
-    return container;
-}
+function renderCharts() {
+    const ctx = document.getElementById('categoryChart');
+    if(!ctx) return;
 
-// Network status monitoring
-function initNetworkMonitoring() {
-    // Show toast when coming online/offline
-    window.addEventListener('online', function() {
-        showToast('Connection Restored', 'Internet connection has been restored.', 'success');
+    // Calculate Counts
+    const counts = {};
+    products.forEach(p => {
+        const cat = p.category || 'Uncategorized';
+        counts[cat] = (counts[cat] || 0) + 1;
     });
+
+    // Update Summary Stats
+    const totalStockVal = document.getElementById('totalStockValue');
+    const mostStocked = document.getElementById('mostStocked');
     
-    window.addEventListener('offline', function() {
-        showToast('Connection Lost', 'Internet connection lost. Some features may not work.', 'warning');
-    });
+    if(totalStockVal) totalStockVal.textContent = Object.keys(counts).length;
     
-    // Check initial connection status
-    if (!navigator.onLine) {
-        showToast('No Connection', 'You appear to be offline. Please check your internet connection.', 'warning');
+    if(mostStocked) {
+        let maxCat = '-';
+        let maxVal = 0;
+        for(const [cat, val] of Object.entries(counts)) {
+            if(val > maxVal) { maxVal = val; maxCat = cat; }
+        }
+        mostStocked.textContent = maxCat;
     }
-}
 
-// Form validation enhancement
-function enhanceFormValidation() {
-    const form = document.getElementById('productForm');
-    if (form) {
-        // Add real-time validation
-        const inputs = form.querySelectorAll('input[required], select[required]');
-        inputs.forEach(input => {
-            input.addEventListener('blur', function() {
-                if (this.checkValidity()) {
-                    this.classList.remove('is-invalid');
-                    this.classList.add('is-valid');
-                } else {
-                    this.classList.remove('is-valid');
-                    this.classList.add('is-invalid');
+    // Destroy existing
+    if(categoryChartInstance) {
+        categoryChartInstance.destroy();
+    }
+
+    // Theme Colors
+    const isDark = document.body.classList.contains('dark-mode');
+    const textColor = isDark ? '#e2e8f0' : '#2d3748';
+    const borderColor = isDark ? '#1e293b' : '#ffffff';
+
+    categoryChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(counts),
+            datasets: [{
+                data: Object.values(counts),
+                backgroundColor: [
+                    '#667eea', '#764ba2', '#2af598', '#009efd', 
+                    '#f59e0b', '#ef4444', '#ec4899', '#6366f1'
+                ],
+                borderWidth: 2,
+                borderColor: borderColor
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: textColor,
+                        font: { family: 'Inter', size: 11 }
+                    }
                 }
-            });
-            
-            input.addEventListener('input', function() {
-                if (this.classList.contains('is-invalid') && this.checkValidity()) {
-                    this.classList.remove('is-invalid');
-                    this.classList.add('is-valid');
-                }
-            });
-        });
-    }
+            }
+        }
+    });
 }
 
-// Reusable function to render products in both views
-function renderProducts(products) {
-    const cardContainer = document.getElementById('cardContainer');
-    const tableBody = document.getElementById('productTableBody');
-    const emptyStateCards = document.getElementById('emptyStateCards');
-    const emptyStateTable = document.getElementById('emptyStateTable');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-
-    // Hide loading spinner if it's showing
-    if (loadingSpinner) {
-        loadingSpinner.classList.add('d-none');
-    }
-
+// --- Export CSV Function ---
+function exportToCSV() {
     if (!products || products.length === 0) {
-        // Handle empty state
-        renderEmptyState();
+        showToast('No products to export', 'error');
         return;
     }
 
-    // Hide empty states
-    if (emptyStateCards) emptyStateCards.classList.add('d-none');
-    if (emptyStateTable) emptyStateTable.classList.add('d-none');
-
-    // Render card view
-    renderCardView(products, cardContainer);
+    // Define CSV Headers
+    const headers = ['ID', 'Title', 'Category', 'Price', 'Sale Price', 'Stock', 'SKU', 'Brand', 'Supplier', 'Description'];
     
-    // Render table view  
-    renderTableView(products, tableBody);
+    // Map Data to CSV Format
+    const csvRows = [headers.join(',')];
+    
+    products.forEach(p => {
+        const row = [
+            p.id,
+            `"${(p.title || '').replace(/"/g, '""')}"`, // Escape quotes
+            `"${(p.category || '').replace(/"/g, '""')}"`,
+            p.price,
+            p.salePrice || '',
+            p.stock,
+            `"${(p.sku || '').replace(/"/g, '""')}"`,
+            `"${(p.brand || '').replace(/"/g, '""')}"`,
+            `"${(p.supplier || '').replace(/"/g, '""')}"`,
+            `"${(p.description || '').replace(/"/g, '""')}"`
+        ];
+        csvRows.push(row.join(','));
+    });
 
-    console.log(`Rendered ${products.length} products successfully`);
+    // Create File and Trigger Download
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `products_export_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    showToast('Product catalog exported successfully', 'success');
 }
 
-// Generate card HTML for products
-function renderCardView(products, container) {
-    if (!container) return;
-
-    const cardsHTML = products.map(product => {
-        // Ensure required fields with fallbacks
-        const safeProduct = {
-            id: product.id || Math.random(),
-            title: product.title || 'Untitled Product',
-            price: product.price || '0.00',
-            category: product.category || 'Uncategorized',
-            stock: product.stock || 0,
-            sku: product.sku || `SKU-${product.id || '000'}`,
-            image: product.image || 'https://via.placeholder.com/300x200?text=No+Image'
-        };
-
-        return `
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card h-100 shadow-sm product-card">
-                    <img src="${safeProduct.image}" 
-                         class="card-img-top" 
-                         alt="${safeProduct.title}"
-                         style="height: 200px; object-fit: cover;"
-                         onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
-                    <div class="card-body d-flex flex-column">
-                        <h6 class="card-title" title="${safeProduct.title}">
-                            ${safeProduct.title.length > 30 ? 
-                              safeProduct.title.substring(0, 30) + '...' : 
-                              safeProduct.title}
-                        </h6>
-                        <p class="card-text text-muted small mb-2">
-                            <i class="bi bi-tag me-1"></i>${safeProduct.category}
-                        </p>
-                        <p class="card-text text-muted small mb-2">
-                            <i class="bi bi-box me-1"></i>${safeProduct.sku}
-                        </p>
-                        <div class="mt-auto">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <p class="card-text fw-bold text-primary fs-5 mb-0">$${safeProduct.price}</p>
-                                <span class="badge ${safeProduct.stock > 10 ? 'bg-success' : 
-                                                    safeProduct.stock > 0 ? 'bg-warning' : 'bg-danger'}">
-                                    ${safeProduct.stock} in stock
-                                </span>
-                            </div>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <button class="btn btn-outline-primary btn-sm" onclick="editProduct(${safeProduct.id})">
-                                    <i class="bi bi-pencil"></i> Edit
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct(${safeProduct.id})">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }).join('');
-
-    container.innerHTML = cardsHTML;
+// --- Toast Functions ---
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `custom-toast ${type}`;
+    const icon = type === 'success' ? 'check-circle-fill text-success' : 'x-circle-fill text-danger';
+    
+    toast.innerHTML = `
+        <i class="bi bi-${icon} fs-5"></i>
+        <div>
+            <div class="fw-bold" style="font-size: 0.9rem;">${type === 'success' ? 'Success' : 'Error'}</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">${message}</div>
+        </div>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    // Remove after 3s
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+    }, 3000);
 }
 
-// Generate table rows HTML for products
-function renderTableView(products, tableBody) {
-    if (!tableBody) return;
+// --- Render Logic ---
 
-    const rowsHTML = products.map(product => {
-        // Ensure required fields with fallbacks
-        const safeProduct = {
-            id: product.id || Math.random(),
-            title: product.title || 'Untitled Product',
-            price: product.price || '0.00',
-            category: product.category || 'Uncategorized',
-            stock: product.stock || 0,
-            sku: product.sku || `SKU-${product.id || '000'}`,
-            image: product.image || 'https://via.placeholder.com/60x60?text=No+Image'
-        };
+function renderProducts(filterText = '') {
+    const cardContainer = document.getElementById('cardContainer');
+    const tableBody = document.getElementById('productTableBody');
+    const emptyState = document.getElementById('emptyState');
+    const sortSelect = document.getElementById('sortSelect');
+    const paginationContainer = document.getElementById('paginationContainer');
+    
+    if (!cardContainer || !tableBody || !emptyState) return;
 
-        return `
-            <tr>
-                <td>
-                    <img src="${safeProduct.image}" 
-                         alt="${safeProduct.title}" 
-                         class="rounded" 
-                         style="width: 60px; height: 60px; object-fit: cover;"
-                         onerror="this.src='https://via.placeholder.com/60x60?text=No+Image'">
-                </td>
-                <td>
-                    <div>
-                        <h6 class="mb-1" title="${safeProduct.title}">
-                            ${safeProduct.title.length > 25 ? 
-                              safeProduct.title.substring(0, 25) + '...' : 
-                              safeProduct.title}
-                        </h6>
-                        <small class="text-muted">SKU: ${safeProduct.sku}</small>
-                    </div>
-                </td>
-                <td>
-                    <span class="badge bg-secondary">${safeProduct.category}</span>
-                </td>
-                <td class="fw-bold text-primary">$${safeProduct.price}</td>
-                <td>
-                    <span class="badge ${safeProduct.stock > 10 ? 'bg-success' : 
-                                       safeProduct.stock > 0 ? 'bg-warning' : 'bg-danger'}">
-                        ${safeProduct.stock} units
-                    </span>
-                </td>
-                <td class="text-center">
-                    <div class="btn-group btn-group-sm" role="group">
-                        <button class="btn btn-outline-primary" 
-                                onclick="editProduct(${safeProduct.id})" 
-                                title="Edit Product">
+    cardContainer.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    let filteredProducts = products.filter(p => 
+        p.title.toLowerCase().includes(filterText.toLowerCase()) || 
+        p.category.toLowerCase().includes(filterText.toLowerCase()) ||
+        (p.sku && p.sku.toLowerCase().includes(filterText.toLowerCase())) // Search by SKU too
+    );
+
+    // Sorting Logic
+    if(sortSelect) {
+        const sortValue = sortSelect.value;
+        filteredProducts.sort((a, b) => {
+            const priceA = a.salePrice ? parseFloat(a.salePrice) : parseFloat(a.price);
+            const priceB = b.salePrice ? parseFloat(b.salePrice) : parseFloat(b.price);
+
+            if (sortValue === 'price_asc') {
+                return priceA - priceB;
+            } else if (sortValue === 'price_desc') {
+                return priceB - priceA;
+            } else {
+                // Default: name_asc
+                return a.title.localeCompare(b.title);
+            }
+        });
+    }
+
+    if (filteredProducts.length === 0) {
+        emptyState.classList.remove('d-none');
+        paginationContainer.classList.add('d-none');
+        return;
+    } else {
+        emptyState.classList.add('d-none');
+        paginationContainer.classList.remove('d-none');
+    }
+
+    // --- Pagination Logic ---
+    const totalItems = filteredProducts.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    
+    // Ensure currentPage is valid
+    if (currentPage > totalPages) currentPage = 1;
+    if (currentPage < 1) currentPage = 1;
+
+    // Slice items for current page
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const paginatedItems = filteredProducts.slice(startIndex, endIndex);
+
+    // Render Items
+    paginatedItems.forEach(product => {
+        // Calculation Logic for Display
+        const hasSale = product.salePrice && parseFloat(product.salePrice) < parseFloat(product.price);
+        const currentPrice = hasSale ? parseFloat(product.salePrice) : parseFloat(product.price);
+        
+        const priceDisplay = hasSale 
+            ? `<span class="text-decoration-line-through text-secondary me-2 small">$${parseFloat(product.price).toFixed(2)}</span>
+               <span class="product-price-sale">$${parseFloat(product.salePrice).toFixed(2)}</span>`
+            : `<span class="product-price">$${parseFloat(product.price).toFixed(2)}</span>`;
+
+        const discountBadge = hasSale
+            ? `<div class="position-absolute top-0 start-0 m-2 badge bg-danger shadow-sm">
+                 -${Math.round(((product.price - product.salePrice) / product.price) * 100)}%
+               </div>`
+            : '';
+
+        // 1. Render Card
+        const cardCol = document.createElement('div');
+        cardCol.className = 'col-md-6 col-lg-4 col-xl-3';
+        cardCol.innerHTML = `
+            <div class="product-card">
+                <div class="product-img-wrapper">
+                    ${discountBadge}
+                    <img src="${product.image || 'https://via.placeholder.com/300x200?text=No+Image'}" 
+                         class="product-img" 
+                         onerror="this.src='https://via.placeholder.com/300x200?text=Error'" 
+                         alt="${product.title}">
+                    <div class="card-actions">
+                        <button class="action-btn sell" onclick="openSellModal(${product.id})" title="Sell Product">
+                            <i class="bi bi-cart-check"></i>
+                        </button>
+                        <button class="action-btn edit" onclick="editProduct(${product.id})">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-outline-danger" 
-                                onclick="deleteProduct(${safeProduct.id})" 
-                                title="Delete Product">
+                        <button class="action-btn delete" onclick="deleteProduct(${product.id})">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
-                </td>
-            </tr>
-        `;
-    }).join('');
-
-    tableBody.innerHTML = rowsHTML;
-}
-
-// Handle empty state rendering
-function renderEmptyState() {
-    const cardContainer = document.getElementById('cardContainer');
-    const tableBody = document.getElementById('productTableBody');
-    const emptyStateCards = document.getElementById('emptyStateCards');
-    const emptyStateTable = document.getElementById('emptyStateTable');
-
-    // Clear containers
-    if (cardContainer) cardContainer.innerHTML = '';
-    if (tableBody) tableBody.innerHTML = '';
-
-    // Show appropriate empty states
-    if (emptyStateCards) {
-        cardContainer.appendChild(emptyStateCards);
-        emptyStateCards.classList.remove('d-none');
-    }
-    if (emptyStateTable) {
-        emptyStateTable.classList.remove('d-none');
-    }
-}
-
-// Edit Product function - fetches and pre-fills form
-window.editProduct = async function(productId) {
-    console.log('Edit product:', productId);
-    
-    try {
-        // Show loading state
-        const modal = new bootstrap.Modal(document.getElementById('productModal'));
-        modal.show();
-        
-        // Show loading in modal
-        const modalBody = document.querySelector('#productModal .modal-body');
-        const originalContent = modalBody.innerHTML;
-        modalBody.innerHTML = `
-            <div class="text-center py-4">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
                 </div>
-                <div class="mt-3">
-                    <h6>Loading Product Data...</h6>
-                    <p class="text-muted mb-0">Please wait while we fetch the product information.</p>
+                <div class="product-details">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <span class="product-category">${product.category}</span>
+                        <span class="product-category text-end" style="color: #764ba2;">${product.brand || ''}</span>
+                    </div>
+                    <h5 class="product-title" title="${product.title}">${product.title}</h5>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="d-flex align-items-center">
+                            ${priceDisplay}
+                        </div>
+                        ${getStockBadge(product.stock)}
+                    </div>
                 </div>
             </div>
         `;
+        cardContainer.appendChild(cardCol);
 
-        // Fetch product data from API
-        const response = await fetch(`https://dummyjson.com/products/${productId}`);
+        // 2. Render Table Row
+        const tr = document.createElement('tr');
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        // --- LOW STOCK ALERT LOGIC ---
+        const stockLevel = parseInt(product.stock);
+        if (stockLevel === 0) {
+            tr.classList.add('row-out-stock');
+        } else if (stockLevel < 5) {
+            tr.classList.add('row-low-stock');
         }
-        
-        const productData = await response.json();
-        console.log('Fetched product data:', productData);
-        
-        // Restore original modal content
-        modalBody.innerHTML = originalContent;
-        
-        // Re-initialize form event listeners after restoring content
-        initializeFormEventListeners();
-        
-        // Populate form with fetched product data
-        populateProductForm(productData);
-        
-    } catch (error) {
-        console.error('Error fetching product:', error);
-        
-        // Show error in modal
-        const modalBody = document.querySelector('#productModal .modal-body');
-        modalBody.innerHTML = `
-            <div class="text-center py-4">
-                <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
-                <h5 class="mt-3 text-muted">Failed to Load Product</h5>
-                <p class="text-muted">There was an error fetching the product data.</p>
-                <p class="text-danger small">${error.message}</p>
-                <div class="d-flex gap-2 justify-content-center">
-                    <button class="btn btn-primary" onclick="editProduct(${productId})">
-                        <i class="bi bi-arrow-clockwise me-1"></i>Try Again
-                    </button>
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-1"></i>Cancel
-                    </button>
-                </div>
-            </div>
+
+        tr.innerHTML = `
+            <td>
+                <img src="${product.image || 'https://via.placeholder.com/50?text=Img'}" 
+                     class="table-img" 
+                     onerror="this.src='https://via.placeholder.com/50?text=Error'">
+            </td>
+            <td>
+                <div class="fw-bold" style="color: var(--text-primary)">${product.title}</div>
+                <small class="text-muted d-block">Brand: ${product.brand || 'N/A'}</small>
+                <small style="color: var(--text-secondary)">SKU: ${product.sku}</small>
+            </td>
+            <td><span class="badge bg-light text-dark border">${product.category}</span></td>
+            <td>${priceDisplay}</td>
+            <td>${getStockBadge(product.stock)}</td>
+            <td class="text-end">
+                <button class="btn btn-sm btn-outline-success me-1" onclick="openSellModal(${product.id})" title="Sell">
+                    <i class="bi bi-cart-check"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary me-1" onclick="editProduct(${product.id})">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${product.id})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
         `;
-        
-        // Show error toast
-        showToast('Error!', `Failed to load product: ${error.message}`, 'error');
+        tableBody.appendChild(tr);
+    });
+
+    // Render Pagination Controls
+    renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+    const paginationControls = document.getElementById('paginationControls');
+    paginationControls.innerHTML = '';
+
+    if (totalPages <= 1) return;
+
+    // Previous Button
+    const prevLi = document.createElement('li');
+    prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+    prevLi.innerHTML = `<a class="page-link" onclick="changePage(${currentPage - 1})"><i class="bi bi-chevron-left"></i></a>`;
+    paginationControls.appendChild(prevLi);
+
+    // Page Numbers
+    for (let i = 1; i <= totalPages; i++) {
+        const li = document.createElement('li');
+        li.className = `page-item ${currentPage === i ? 'active' : ''}`;
+        li.innerHTML = `<a class="page-link" onclick="changePage(${i})">${i}</a>`;
+        paginationControls.appendChild(li);
     }
-};
 
-// Delete Product function
-window.deleteProduct = async function(productId) {
-    console.log('Delete product:', productId);
+    // Next Button
+    const nextLi = document.createElement('li');
+    nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+    nextLi.innerHTML = `<a class="page-link" onclick="changePage(${currentPage + 1})"><i class="bi bi-chevron-right"></i></a>`;
+    paginationControls.appendChild(nextLi);
+}
+
+function changePage(page) {
+    currentPage = page;
+    const searchValue = document.getElementById('searchInput').value;
+    renderProducts(searchValue);
+}
+
+function getStockBadge(stock) {
+    stock = parseInt(stock);
+    if (stock === 0) return '<span class="stock-badge bg-stock-red">Out of Stock</span>';
+    if (stock < 10) return '<span class="stock-badge bg-stock-orange">Low: ' + stock + '</span>';
+    return '<span class="stock-badge bg-stock-green">In Stock: ' + stock + '</span>';
+}
+
+function updateStats() {
+    document.getElementById('totalProducts').textContent = products.length;
+    document.getElementById('inStock').textContent = products.filter(p => parseInt(p.stock) >= 10).length;
+    document.getElementById('lowStock').textContent = products.filter(p => parseInt(p.stock) > 0 && parseInt(p.stock) < 10).length;
+    document.getElementById('outOfStock').textContent = products.filter(p => parseInt(p.stock) === 0).length;
+}
+
+// --- Sales History Logic ---
+function renderSalesHistory() {
+    const tableBody = document.getElementById('salesTableBody');
+    const emptyState = document.getElementById('salesEmptyState');
     
-    // Ask for confirmation before deleting
-    const confirmed = confirm('Are you sure you want to delete this product? This action cannot be undone.');
-    
-    if (!confirmed) {
-        return; // User cancelled the deletion
+    if(!sales || sales.length === 0) {
+        tableBody.innerHTML = '';
+        emptyState.classList.remove('d-none');
+        document.getElementById('totalRevenue').textContent = '$0.00';
+        document.getElementById('totalItemsSold').textContent = '0';
+        return;
     }
 
-    try {
-        console.log(`Sending DELETE request for product ID: ${productId}`);
+    emptyState.classList.add('d-none');
+    tableBody.innerHTML = '';
+    
+    // Sort by date (newest first)
+    const sortedSales = [...sales].sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    let totalRev = 0;
+    let totalItems = 0;
+
+    sortedSales.forEach(sale => {
+        totalRev += sale.total;
+        totalItems += parseInt(sale.quantity);
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${new Date(sale.date).toLocaleDateString()} <small class="text-muted">${new Date(sale.date).toLocaleTimeString()}</small></td>
+            <td class="fw-bold" style="color: var(--text-primary)">${sale.productName}</td>
+            <td class="text-muted small">${sale.productSku || '-'}</td>
+            <td>${sale.quantity}</td>
+            <td class="fw-bold text-success">$${sale.total.toFixed(2)}</td>
+        `;
+        tableBody.appendChild(tr);
+    });
+
+    document.getElementById('totalRevenue').textContent = `$${totalRev.toFixed(2)}`;
+    document.getElementById('totalItemsSold').textContent = totalItems;
+}
+
+// --- Sell Logic ---
+function openSellModal(id) {
+    const product = products.find(p => String(p.id) === String(id));
+    if (!product) return;
+
+    // Populate Modal
+    document.getElementById('sellProductId').value = product.id;
+    document.getElementById('sellProductName').textContent = product.title;
+    document.getElementById('sellProductSku').textContent = `SKU: ${product.sku}`;
+    document.getElementById('sellCurrentStock').textContent = product.stock;
+    
+    // Determine active price
+    const activePrice = (product.salePrice && parseFloat(product.salePrice) < parseFloat(product.price)) 
+        ? parseFloat(product.salePrice) 
+        : parseFloat(product.price);
+    
+    document.getElementById('sellUnitPrice').textContent = `$${activePrice.toFixed(2)}`;
+    
+    // Reset Input
+    const qtyInput = document.getElementById('sellQuantity');
+    qtyInput.value = 1;
+    qtyInput.max = product.stock; // Set max attribute
+    
+    // Calc initial total
+    calculateSellTotal(activePrice);
+
+    // Add event listener for dynamic total calc
+    qtyInput.oninput = function() {
+        const qty = parseInt(this.value);
+        const stock = parseInt(product.stock);
+        const errDiv = document.getElementById('sellStockError');
         
-        // Send DELETE request to DummyJSON API
-        const response = await fetch(`https://dummyjson.com/products/${productId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        console.log('Delete response status:', response.status);
-
-        // Check if deletion was successful (status 200)
-        if (response.status === 200) {
-            const result = await response.json();
-            console.log('Product deleted successfully:', result);
-            
-            // Remove the product from the DOM
-            removeProductFromUI(productId);
-            
-            // Show success alert
-            alert('Product Deleted');
-            
-            // Show success toast
-            showToast('Success!', `Product has been deleted successfully.`, 'success');
-            
+        if (qty > stock) {
+            errDiv.classList.remove('d-none');
+            document.getElementById('sellTotal').textContent = "$0.00";
         } else {
-            throw new Error(`Delete failed with status: ${response.status}`);
+            errDiv.classList.add('d-none');
+            const total = qty * activePrice;
+            document.getElementById('sellTotal').textContent = `$${total.toFixed(2)}`;
         }
+    };
 
-    } catch (error) {
-        console.error('Error deleting product:', error);
-        
-        // Delete locally even if API fails
-        console.log('API failed, deleting product locally');
-        removeProductFromUI(productId);
-        
-        alert('Product Deleted (Offline Mode)');
-        showToast('Success!', 'Product deleted locally (API unavailable).', 'warning');
-    }
-};
-
-// Function to remove product from UI after successful deletion
-function removeProductFromUI(productId) {
-    // Remove from localStorage
-    removeLocalProduct(productId);
-    
-    // Remove from card view
-    const cardContainer = document.getElementById('cardContainer');
-    if (cardContainer) {
-        const productCard = cardContainer.querySelector(`[onclick*="editProduct(${productId})"]`)?.closest('.col-lg-3, .col-md-4, .col-sm-6');
-        if (productCard) {
-            // Add fade-out animation
-            productCard.style.transition = 'opacity 0.3s ease-out';
-            productCard.style.opacity = '0';
-            setTimeout(() => {
-                productCard.remove();
-                checkIfEmpty();
-            }, 300);
-        }
-    }
-
-    // Remove from table view
-    const tableBody = document.getElementById('productTableBody');
-    if (tableBody) {
-        const productRow = tableBody.querySelector(`[onclick*="editProduct(${productId})"]`)?.closest('tr');
-        if (productRow) {
-            // Add fade-out animation
-            productRow.style.transition = 'opacity 0.3s ease-out';
-            productRow.style.opacity = '0';
-            setTimeout(() => {
-                productRow.remove();
-                checkIfEmpty();
-            }, 300);
-        }
-    }
-
-    console.log('Product removed from UI with ID:', productId);
+    new bootstrap.Modal(document.getElementById('sellModal')).show();
 }
 
-// Function to check if product list is empty and show empty state
-function checkIfEmpty() {
-    const cardContainer = document.getElementById('cardContainer');
-    const tableBody = document.getElementById('productTableBody');
-    const emptyStateCards = document.getElementById('emptyStateCards');
-    const emptyStateTable = document.getElementById('emptyStateTable');
-
-    // Check if card view is empty
-    if (cardContainer) {
-        const remainingCards = cardContainer.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6').length;
-        if (remainingCards === 0 && emptyStateCards) {
-            cardContainer.appendChild(emptyStateCards);
-            emptyStateCards.classList.remove('d-none');
-        }
-    }
-
-    // Check if table view is empty
-    if (tableBody) {
-        const remainingRows = tableBody.querySelectorAll('tr').length;
-        if (remainingRows === 0 && emptyStateTable) {
-            emptyStateTable.classList.remove('d-none');
-        }
-    }
+function calculateSellTotal(price) {
+    const qty = parseInt(document.getElementById('sellQuantity').value) || 0;
+    const total = qty * price;
+    document.getElementById('sellTotal').textContent = `$${total.toFixed(2)}`;
 }
 
-// Updated loadProducts function to use renderProducts
-window.loadProducts = function(products) {
-    renderProducts(products);
-};
-
-// Function to show loading state
-window.showLoading = function() {
-    const cardContainer = document.getElementById('cardContainer');
-    const tableContainer = document.getElementById('tableContainer');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const emptyStateCards = document.getElementById('emptyStateCards');
-    const emptyStateTable = document.getElementById('emptyStateTable');
-
-    // Hide all content and show spinner
-    cardContainer.innerHTML = '';
-    document.getElementById('productTableBody').innerHTML = '';
-    emptyStateCards.classList.add('d-none');
-    emptyStateTable.classList.add('d-none');
-    loadingSpinner.classList.remove('d-none');
-};
-
-// Fetch products from API using async/await
-async function fetchProducts() {
-    try {
-        showLoading();
+// Handle Sell Submit
+const sellForm = document.getElementById('sellForm');
+if(sellForm) {
+    sellForm.addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        const response = await fetch('https://dummyjson.com/products?limit=10');
+        const productId = document.getElementById('sellProductId').value;
+        const qty = parseInt(document.getElementById('sellQuantity').value);
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // Find Product
+        const productIndex = products.findIndex(p => String(p.id) === String(productId));
+        if (productIndex === -1) return;
         
-        const data = await response.json();
+        const product = products[productIndex];
         
-        // Transform API data to match our UI format
-        const apiProducts = data.products.map(product => ({
-            id: product.id,
-            title: product.title,
-            price: product.price.toFixed(2),
-            category: product.category,
-            stock: product.stock,
-            sku: `SKU-${product.id.toString().padStart(3, '0')}`,
-            image: product.thumbnail || product.images[0]
-        }));
-        
-        // Get locally stored products and merge with API products
-        const localProducts = getLocalProducts();
-        
-        // Combine: local products first, then API products
-        const allProducts = [...localProducts, ...apiProducts];
-        
-        // Load products into UI (this will hide the loading spinner)
-        loadProducts(allProducts);
-        
-        console.log('Successfully loaded', apiProducts.length, 'API products +', localProducts.length, 'local products');
-        
-    } catch (error) {
-        console.error('Error fetching products:', error);
-        
-        // Hide loading spinner
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const cardContainer = document.getElementById('cardContainer');
-        
-        if (loadingSpinner) loadingSpinner.classList.add('d-none');
-        
-        // Try to load local products even if API fails
-        const localProducts = getLocalProducts();
-        if (localProducts.length > 0) {
-            loadProducts(localProducts);
-            showToast('Offline Mode', 'Loaded products from local storage. API is unavailable.', 'warning');
-            console.log('Loaded', localProducts.length, 'products from localStorage');
+        // Validate Stock
+        if (qty > parseInt(product.stock)) {
+            showToast('Insufficient stock!', 'error');
             return;
         }
+
+        // Calculate Total
+        const activePrice = (product.salePrice && parseFloat(product.salePrice) < parseFloat(product.price)) 
+            ? parseFloat(product.salePrice) 
+            : parseFloat(product.price);
+        const total = qty * activePrice;
+
+        // 1. Update Product Stock
+        products[productIndex].stock = parseInt(product.stock) - qty;
         
-        // Determine error type and show appropriate message
-        let errorMessage = 'Unknown error occurred while loading products.';
-        let errorIcon = 'bi-exclamation-triangle';
-        let errorColor = 'text-warning';
+        // 2. Create Sale Record
+        const saleRecord = {
+            id: Date.now(),
+            productId: product.id,
+            productName: product.title,
+            productSku: product.sku,
+            quantity: qty,
+            total: total,
+            date: new Date().toISOString()
+        };
         
-        if (!navigator.onLine) {
-            errorMessage = 'No internet connection. Please check your network connection.';
-            errorIcon = 'bi-wifi-off';
-            errorColor = 'text-danger';
-        } else if (error.name === 'TypeError' || error.message.includes('fetch')) {
-            errorMessage = 'Unable to connect to the product database. Please try again later.';
-            errorIcon = 'bi-server';
-            errorColor = 'text-danger';
-        } else if (error.message.includes('HTTP error')) {
-            errorMessage = `Server error while loading products (${error.message}).`;
-            errorIcon = 'bi-exclamation-triangle';
-            errorColor = 'text-warning';
-        }
-        
-        // Show enhanced error message with retry options
-        if (cardContainer) {
-            cardContainer.innerHTML = `
-                <div class="col-12 text-center py-5">
-                    <i class="bi ${errorIcon} ${errorColor}" style="font-size: 4rem;"></i>
-                    <h4 class="text-muted mt-3">Failed to Load Products</h4>
-                    <p class="text-muted">${errorMessage}</p>
-                    <p class="text-danger small">${error.message}</p>
-                    <div class="d-flex gap-2 justify-content-center mt-4">
-                        <button class="btn btn-primary" onclick="fetchProducts()">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Try Again
-                        </button>
-                        <button class="btn btn-outline-secondary" onclick="loadProducts([])">
-                            <i class="bi bi-plus-circle me-2"></i>Start Fresh
-                        </button>
-                        ${!navigator.onLine ? '' : `
-                            <button class="btn btn-outline-info" onclick="fetchProductsWithCatch()">
-                                <i class="bi bi-arrow-clockwise me-2"></i>Alternative Method
-                            </button>
-                        `}
-                    </div>
-                </div>
-            `;
-        }
-    }
+        sales.push(saleRecord);
+
+        // 3. Save Everything
+        saveProducts(); // Updates inventory
+        saveSales();    // Updates sales history
+
+        // 4. UI Feedback
+        showToast('Sale completed successfully!', 'success');
+        const modal = bootstrap.Modal.getInstance(document.getElementById('sellModal'));
+        modal.hide();
+    });
 }
 
-// Alternative fetch method using .catch() for additional error handling
-window.fetchProductsWithCatch = function() {
-    showLoading();
+// --- Event Listeners ---
+
+function setupEventListeners() {
+    // View Toggles
+    document.getElementById('cardView').addEventListener('change', () => {
+        document.getElementById('cardContainer').classList.remove('d-none');
+        document.getElementById('tableContainer').classList.add('d-none');
+    });
     
-    fetch('https://dummyjson.com/products?limit=10')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            const transformedProducts = data.products.map(product => ({
-                id: product.id,
-                title: product.title,
-                price: product.price.toFixed(2),
-                category: product.category,
-                stock: product.stock,
-                sku: `SKU-${product.id.toString().padStart(3, '0')}`,
-                image: product.thumbnail || product.images[0]
-            }));
-            
-            loadProducts(transformedProducts);
-            console.log('Successfully loaded products using .catch() method');
-        })
-        .catch(error => {
-            console.error('Error in .catch():', error);
-            
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const cardContainer = document.getElementById('cardContainer');
-            
-            loadingSpinner.classList.add('d-none');
-            
-            cardContainer.innerHTML = `
-                <div class="col-12 text-center py-5">
-                    <i class="bi bi-wifi-off text-danger" style="font-size: 4rem;"></i>
-                    <h4 class="text-muted mt-3">Connection Error</h4>
-                    <p class="text-muted">Unable to connect to the product database.</p>
-                    <p class="text-danger small">${error.message}</p>
-                    <div class="d-flex gap-2 justify-content-center">
-                        <button class="btn btn-primary" onclick="fetchProducts()">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Retry with async/await
-                        </button>
-                        <button class="btn btn-outline-primary" onclick="fetchProductsWithCatch()">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Retry with .catch()
-                        </button>
-                    </div>
-                </div>
-            `;
+    document.getElementById('tableView').addEventListener('change', () => {
+        document.getElementById('cardContainer').classList.add('d-none');
+        document.getElementById('tableContainer').classList.remove('d-none');
+    });
+
+    // Search
+    const searchInput = document.getElementById('searchInput');
+    if(searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentPage = 1; // Reset to page 1 on search
+            renderProducts(e.target.value);
         });
-};
+    }
 
-// Function to update product in UI after successful edit
-function updateProductInUI(updatedProduct) {
-    // Transform the updated product to match our UI format
-    const price = typeof updatedProduct.price === 'number' ? updatedProduct.price : parseFloat(updatedProduct.price) || 0;
-    const stock = typeof updatedProduct.stock === 'number' ? updatedProduct.stock : parseInt(updatedProduct.stock) || 0;
+    // Sort Dropdown
+    const sortSelect = document.getElementById('sortSelect');
+    if(sortSelect) {
+        sortSelect.addEventListener('change', () => {
+            currentPage = 1; // Reset to page 1 on sort
+            const searchValue = document.getElementById('searchInput').value;
+            renderProducts(searchValue);
+        });
+    }
+
+    // Image Preview
+    const imgInput = document.getElementById('productImage');
+    if(imgInput) {
+        imgInput.addEventListener('input', (e) => {
+            const url = e.target.value;
+            const container = document.getElementById('imagePreviewContainer');
+            const img = document.getElementById('imagePreview');
+            if (url) {
+                container.classList.remove('d-none');
+                img.src = url;
+                img.onerror = () => { container.classList.add('d-none'); };
+            } else {
+                container.classList.add('d-none');
+            }
+        });
+    }
+
+    // Discount Calculation Inputs
+    const priceIn = document.getElementById('productPrice');
+    const saleIn = document.getElementById('productSalePrice');
+    if(priceIn && saleIn) {
+        const calc = () => {
+            const p = parseFloat(priceIn.value);
+            const s = parseFloat(saleIn.value);
+            const disc = document.getElementById('productDiscount');
+            
+            if(p && s && s < p) {
+                const pct = Math.round(((p-s)/p)*100);
+                disc.value = `${pct}% OFF`;
+                disc.style.color = '#10b981';
+            } else {
+                disc.value = '';
+            }
+        };
+        priceIn.addEventListener('input', calc);
+        saleIn.addEventListener('input', calc);
+    }
+
+    // Form Submit
+    const form = document.getElementById('productForm');
+    if(form) {
+        form.addEventListener('submit', handleFormSubmit);
+    }
     
-    const transformedProduct = {
-        id: updatedProduct.id,
-        title: updatedProduct.title,
-        price: price.toFixed(2),
-        category: updatedProduct.category,
-        stock: stock,
-        sku: `SKU-${updatedProduct.id.toString().padStart(3, '0')}`,
-        image: updatedProduct.thumbnail || updatedProduct.image || 'https://via.placeholder.com/300x200?text=No+Image'
-    };
-
-    // Update in localStorage
-    updateLocalProduct(transformedProduct);
-
-    // Update card view if visible
-    const cardContainer = document.getElementById('cardContainer');
-    if (cardContainer && !cardContainer.classList.contains('d-none')) {
-        const existingCard = cardContainer.querySelector(`[onclick*="editProduct(${updatedProduct.id})"]`)?.closest('.col-lg-3, .col-md-4, .col-sm-6');
-        if (existingCard) {
-            const newCardHTML = createSingleProductCard(transformedProduct);
-            existingCard.outerHTML = newCardHTML;
-        }
+    // Delete Confirm
+    const deleteBtn = document.getElementById('confirmDeleteBtn');
+    if(deleteBtn) {
+        deleteBtn.addEventListener('click', confirmDeleteAction);
     }
-
-    // Update table view if visible
-    const tableBody = document.getElementById('productTableBody');
-    if (tableBody) {
-        const existingRow = tableBody.querySelector(`[onclick*="editProduct(${updatedProduct.id})"]`)?.closest('tr');
-        if (existingRow) {
-            const newRowHTML = createSingleProductRow(transformedProduct);
-            existingRow.outerHTML = newRowHTML;
-        }
-    }
-
-    console.log('UI and localStorage updated for product ID:', updatedProduct.id);
 }
 
-// Function to add new product to UI after successful creation
-function addProductToUI(newProduct) {
-    // Transform the new product to match our UI format
-    // Handle potential missing or differently-typed fields from API response
-    const price = typeof newProduct.price === 'number' ? newProduct.price : parseFloat(newProduct.price) || 0;
-    const stock = typeof newProduct.stock === 'number' ? newProduct.stock : parseInt(newProduct.stock) || 0;
-    const productId = newProduct.id || Date.now();
-    
-    const transformedProduct = {
-        id: productId,
-        title: newProduct.title || 'Untitled Product',
-        price: price.toFixed(2),
-        category: newProduct.category || 'Uncategorized',
-        stock: stock,
-        sku: `SKU-${productId.toString().padStart(3, '0')}`,
-        image: newProduct.thumbnail || newProduct.image || 'https://via.placeholder.com/300x200?text=No+Image'
-    };
+// --- Actions ---
 
-    // Save to localStorage for persistence
-    addLocalProduct(transformedProduct);
-
-    // Add to card view
-    const cardContainer = document.getElementById('cardContainer');
-    const emptyStateCards = document.getElementById('emptyStateCards');
+function openAddModal() {
+    document.getElementById('productForm').reset();
+    document.getElementById('editProductId').value = ""; 
+    document.getElementById('imagePreviewContainer').classList.add('d-none');
+    document.getElementById('productDiscount').value = "";
+    document.getElementById('productModalLabel').textContent = "Add New Product";
     
-    if (cardContainer) {
-        // Hide empty state if visible
-        if (emptyStateCards && !emptyStateCards.classList.contains('d-none')) {
-            emptyStateCards.classList.add('d-none');
+    new bootstrap.Modal(document.getElementById('productModal')).show();
+}
+
+function editProduct(id) {
+    const product = products.find(p => String(p.id) === String(id));
+    if (!product) return;
+
+    document.getElementById('productTitle').value = product.title;
+    document.getElementById('productPrice').value = product.price;
+    document.getElementById('productSalePrice').value = product.salePrice || '';
+    document.getElementById('productCategory').value = product.category;
+    // Load description
+    document.getElementById('productDescription').value = product.description || '';
+    document.getElementById('productImage').value = product.image;
+    document.getElementById('productStock').value = product.stock;
+    document.getElementById('productSku').value = product.sku;
+    // Load Brand and Supplier
+    document.getElementById('productBrand').value = product.brand || '';
+    document.getElementById('productSupplier').value = product.supplier || '';
+
+    // Trigger discount calc
+    const p = parseFloat(product.price);
+    const s = parseFloat(product.salePrice);
+    if(p && s && s < p) {
+        document.getElementById('productDiscount').value = `${Math.round(((p-s)/p)*100)}% OFF`;
+    } else {
+        document.getElementById('productDiscount').value = "";
+    }
+
+    if(product.image) {
+        document.getElementById('imagePreview').src = product.image;
+        document.getElementById('imagePreviewContainer').classList.remove('d-none');
+    } else {
+        document.getElementById('imagePreviewContainer').classList.add('d-none');
+    }
+
+    document.getElementById('editProductId').value = product.id;
+    
+    document.getElementById('productModalLabel').textContent = "Edit Product";
+    new bootstrap.Modal(document.getElementById('productModal')).show();
+}
+
+function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const title = document.getElementById('productTitle').value;
+    const price = document.getElementById('productPrice').value;
+    const salePrice = document.getElementById('productSalePrice').value;
+    const category = document.getElementById('productCategory').value;
+    const description = document.getElementById('productDescription').value; 
+    const image = document.getElementById('productImage').value;
+    const stock = document.getElementById('productStock').value;
+    let sku = document.getElementById('productSku').value;
+    const brand = document.getElementById('productBrand').value;
+    const supplier = document.getElementById('productSupplier').value;
+    const editId = document.getElementById('editProductId').value; 
+
+    if (!sku) sku = 'SKU-' + Date.now().toString().slice(-6);
+
+    if (editId) {
+        const index = products.findIndex(p => String(p.id) === String(editId));
+        if (index !== -1) {
+            products[index] = {
+                id: parseInt(editId), 
+                title, price, salePrice, category, description, image, stock, sku, brand, supplier
+            };
+            showToast('Product updated successfully', 'success');
         }
+    } else {
+        const newProduct = {
+            id: Date.now(),
+            title, price, salePrice, category, description, image, stock, sku, brand, supplier
+        };
+        products.push(newProduct);
+        showToast('Product added successfully', 'success');
+    }
+
+    saveProducts();
+    
+    const modalEl = document.getElementById('productModal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+}
+
+let productToDeleteId = null;
+
+function deleteProduct(id) {
+    productToDeleteId = id;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+
+function confirmDeleteAction() {
+    if(productToDeleteId) {
+        products = products.filter(p => String(p.id) !== String(productToDeleteId));
+        saveProducts();
+        showToast('Product deleted successfully', 'success');
         
-        // Add new card
-        const newCardHTML = createSingleProductCard(transformedProduct);
-        cardContainer.insertAdjacentHTML('afterbegin', newCardHTML);
-    }
-
-    // Add to table view
-    const tableBody = document.getElementById('productTableBody');
-    const emptyStateTable = document.getElementById('emptyStateTable');
-    
-    if (tableBody) {
-        // Hide empty state if visible
-        if (emptyStateTable && !emptyStateTable.classList.contains('d-none')) {
-            emptyStateTable.classList.add('d-none');
-        }
+        const modalEl = document.getElementById('deleteModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
         
-        // Add new row
-        const newRowHTML = createSingleProductRow(transformedProduct);
-        tableBody.insertAdjacentHTML('afterbegin', newRowHTML);
+        productToDeleteId = null;
     }
-
-    console.log('New product added to UI with ID:', newProduct.id);
 }
-
-// Helper function to create a single product card
-function createSingleProductCard(product) {
-    return `
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card h-100 shadow-sm product-card">
-                <img src="${product.image}" 
-                     class="card-img-top" 
-                     alt="${product.title}"
-                     style="height: 200px; object-fit: cover;"
-                     onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title" title="${product.title}">
-                        ${product.title.length > 30 ? 
-                          product.title.substring(0, 30) + '...' : 
-                          product.title}
-                    </h6>
-                    <p class="card-text text-muted small mb-2">
-                        <i class="bi bi-tag me-1"></i>${product.category}
-                    </p>
-                    <p class="card-text text-muted small mb-2">
-                        <i class="bi bi-box me-1"></i>${product.sku}
-                    </p>
-                    <div class="mt-auto">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <p class="card-text fw-bold text-primary fs-5 mb-0">$${product.price}</p>
-                            <span class="badge ${product.stock > 10 ? 'bg-success' : 
-                                                product.stock > 0 ? 'bg-warning' : 'bg-danger'}">
-                                ${product.stock} in stock
-                            </span>
-                        </div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-outline-primary btn-sm" onclick="editProduct(${product.id})">
-                                <i class="bi bi-pencil"></i> Edit
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct(${product.id})">
-                                <i class="bi bi-trash"></i> Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// Helper function to create a single product table row
-function createSingleProductRow(product) {
-    return `
-        <tr>
-            <td>
-                <img src="${product.image}" 
-                     alt="${product.title}" 
-                     class="rounded" 
-                     style="width: 60px; height: 60px; object-fit: cover;"
-                     onerror="this.src='https://via.placeholder.com/60x60?text=No+Image'">
-            </td>
-            <td>
-                <div>
-                    <h6 class="mb-1" title="${product.title}">
-                        ${product.title.length > 25 ? 
-                          product.title.substring(0, 25) + '...' : 
-                          product.title}
-                    </h6>
-                    <small class="text-muted">SKU: ${product.sku}</small>
-                </div>
-            </td>
-            <td>
-                <span class="badge bg-secondary">${product.category}</span>
-            </td>
-            <td class="fw-bold text-primary">$${product.price}</td>
-            <td>
-                <span class="badge ${product.stock > 10 ? 'bg-success' : 
-                                   product.stock > 0 ? 'bg-warning' : 'bg-danger'}">
-                    ${product.stock} units
-                </span>
-            </td>
-            <td class="text-center">
-                <div class="btn-group btn-group-sm" role="group">
-                    <button class="btn btn-outline-primary" 
-                            onclick="editProduct(${product.id})" 
-                            title="Edit Product">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-outline-danger" 
-                            onclick="deleteProduct(${product.id})" 
-                            title="Delete Product">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-            </td>
-        </tr>
-    `;
-}
-
-// Make functions globally available
-window.resetProductForm = resetProductForm;
-window.populateProductForm = populateProductForm;
