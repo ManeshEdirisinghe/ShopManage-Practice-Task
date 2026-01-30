@@ -87,6 +87,7 @@
             color: var(--text-secondary) !important;
             font-weight: 500;
             transition: color 0.3s;
+            cursor: pointer;
         }
 
         .nav-link.active, .nav-link:hover {
@@ -303,6 +304,7 @@
         }
         .action-btn.edit:hover { background: #3b82f6; color: white; }
         .action-btn.delete:hover { background: #ef4444; color: white; }
+        .action-btn.sell:hover { background: #10b981; color: white; }
 
         .product-details { padding: 1.5rem; }
         .product-category { font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px; font-weight: 600; margin-bottom: 0.5rem; display: block; }
@@ -342,7 +344,7 @@
         }
         .form-control-modern[readonly] {
             background-color: var(--bg-body);
-            color: #10b981;
+            color: var(--text-secondary);
             font-weight: 700;
         }
         
@@ -455,9 +457,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-4">
-                    <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-grid me-1"></i>Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-tags me-1"></i>Categories</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#analyticsSection"><i class="bi bi-graph-up me-1"></i>Reports</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="navInventory" onclick="switchView('inventory')">
+                            <i class="bi bi-grid me-1"></i>Inventory
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="navSales" onclick="switchView('sales')">
+                            <i class="bi bi-receipt me-1"></i>Sales History
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="navReports" onclick="switchView('inventory'); location.href='#analyticsSection'">
+                            <i class="bi bi-graph-up me-1"></i>Reports
+                        </a>
+                    </li>
                 </ul>
                 <div class="d-flex align-items-center gap-3 flex-wrap">
                     <!-- Theme Toggle Button -->
@@ -481,187 +495,269 @@
 
     <!-- Main Content -->
     <main class="container main-container mt-4">
-        <!-- Page Header -->
-        <header class="row mb-4">
-            <div class="col-12">
-                <div class="page-header-card">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                        <div>
-                            <h1 class="h3 mb-2 fw-bold">Product Management</h1>
-                            <p class="mb-0" style="color: var(--text-secondary)"><i class="bi bi-layers me-2"></i>Manage your inventory and product catalog</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Product Statistics -->
-        <section class="row stats-section mb-4">
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="modern-stats-card gradient-blue">
-                    <div class="stats-content">
-                        <div class="stats-icon"><i class="bi bi-box-seam"></i></div>
-                        <div class="stats-info">
-                            <h5 class="stats-label">Total Products</h5>
-                            <p class="stats-value" id="totalProducts">0</p>
-                        </div>
-                    </div>
-                    <div class="stats-bg-icon"><i class="bi bi-box-seam"></i></div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="modern-stats-card gradient-green">
-                    <div class="stats-content">
-                        <div class="stats-icon"><i class="bi bi-check-circle"></i></div>
-                        <div class="stats-info">
-                            <h5 class="stats-label">In Stock</h5>
-                            <p class="stats-value" id="inStock">0</p>
-                        </div>
-                    </div>
-                    <div class="stats-bg-icon"><i class="bi bi-check-circle"></i></div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="modern-stats-card gradient-orange">
-                    <div class="stats-content">
-                        <div class="stats-icon"><i class="bi bi-exclamation-triangle"></i></div>
-                        <div class="stats-info">
-                            <h5 class="stats-label">Low Stock</h5>
-                            <p class="stats-value" id="lowStock">0</p>
-                        </div>
-                    </div>
-                    <div class="stats-bg-icon"><i class="bi bi-exclamation-triangle"></i></div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="modern-stats-card gradient-red">
-                    <div class="stats-content">
-                        <div class="stats-icon"><i class="bi bi-x-circle"></i></div>
-                        <div class="stats-info">
-                            <h5 class="stats-label">Out of Stock</h5>
-                            <p class="stats-value" id="outOfStock">0</p>
-                        </div>
-                    </div>
-                    <div class="stats-bg-icon"><i class="bi bi-x-circle"></i></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Analytics Section -->
-        <section class="row mb-4" id="analyticsSection">
-            <div class="col-12">
-                <div class="card catalog-card">
-                    <div class="card-header catalog-header p-4 border-bottom-0">
-                        <h5 class="mb-0 fw-bold"><i class="bi bi-pie-chart me-2"></i>Analytics Dashboard</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="row align-items-center">
-                            <div class="col-md-6 mb-4 mb-md-0">
-                                <h6 class="fw-bold text-center mb-3" style="color: var(--text-secondary);">Product Distribution by Category</h6>
-                                <div style="height: 300px; position: relative;">
-                                    <canvas id="categoryChart"></canvas>
-                                </div>
+        
+        <!-- INVENTORY VIEW -->
+        <div id="inventoryView">
+            <!-- Page Header -->
+            <header class="row mb-4">
+                <div class="col-12">
+                    <div class="page-header-card">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h1 class="h3 mb-2 fw-bold">Inventory Management</h1>
+                                <p class="mb-0" style="color: var(--text-secondary)"><i class="bi bi-layers me-2"></i>Manage your inventory and product catalog</p>
                             </div>
-                            <div class="col-md-6 text-center">
-                                <div class="p-4 rounded-3" style="background-color: var(--bg-body); border: 1px solid var(--border-color);">
-                                    <h6 class="fw-bold mb-3" style="color: var(--text-secondary);">Inventory Summary</h6>
-                                    <div class="row text-center g-3">
-                                        <div class="col-6">
-                                            <h2 class="fw-bold mb-0" style="color: #764ba2;" id="totalStockValue">0</h2>
-                                            <small class="text-muted">Total Categories</small>
-                                        </div>
-                                        <div class="col-6">
-                                            <h2 class="fw-bold mb-0" style="color: #10b981;" id="mostStocked">0</h2>
-                                            <small class="text-muted">Top Category</small>
-                                        </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Product Statistics -->
+            <section class="row stats-section mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="modern-stats-card gradient-blue">
+                        <div class="stats-content">
+                            <div class="stats-icon"><i class="bi bi-box-seam"></i></div>
+                            <div class="stats-info">
+                                <h5 class="stats-label">Total Products</h5>
+                                <p class="stats-value" id="totalProducts">0</p>
+                            </div>
+                        </div>
+                        <div class="stats-bg-icon"><i class="bi bi-box-seam"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="modern-stats-card gradient-green">
+                        <div class="stats-content">
+                            <div class="stats-icon"><i class="bi bi-check-circle"></i></div>
+                            <div class="stats-info">
+                                <h5 class="stats-label">In Stock</h5>
+                                <p class="stats-value" id="inStock">0</p>
+                            </div>
+                        </div>
+                        <div class="stats-bg-icon"><i class="bi bi-check-circle"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="modern-stats-card gradient-orange">
+                        <div class="stats-content">
+                            <div class="stats-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                            <div class="stats-info">
+                                <h5 class="stats-label">Low Stock</h5>
+                                <p class="stats-value" id="lowStock">0</p>
+                            </div>
+                        </div>
+                        <div class="stats-bg-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="modern-stats-card gradient-red">
+                        <div class="stats-content">
+                            <div class="stats-icon"><i class="bi bi-x-circle"></i></div>
+                            <div class="stats-info">
+                                <h5 class="stats-label">Out of Stock</h5>
+                                <p class="stats-value" id="outOfStock">0</p>
+                            </div>
+                        </div>
+                        <div class="stats-bg-icon"><i class="bi bi-x-circle"></i></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section class="row mb-4" id="analyticsSection">
+                <div class="col-12">
+                    <div class="card catalog-card">
+                        <div class="card-header catalog-header p-4 border-bottom-0">
+                            <h5 class="mb-0 fw-bold"><i class="bi bi-pie-chart me-2"></i>Analytics Dashboard</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-6 mb-4 mb-md-0">
+                                    <h6 class="fw-bold text-center mb-3" style="color: var(--text-secondary);">Product Distribution by Category</h6>
+                                    <div style="height: 300px; position: relative;">
+                                        <canvas id="categoryChart"></canvas>
                                     </div>
-                                    <p class="mt-4 text-muted small">
-                                        <i class="bi bi-info-circle me-1"></i>
-                                        This chart visualizes the distribution of your inventory across different categories.
-                                    </p>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <div class="p-4 rounded-3" style="background-color: var(--bg-body); border: 1px solid var(--border-color);">
+                                        <h6 class="fw-bold mb-3" style="color: var(--text-secondary);">Inventory Summary</h6>
+                                        <div class="row text-center g-3">
+                                            <div class="col-6">
+                                                <h2 class="fw-bold mb-0" style="color: #764ba2;" id="totalStockValue">0</h2>
+                                                <small class="text-muted">Total Categories</small>
+                                            </div>
+                                            <div class="col-6">
+                                                <h2 class="fw-bold mb-0" style="color: #10b981;" id="mostStocked">0</h2>
+                                                <small class="text-muted">Top Category</small>
+                                            </div>
+                                        </div>
+                                        <p class="mt-4 text-muted small">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            This chart visualizes the distribution of your inventory across different categories.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Product Listing -->
-        <section class="row" id="productList">
-            <div class="col-12">
-                <div class="card catalog-card">
-                    <div class="card-header catalog-header p-4 border-bottom-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h5 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog</h5>
-                        
-                        <div class="d-flex align-items-center gap-2">
-                            <!-- NEW: Export Button -->
-                            <button class="btn btn-modern-outline btn-sm" onclick="exportToCSV()" title="Download as CSV">
-                                <i class="bi bi-download me-1"></i> <span class="d-none d-sm-inline">Export</span>
-                            </button>
+            <!-- Product Listing -->
+            <section class="row" id="productList">
+                <div class="col-12">
+                    <div class="card catalog-card">
+                        <div class="card-header catalog-header p-4 border-bottom-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h5 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap me-2"></i>Product Catalog</h5>
+                            
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- Export Button -->
+                                <button class="btn btn-modern-outline btn-sm" onclick="exportToCSV()" title="Download as CSV">
+                                    <i class="bi bi-download me-1"></i> <span class="d-none d-sm-inline">Export</span>
+                                </button>
 
-                            <!-- Sort Dropdown -->
-                            <select class="form-select-modern py-1" id="sortSelect" style="min-width: 150px; font-size: 0.9rem;">
-                                <option value="name_asc">Name (A-Z)</option>
-                                <option value="price_asc">Price (Low to High)</option>
-                                <option value="price_desc">Price (High to Low)</option>
-                            </select>
+                                <!-- Sort Dropdown -->
+                                <select class="form-select-modern py-1" id="sortSelect" style="min-width: 150px; font-size: 0.9rem;">
+                                    <option value="name_asc">Name (A-Z)</option>
+                                    <option value="price_asc">Price (Low to High)</option>
+                                    <option value="price_desc">Price (High to Low)</option>
+                                </select>
 
-                            <div class="btn-group" role="group">
-                                <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked autocomplete="off">
-                                <label class="btn btn-outline-secondary btn-sm" for="cardView"><i class="bi bi-grid-3x3-gap"></i></label>
-                                <input type="radio" class="btn-check" name="viewToggle" id="tableView" autocomplete="off">
-                                <label class="btn btn-outline-secondary btn-sm" for="tableView"><i class="bi bi-table"></i></label>
+                                <div class="btn-group" role="group">
+                                    <input type="radio" class="btn-check" name="viewToggle" id="cardView" checked autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm" for="cardView"><i class="bi bi-grid-3x3-gap"></i></label>
+                                    <input type="radio" class="btn-check" name="viewToggle" id="tableView" autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm" for="tableView"><i class="bi bi-table"></i></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Loading -->
+                            <div id="loadingSpinner" class="text-center py-5 d-none">
+                                <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                            </div>
+
+                            <!-- Card Grid -->
+                            <div id="cardContainer" class="row g-4"></div>
+
+                            <!-- Table View -->
+                            <div id="tableContainer" class="d-none">
+                                <div class="table-responsive">
+                                    <table class="table modern-table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Image</th>
+                                                <th>Product</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Stock</th>
+                                                <th class="text-end">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="productTableBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Empty State -->
+                            <div id="emptyState" class="text-center py-5 d-none">
+                                <div class="mb-3 text-muted" style="font-size: 3rem;"><i class="bi bi-inbox"></i></div>
+                                <h4>No Products Found</h4>
+                                <p class="text-muted">Start by adding your first product.</p>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div id="paginationContainer" class="mt-4 pt-3 border-top" style="border-color: var(--border-color) !important;">
+                                <nav aria-label="Product pagination">
+                                    <ul class="pagination justify-content-center mb-0" id="paginationControls">
+                                        <!-- Pagination items will be injected here -->
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body p-4">
-                        <!-- Loading -->
-                        <div id="loadingSpinner" class="text-center py-5 d-none">
-                            <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SALES HISTORY VIEW -->
+        <div id="salesView" class="d-none">
+            <!-- Header -->
+            <header class="row mb-4">
+                <div class="col-12">
+                    <div class="page-header-card">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h1 class="h3 mb-2 fw-bold">Sales History</h1>
+                                <p class="mb-0" style="color: var(--text-secondary)"><i class="bi bi-clock-history me-2"></i>Track your sales transactions</p>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </header>
 
-                        <!-- Card Grid -->
-                        <div id="cardContainer" class="row g-4"></div>
+            <!-- Sales Summary -->
+            <section class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="modern-stats-card gradient-green">
+                        <div class="stats-content">
+                            <div class="stats-icon"><i class="bi bi-cash-coin"></i></div>
+                            <div class="stats-info">
+                                <h5 class="stats-label">Total Revenue</h5>
+                                <p class="stats-value" id="totalRevenue">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="modern-stats-card gradient-blue">
+                        <div class="stats-content">
+                            <div class="stats-icon"><i class="bi bi-cart-check"></i></div>
+                            <div class="stats-info">
+                                <h5 class="stats-label">Items Sold</h5>
+                                <p class="stats-value" id="totalItemsSold">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                        <!-- Table View -->
-                        <div id="tableContainer" class="d-none">
+            <!-- Sales Table -->
+            <section class="row">
+                <div class="col-12">
+                    <div class="card catalog-card">
+                        <div class="card-header catalog-header p-4 border-bottom-0">
+                            <h5 class="mb-0 fw-bold"><i class="bi bi-list-ul me-2"></i>Transaction Log</h5>
+                        </div>
+                        <div class="card-body p-4">
                             <div class="table-responsive">
                                 <table class="table modern-table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Image</th>
+                                            <th>Date</th>
                                             <th>Product</th>
-                                            <th>Category</th>
-                                            <th>Price</th>
-                                            <th>Stock</th>
-                                            <th class="text-end">Actions</th>
+                                            <th>SKU</th>
+                                            <th>Quantity</th>
+                                            <th>Total Price</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="productTableBody"></tbody>
+                                    <tbody id="salesTableBody">
+                                        <!-- Sales populated here -->
+                                    </tbody>
                                 </table>
                             </div>
-                        </div>
-
-                        <!-- Empty State -->
-                        <div id="emptyState" class="text-center py-5 d-none">
-                            <div class="mb-3 text-muted" style="font-size: 3rem;"><i class="bi bi-inbox"></i></div>
-                            <h4>No Products Found</h4>
-                            <p class="text-muted">Start by adding your first product.</p>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div id="paginationContainer" class="mt-4 pt-3 border-top" style="border-color: var(--border-color) !important;">
-                            <nav aria-label="Product pagination">
-                                <ul class="pagination justify-content-center mb-0" id="paginationControls">
-                                    <!-- Pagination items will be injected here -->
-                                </ul>
-                            </nav>
+                            <div id="salesEmptyState" class="text-center py-5 d-none">
+                                <div class="mb-3 text-muted" style="font-size: 2rem;"><i class="bi bi-receipt"></i></div>
+                                <h5>No Sales Yet</h5>
+                                <p class="text-muted">Sell items from the inventory to see records here.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
     </main>
 
     <!-- Toast Container -->
@@ -681,6 +777,55 @@
                         <button type="button" class="btn btn-modern-outline" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sell Product Modal -->
+    <div class="modal fade" id="sellModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modern-modal">
+                <div class="modal-header modern-modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="bi bi-cart-check me-2"></i>Sell Product</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body modern-modal-body">
+                    <form id="sellForm">
+                        <input type="hidden" id="sellProductId">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted small text-uppercase">Product</label>
+                            <div class="fw-bold fs-5" id="sellProductName">Product Name</div>
+                            <div class="text-muted" id="sellProductSku">SKU: 12345</div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold text-muted small">Current Stock</label>
+                                <div class="fs-5" id="sellCurrentStock">0</div>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold text-muted small">Unit Price</label>
+                                <div class="fs-5 text-primary" id="sellUnitPrice">$0.00</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Quantity to Sell</label>
+                            <input type="number" class="form-control form-control-modern" id="sellQuantity" min="1" value="1" required>
+                            <div class="form-text text-danger d-none" id="sellStockError">Not enough stock available.</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center p-3 rounded" style="background-color: var(--bg-body);">
+                            <span class="fw-bold">Total Amount:</span>
+                            <span class="fs-4 fw-bold text-success" id="sellTotal">$0.00</span>
+                        </div>
+
+                        <div class="mt-4 text-end">
+                            <button type="button" class="btn btn-modern-outline me-2" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success fw-bold px-4">Complete Sale</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -981,8 +1126,10 @@
             }
         ];
 
-        let products = [...defaultData]; 
+        let products = [...defaultData];
+        let sales = []; 
         const STORAGE_KEY = 'shopManage_products_v7'; 
+        const SALES_STORAGE_KEY = 'shopManage_sales_v1';
         
         // --- Pagination State ---
         let currentPage = 1;
@@ -992,8 +1139,33 @@
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             loadProducts();
+            loadSales();
             setupEventListeners();
         });
+
+        // --- View Switching ---
+        function switchView(viewName) {
+            const inventoryView = document.getElementById('inventoryView');
+            const salesView = document.getElementById('salesView');
+            const navInventory = document.getElementById('navInventory');
+            const navSales = document.getElementById('navSales');
+            const navReports = document.getElementById('navReports');
+
+            navInventory.classList.remove('active');
+            navSales.classList.remove('active');
+            navReports.classList.remove('active');
+
+            if (viewName === 'inventory') {
+                inventoryView.classList.remove('d-none');
+                salesView.classList.add('d-none');
+                navInventory.classList.add('active');
+            } else if (viewName === 'sales') {
+                inventoryView.classList.add('d-none');
+                salesView.classList.remove('d-none');
+                navSales.classList.add('active');
+                renderSalesHistory();
+            }
+        }
 
         // --- Theme Management ---
         function initTheme() {
@@ -1059,6 +1231,26 @@
             updateStats();
             renderProducts();
             renderCharts(); // Update charts on save
+        }
+
+        function loadSales() {
+            try {
+                const stored = localStorage.getItem(SALES_STORAGE_KEY);
+                if (stored) {
+                    sales = JSON.parse(stored);
+                }
+            } catch(e) {
+                console.warn("Sales storage error", e);
+            }
+        }
+
+        function saveSales() {
+            try {
+                localStorage.setItem(SALES_STORAGE_KEY, JSON.stringify(sales));
+            } catch(e) {
+                console.warn("Could not save sales", e);
+            }
+            renderSalesHistory();
         }
 
         // --- Chart Logic ---
@@ -1290,6 +1482,9 @@
                                  onerror="this.src='https://via.placeholder.com/300x200?text=Error'" 
                                  alt="${product.title}">
                             <div class="card-actions">
+                                <button class="action-btn sell" onclick="openSellModal(${product.id})" title="Sell Product">
+                                    <i class="bi bi-cart-check"></i>
+                                </button>
                                 <button class="action-btn edit" onclick="editProduct(${product.id})">
                                     <i class="bi bi-pencil"></i>
                                 </button>
@@ -1341,6 +1536,9 @@
                     <td>${priceDisplay}</td>
                     <td>${getStockBadge(product.stock)}</td>
                     <td class="text-end">
+                        <button class="btn btn-sm btn-outline-success me-1" onclick="openSellModal(${product.id})" title="Sell">
+                            <i class="bi bi-cart-check"></i>
+                        </button>
                         <button class="btn btn-sm btn-outline-primary me-1" onclick="editProduct(${product.id})">
                             <i class="bi bi-pencil"></i>
                         </button>
@@ -1401,6 +1599,152 @@
             document.getElementById('inStock').textContent = products.filter(p => parseInt(p.stock) >= 10).length;
             document.getElementById('lowStock').textContent = products.filter(p => parseInt(p.stock) > 0 && parseInt(p.stock) < 10).length;
             document.getElementById('outOfStock').textContent = products.filter(p => parseInt(p.stock) === 0).length;
+        }
+
+        // --- Sales History Logic ---
+        function renderSalesHistory() {
+            const tableBody = document.getElementById('salesTableBody');
+            const emptyState = document.getElementById('salesEmptyState');
+            
+            if(!sales || sales.length === 0) {
+                tableBody.innerHTML = '';
+                emptyState.classList.remove('d-none');
+                document.getElementById('totalRevenue').textContent = '$0.00';
+                document.getElementById('totalItemsSold').textContent = '0';
+                return;
+            }
+
+            emptyState.classList.add('d-none');
+            tableBody.innerHTML = '';
+            
+            // Sort by date (newest first)
+            const sortedSales = [...sales].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            let totalRev = 0;
+            let totalItems = 0;
+
+            sortedSales.forEach(sale => {
+                totalRev += sale.total;
+                totalItems += parseInt(sale.quantity);
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${new Date(sale.date).toLocaleDateString()} <small class="text-muted">${new Date(sale.date).toLocaleTimeString()}</small></td>
+                    <td class="fw-bold" style="color: var(--text-primary)">${sale.productName}</td>
+                    <td class="text-muted small">${sale.productSku || '-'}</td>
+                    <td>${sale.quantity}</td>
+                    <td class="fw-bold text-success">$${sale.total.toFixed(2)}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            document.getElementById('totalRevenue').textContent = `$${totalRev.toFixed(2)}`;
+            document.getElementById('totalItemsSold').textContent = totalItems;
+        }
+
+        // --- Sell Logic ---
+        function openSellModal(id) {
+            const product = products.find(p => String(p.id) === String(id));
+            if (!product) return;
+
+            // Populate Modal
+            document.getElementById('sellProductId').value = product.id;
+            document.getElementById('sellProductName').textContent = product.title;
+            document.getElementById('sellProductSku').textContent = `SKU: ${product.sku}`;
+            document.getElementById('sellCurrentStock').textContent = product.stock;
+            
+            // Determine active price
+            const activePrice = (product.salePrice && parseFloat(product.salePrice) < parseFloat(product.price)) 
+                ? parseFloat(product.salePrice) 
+                : parseFloat(product.price);
+            
+            document.getElementById('sellUnitPrice').textContent = `$${activePrice.toFixed(2)}`;
+            
+            // Reset Input
+            const qtyInput = document.getElementById('sellQuantity');
+            qtyInput.value = 1;
+            qtyInput.max = product.stock; // Set max attribute
+            
+            // Calc initial total
+            calculateSellTotal(activePrice);
+
+            // Add event listener for dynamic total calc
+            qtyInput.oninput = function() {
+                const qty = parseInt(this.value);
+                const stock = parseInt(product.stock);
+                const errDiv = document.getElementById('sellStockError');
+                
+                if (qty > stock) {
+                    errDiv.classList.remove('d-none');
+                    document.getElementById('sellTotal').textContent = "$0.00";
+                } else {
+                    errDiv.classList.add('d-none');
+                    const total = qty * activePrice;
+                    document.getElementById('sellTotal').textContent = `$${total.toFixed(2)}`;
+                }
+            };
+
+            new bootstrap.Modal(document.getElementById('sellModal')).show();
+        }
+
+        function calculateSellTotal(price) {
+            const qty = parseInt(document.getElementById('sellQuantity').value) || 0;
+            const total = qty * price;
+            document.getElementById('sellTotal').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Handle Sell Submit
+        const sellForm = document.getElementById('sellForm');
+        if(sellForm) {
+            sellForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const productId = document.getElementById('sellProductId').value;
+                const qty = parseInt(document.getElementById('sellQuantity').value);
+                
+                // Find Product
+                const productIndex = products.findIndex(p => String(p.id) === String(productId));
+                if (productIndex === -1) return;
+                
+                const product = products[productIndex];
+                
+                // Validate Stock
+                if (qty > parseInt(product.stock)) {
+                    showToast('Insufficient stock!', 'error');
+                    return;
+                }
+
+                // Calculate Total
+                const activePrice = (product.salePrice && parseFloat(product.salePrice) < parseFloat(product.price)) 
+                    ? parseFloat(product.salePrice) 
+                    : parseFloat(product.price);
+                const total = qty * activePrice;
+
+                // 1. Update Product Stock
+                products[productIndex].stock = parseInt(product.stock) - qty;
+                
+                // 2. Create Sale Record
+                const saleRecord = {
+                    id: Date.now(),
+                    productId: product.id,
+                    productName: product.title,
+                    productSku: product.sku,
+                    quantity: qty,
+                    total: total,
+                    date: new Date().toISOString()
+                };
+                
+                sales.push(saleRecord);
+
+                // 3. Save Everything
+                saveProducts(); // Updates inventory
+                saveSales();    // Updates sales history
+
+                // 4. UI Feedback
+                showToast('Sale completed successfully!', 'success');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('sellModal'));
+                modal.hide();
+            });
         }
 
         // --- Event Listeners ---
